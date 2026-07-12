@@ -1,50 +1,51 @@
-import type { Metadata } from "next"
-import { PageBanner } from "@/components/public/page-banner"
-import { StatsBand } from "@/components/public/home/stats-band"
-import { Card, CardContent } from "@/components/ui/card"
-import { TargetIcon, EyeIcon, HeartIcon, CheckCircle2Icon } from "lucide-react"
+import { StatsBand } from "@/components/public/home/stats-band";
+import { PageBanner } from "@/components/public/page-banner";
+import { Card, CardContent } from "@/components/ui/card";
+import { CheckCircle2Icon, EyeIcon, HeartIcon, TargetIcon } from "lucide-react";
+import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "About Us",
-  description: "Learn about Bright Future Coaching Center, our mission, vision, and commitment to student success.",
-}
+  title: "আমাদের সম্পর্কে",
+  description:
+    "Bright Future Coaching Center সম্পর্কে জানুন—আমাদের লক্ষ্য, দৃষ্টিভঙ্গি এবং শিক্ষার্থীদের সাফল্যের প্রতি আমাদের অঙ্গীকার।",
+};
 
 const values = [
   {
     icon: TargetIcon,
-    title: "Our Mission",
+    title: "আমাদের লক্ষ্য",
     description:
-      "To provide accessible, high-quality education that empowers every student to reach their full potential and achieve academic excellence.",
+      "মানসম্মত ও সহজলভ্য শিক্ষা প্রদান করে প্রতিটি শিক্ষার্থীকে তার সর্বোচ্চ সম্ভাবনা অর্জন এবং একাডেমিক সাফল্যের পথে এগিয়ে নেওয়া।",
   },
   {
     icon: EyeIcon,
-    title: "Our Vision",
+    title: "আমাদের দৃষ্টিভঙ্গি",
     description:
-      "To be the most trusted coaching center, shaping confident learners and future leaders through innovative teaching methods.",
+      "আধুনিক ও কার্যকর শিক্ষাদান পদ্ধতির মাধ্যমে আত্মবিশ্বাসী শিক্ষার্থী এবং ভবিষ্যতের দক্ষ নেতৃত্ব তৈরি করে দেশের অন্যতম বিশ্বস্ত কোচিং সেন্টার হিসেবে প্রতিষ্ঠিত হওয়া।",
   },
   {
     icon: HeartIcon,
-    title: "Our Values",
+    title: "আমাদের মূল্যবোধ",
     description:
-      "Integrity, dedication, and student-first thinking guide everything we do. We believe in nurturing both knowledge and character.",
+      "সততা, নিষ্ঠা এবং শিক্ষার্থী-কেন্দ্রিক চিন্তাধারা আমাদের প্রতিটি কার্যক্রমের মূল ভিত্তি। আমরা জ্ঞান ও নৈতিকতার সমন্বিত বিকাশে বিশ্বাস করি।",
   },
-]
+];
 
 const highlights = [
-  "Experienced and certified faculty members",
-  "Modern classrooms with digital learning tools",
-  "Regular assessments and progress tracking",
-  "Personalized attention with small batches",
-  "Comprehensive study materials and resources",
-  "Proven track record of student success",
-]
+  "অভিজ্ঞ ও দক্ষ শিক্ষকবৃন্দ",
+  "আধুনিক শ্রেণিকক্ষ ও ডিজিটাল শিক্ষার সুবিধা",
+  "নিয়মিত মূল্যায়ন ও অগ্রগতি পর্যবেক্ষণ",
+  "ছোট ব্যাচের মাধ্যমে ব্যক্তিগত যত্ন",
+  "সম্পূর্ণ স্টাডি ম্যাটেরিয়াল ও শিক্ষাসহায়ক উপকরণ",
+  "শিক্ষার্থীদের ধারাবাহিক সফলতার প্রমাণিত ইতিহাস",
+];
 
 export default function AboutPage() {
   return (
     <>
       <PageBanner
-        title="About Bright Future"
-        description="For over 12 years, we have been dedicated to transforming students into confident achievers through quality education."
+        title="আমাদের সম্পর্কে"
+        description="গত ১২ বছরেরও বেশি সময় ধরে আমরা মানসম্মত শিক্ষার মাধ্যমে শিক্ষার্থীদের আত্মবিশ্বাসী ও সফল মানুষ হিসেবে গড়ে তুলতে কাজ করে আসছি।"
       />
 
       <section className="py-16 md:py-24">
@@ -56,8 +57,14 @@ export default function AboutPage() {
                   <div className="flex size-12 items-center justify-center rounded-xl bg-primary/10 text-primary">
                     <value.icon className="size-6" />
                   </div>
-                  <h2 className="font-display text-xl font-semibold text-foreground">{value.title}</h2>
-                  <p className="text-sm leading-relaxed text-muted-foreground">{value.description}</p>
+
+                  <h2 className="font-display text-xl font-semibold text-foreground">
+                    {value.title}
+                  </h2>
+
+                  <p className="text-sm leading-relaxed text-muted-foreground">
+                    {value.description}
+                  </p>
                 </CardContent>
               </Card>
             ))}
@@ -69,12 +76,15 @@ export default function AboutPage() {
         <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-12 px-4 md:px-6 lg:grid-cols-2">
           <div className="flex flex-col gap-6">
             <h2 className="font-display text-3xl font-bold text-balance text-foreground">
-              Why Students & Parents Trust Us
+              কেন শিক্ষার্থী ও অভিভাবকরা আমাদের ওপর আস্থা রাখেন
             </h2>
+
             <p className="leading-relaxed text-muted-foreground">
-              At Bright Future Coaching Center, we combine experienced educators, a supportive environment, and a
-              results-driven approach to help every student thrive academically and personally.
+              Bright Future Coaching Center-এ আমরা অভিজ্ঞ শিক্ষকবৃন্দ, সহায়ক
+              শিক্ষার পরিবেশ এবং ফলাফলভিত্তিক শিক্ষাদান পদ্ধতির মাধ্যমে প্রতিটি
+              শিক্ষার্থীকে একাডেমিক ও ব্যক্তিগত জীবনে সফল হতে সহায়তা করি।
             </p>
+
             <ul className="flex flex-col gap-3">
               {highlights.map((item) => (
                 <li key={item} className="flex items-start gap-3">
@@ -84,10 +94,11 @@ export default function AboutPage() {
               ))}
             </ul>
           </div>
+
           <div className="overflow-hidden rounded-2xl border border-border">
             <img
               src="/students-studying-together-in-a-modern-classroom.png"
-              alt="Students learning in a modern classroom at Bright Future Coaching Center"
+              alt="আধুনিক শ্রেণিকক্ষে একসাথে পড়াশোনা করছে শিক্ষার্থীরা"
               className="h-full w-full object-cover"
             />
           </div>
@@ -96,5 +107,5 @@ export default function AboutPage() {
 
       <StatsBand />
     </>
-  )
+  );
 }
