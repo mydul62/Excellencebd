@@ -1,0 +1,24 @@
+import type { Student } from '@/types'
+
+export const students: Student[] = [
+  { id: 's1', name: 'Tahsin Ahmed', email: 'student@demo.com', phone: '+880 1811 200001', avatar: 'https://i.pravatar.cc/300?img=68', status: 'active', address: 'Mirpur, Dhaka', guardian: 'Rafiq Ahmed', joinedAt: '2024-01-10' },
+  { id: 's2', name: 'Nusrat Jahan', email: 'nusrat.jahan@student.com', phone: '+880 1811 200002', avatar: 'https://i.pravatar.cc/300?img=44', status: 'active', address: 'Uttara, Dhaka', guardian: 'Kamal Uddin', joinedAt: '2024-01-15' },
+  { id: 's3', name: 'Riyad Hossain', email: 'riyad.hossain@student.com', phone: '+880 1811 200003', avatar: 'https://i.pravatar.cc/300?img=59', status: 'active', address: 'Dhanmondi, Dhaka', guardian: 'Selim Hossain', joinedAt: '2024-02-01' },
+  { id: 's4', name: 'Mim Akter', email: 'mim.akter@student.com', phone: '+880 1811 200004', avatar: 'https://i.pravatar.cc/300?img=32', status: 'active', address: 'Bashundhara, Dhaka', guardian: 'Jamal Akter', joinedAt: '2024-02-05' },
+  { id: 's5', name: 'Sabbir Khan', email: 'sabbir.khan@student.com', phone: '+880 1811 200005', avatar: 'https://i.pravatar.cc/300?img=53', status: 'inactive', address: 'Mohammadpur, Dhaka', guardian: 'Anwar Khan', joinedAt: '2024-02-10' },
+  { id: 's6', name: 'Jarin Tasnim', email: 'jarin.tasnim@student.com', phone: '+880 1811 200006', avatar: 'https://i.pravatar.cc/300?img=25', status: 'active', address: 'Banani, Dhaka', guardian: 'Habib Rahman', joinedAt: '2024-02-18' },
+  { id: 's7', name: 'Fahim Rahman', email: 'fahim.rahman@student.com', phone: '+880 1811 200007', avatar: 'https://i.pravatar.cc/300?img=60', status: 'active', address: 'Gulshan, Dhaka', guardian: 'Nasir Rahman', joinedAt: '2024-03-01' },
+  { id: 's8', name: 'Anika Tabassum', email: 'anika.tabassum@student.com', phone: '+880 1811 200008', avatar: 'https://i.pravatar.cc/300?img=28', status: 'active', address: 'Badda, Dhaka', guardian: 'Faruk Ahmed', joinedAt: '2024-03-08' },
+  { id: 's9', name: 'Rakib Islam', email: 'rakib.islam@student.com', phone: '+880 1811 200009', avatar: 'https://i.pravatar.cc/300?img=64', status: 'active', address: 'Rampura, Dhaka', guardian: 'Shahin Islam', joinedAt: '2024-03-12' },
+  { id: 's10', name: 'Sumaiya Islam', email: 'sumaiya.islam@student.com', phone: '+880 1811 200010', avatar: 'https://i.pravatar.cc/300?img=20', status: 'inactive', address: 'Mugda, Dhaka', guardian: 'Kabir Islam', joinedAt: '2024-03-20' },
+  { id: 's11', name: 'Nafis Iqbal', email: 'nafis.iqbal@student.com', phone: '+880 1811 200011', avatar: 'https://i.pravatar.cc/300?img=57', status: 'active', address: 'Khilgaon, Dhaka', guardian: 'Aminul Iqbal', joinedAt: '2024-04-02' },
+  { id: 's12', name: 'Tania Sultana', email: 'tania.sultana@student.com', phone: '+880 1811 200012', avatar: 'https://i.pravatar.cc/300?img=41', status: 'active', address: 'Shyamoli, Dhaka', guardian: 'Rashed Sultan', joinedAt: '2024-04-10' },
+  { id: 's13', name: 'Imran Hossain', email: 'imran.hossain@student.com', phone: '+880 1811 200013', avatar: 'https://i.pravatar.cc/300?img=65', status: 'active', address: 'Malibagh, Dhaka', guardian: 'Delwar Hossain', joinedAt: '2024-04-15' },
+  { id: 's14', name: 'Fariha Noor', email: 'fariha.noor@student.com', phone: '+880 1811 200014', avatar: 'https://i.pravatar.cc/300?img=24', status: 'active', address: 'Tejgaon, Dhaka', guardian: 'Mizanur Noor', joinedAt: '2024-04-22' },
+  { id: 's15', name: 'Shakil Ahmed', email: 'shakil.ahmed@student.com', phone: '+880 1811 200015', avatar: 'https://i.pravatar.cc/300?img=52', status: 'inactive', address: 'Jatrabari, Dhaka', guardian: 'Bashir Ahmed', joinedAt: '2024-05-01' },
+  { id: 's16', name: 'Rima Khatun', email: 'rima.khatun@student.com', phone: '+880 1811 200016', avatar: 'https://i.pravatar.cc/300?img=49', status: 'active', address: 'Motijheel, Dhaka', guardian: 'Sohel Rana', joinedAt: '2024-05-06' },
+  { id: 's17', name: 'Arafat Karim', email: 'arafat.karim@student.com', phone: '+880 1811 200017', avatar: 'https://i.pravatar.cc/300?img=58', status: 'active', address: 'Kotwali, Dhaka', guardian: 'Nurul Karim', joinedAt: '2024-05-14' },
+  { id: 's18', name: 'Lamia Rahman', email: 'lamia.rahman@student.com', phone: '+880 1811 200018', avatar: 'https://i.pravatar.cc/300?img=30', status: 'active', address: 'Wari, Dhaka', guardian: 'Hasan Rahman', joinedAt: '2024-05-20' },
+  { id: 's19', name: 'Tanjid Hasan', email: 'tanjid.hasan@student.com', phone: '+880 1811 200019', avatar: 'https://i.pravatar.cc/300?img=61', status: 'active', address: 'Farmgate, Dhaka', guardian: 'Alamgir Hasan', joinedAt: '2024-06-01' },
+  { id: 's20', name: 'Sadia Afrin', email: 'sadia.afrin@student.com', phone: '+880 1811 200020', avatar: 'https://i.pravatar.cc/300?img=36', status: 'active', address: 'Kalabagan, Dhaka', guardian: 'Monir Hossain', joinedAt: '2024-06-08' },
+]
