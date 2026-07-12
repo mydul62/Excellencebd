@@ -5,7 +5,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { MapPinIcon, PhoneIcon, MailIcon, ClockIcon } from "lucide-react"
 
 export const metadata: Metadata = {
-  title: "Contact Us",
+  title: "Contact Toukir Ahmed",
   description: "Get in touch with Bright Future Coaching Center. We are here to help you.",
 }
 
