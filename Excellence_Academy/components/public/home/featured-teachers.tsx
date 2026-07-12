@@ -28,6 +28,7 @@ export function FeaturedTeachers() {
             render={<Link href="/teachers" />}
             size="lg"
             variant="outline"
+            className="rounded-full border-[#146373] bg-white text-[#146373] hover:bg-[#EAF2F4]"
           >
             সকল শিক্ষক দেখুন
             <ArrowRightIcon data-icon="inline-end" />

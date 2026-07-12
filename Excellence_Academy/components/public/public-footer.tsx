@@ -19,12 +19,12 @@ const socials = [
 
 export function PublicFooter() {
   return (
-    <footer className="border-t border-border bg-card">
+    <footer className="border-t border-border bg-[#010F3F]">
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
           <div className="flex flex-col gap-4">
             <Logo />
-            <p className="max-w-xs text-sm leading-relaxed text-muted-foreground">
+            <p className="max-w-xs text-sm leading-relaxed text-[#8FA2B8]">
               Empowering students with quality education, experienced teachers, and a nurturing
               environment for a brighter future.
             </p>
@@ -34,7 +34,7 @@ export function PublicFooter() {
                   key={label}
                   href="#"
                   aria-label={label}
-                  className="flex size-9 items-center justify-center rounded-lg bg-secondary text-muted-foreground transition-colors hover:bg-primary hover:text-primary-foreground"
+                  className="flex size-9 items-center justify-center rounded-lg bg-white/10 text-[#8FA2B8] transition-colors duration-300 hover:bg-[#F9801D] hover:text-white"
                 >
                   <Icon className="size-4" />
                 </a>
@@ -43,13 +43,13 @@ export function PublicFooter() {
           </div>
 
           <div className="flex flex-col gap-3">
-            <h4 className="font-display text-sm font-semibold text-foreground">Quick Links</h4>
+            <h4 className="font-display text-sm font-semibold text-white">দ্রুত লিংক</h4>
             <ul className="flex flex-col gap-2">
               {quickLinks.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-sm text-muted-foreground transition-colors hover:text-primary"
+                    className="text-sm text-[#8FA2B8] transition-colors duration-300 hover:text-[#F9801D]"
                   >
                     {link.label}
                   </Link>
@@ -59,8 +59,8 @@ export function PublicFooter() {
           </div>
 
           <div className="flex flex-col gap-3">
-            <h4 className="font-display text-sm font-semibold text-foreground">Programs</h4>
-            <ul className="flex flex-col gap-2 text-sm text-muted-foreground">
+            <h4 className="font-display text-sm font-semibold text-white">প্রোগ্রামসমূহ</h4>
+            <ul className="flex flex-col gap-2 text-sm text-[#8FA2B8]">
               <li>HSC & SSC Academic</li>
               <li>Web Development</li>
               <li>Spoken English & IELTS</li>
@@ -69,27 +69,27 @@ export function PublicFooter() {
           </div>
 
           <div className="flex flex-col gap-3">
-            <h4 className="font-display text-sm font-semibold text-foreground">Get in Touch</h4>
-            <ul className="flex flex-col gap-3 text-sm text-muted-foreground">
+            <h4 className="font-display text-sm font-semibold text-white">যোগাযোগ করুন</h4>
+            <ul className="flex flex-col gap-3 text-sm text-[#8FA2B8]">
               <li className="flex items-start gap-2.5">
-                <MapPin className="mt-0.5 size-4 shrink-0 text-primary" />
+                <MapPin className="mt-0.5 size-4 shrink-0 text-[#F9801D]" />
                 House 12, Road 5, Dhanmondi, Dhaka 1205
               </li>
               <li className="flex items-center gap-2.5">
-                <Phone className="size-4 shrink-0 text-primary" />
+                <Phone className="size-4 shrink-0 text-[#F9801D]" />
                 +880 1711 000000
               </li>
               <li className="flex items-center gap-2.5">
-                <Mail className="size-4 shrink-0 text-primary" />
+                <Mail className="size-4 shrink-0 text-[#F9801D]" />
                 info@brightfuture.com
               </li>
             </ul>
           </div>
         </div>
 
-        <div className="mt-10 flex flex-col items-center justify-between gap-3 border-t border-border pt-6 text-sm text-muted-foreground sm:flex-row">
-          <p>&copy; {new Date().getFullYear()} Bright Future Coaching Center. All rights reserved.</p>
-          <p>Built for excellence in education.</p>
+        <div className="mt-10 flex flex-col items-center justify-between gap-3 border-t border-white/10 pt-6 text-sm text-[#8FA2B8] sm:flex-row">
+          <p>&copy; {new Date().getFullYear()} Exellence Academy. সর্বস্বত্ব সংরক্ষিত।</p>
+          <p>শিক্ষায় উৎকর্ষের জন্য নির্মিত।</p>
         </div>
       </div>
     </footer>

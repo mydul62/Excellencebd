@@ -5,7 +5,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "কোর্সসমূহ",
   description:
-    "Bright Future Coaching Center-এর একাডেমিক, দক্ষতা উন্নয়ন, ভাষা শিক্ষা এবং বিজ্ঞান বিষয়ক বিভিন্ন কোর্স সম্পর্কে জানুন।",
+    "Exellence Academy-এর একাডেমিক, দক্ষতা উন্নয়ন, ভাষা শিক্ষা এবং বিজ্ঞান বিষয়ক বিভিন্ন কোর্স সম্পর্কে জানুন।",
 };
 
 export default function CoursesPage() {

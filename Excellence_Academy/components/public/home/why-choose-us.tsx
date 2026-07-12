@@ -49,7 +49,7 @@ const features = [
 
 export function WhyChooseUs() {
   return (
-    <section className="bg-secondary/50 py-16 md:py-24">
+    <section className="bg-[#F6F8FB] py-16 md:py-24">
       <div className="container mx-auto w-[95%] px-4 md:px-6">
         <SectionHeading
           eyebrow="কেন আমাদের বেছে নেবেন"
@@ -59,18 +59,18 @@ export function WhyChooseUs() {
 
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {features.map((feature) => (
-            <Card key={feature.title} className="border-border/60">
+            <Card key={feature.title} className="border-[#E5E7EB] bg-white shadow-[0_10px_30px_rgba(1,15,63,0.05)]">
               <CardContent className="flex flex-col gap-4 p-6">
-                <div className="flex size-12 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                <div className="flex size-12 items-center justify-center rounded-xl bg-[#EAF2F4] text-[#146373]">
                   <feature.icon className="size-6" />
                 </div>
 
                 <div className="flex flex-col gap-1.5">
-                  <h3 className="font-display text-lg font-semibold text-foreground">
+                  <h3 className="font-display text-lg font-semibold text-[#010F3F]">
                     {feature.title}
                   </h3>
 
-                  <p className="text-sm leading-relaxed text-muted-foreground">
+                  <p className="text-sm leading-relaxed text-[#5b6b7a]">
                     {feature.description}
                   </p>
                 </div>

@@ -3,59 +3,59 @@ import type { Review } from '@/types'
 export const reviews: Review[] = [
   {
     id: 'r1',
-    name: 'Nusrat Jahan',
+    name: 'নুসরাত জাহান',
     avatar: 'https://i.pravatar.cc/150?img=44',
-    role: 'HSC Student',
+    role: 'এইচএসসি শিক্ষার্থী',
     rating: 5,
     featured: true,
     comment:
-      'The teachers here are incredibly supportive. My grades improved dramatically after joining the HSC Academic program. Highly recommended!',
+      'এখানের শিক্ষকরা অসাধারণভাবে সহায়ক। এইচএসসি একাডেমিক প্রোগ্রামে যোগ দেওয়ার পর আমার গ্রেড নাটকীয়ভাবে উন্নত হয়েছে। খুবই সাজেশনযোগ্য।',
   },
   {
     id: 'r2',
-    name: 'Fahim Rahman',
+    name: 'ফাহিম রহমান',
     avatar: 'https://i.pravatar.cc/150?img=60',
-    role: 'Web Development Student',
+    role: 'ওয়েব ডেভেলপমেন্ট শিক্ষার্থী',
     rating: 5,
     featured: true,
     comment:
-      'I built my first full-stack app during the Web Development course. The project-based approach made everything click for me.',
+      'ওয়েব ডেভেলপমেন্ট কোর্সে আমি আমার প্রথম ফুল-স্ট্যাক অ্যাপ বানিয়েছি। প্রজেক্টভিত্তিক পদ্ধতি সবকিছু বুঝতে সাহায্য করেছে।',
   },
   {
     id: 'r3',
-    name: 'Mim Akter',
+    name: 'মিম আক্তার',
     avatar: 'https://i.pravatar.cc/150?img=32',
-    role: 'IELTS Student',
+    role: 'IELTS শিক্ষার্থী',
     rating: 5,
     featured: true,
     comment:
-      'Scored 7.5 in IELTS thanks to the focused speaking sessions. The mock tests felt exactly like the real exam.',
+      'ফোকাসড স্পিকিং সেশনের কারণে IELTS-এ 7.5 স্কোর করেছি। মক টেস্টগুলো প্রকৃত পরীক্ষার মতো অনুভূত হয়েছিল।',
   },
   {
     id: 'r4',
-    name: 'Riyad Hossain',
+    name: 'রিয়াদ হোসেন',
     avatar: 'https://i.pravatar.cc/150?img=59',
-    role: 'Physics Student',
+    role: 'ফিজিক্স শিক্ষার্থী',
     rating: 4,
     comment:
-      'Physics finally makes sense to me. The live demonstrations and problem-solving classes are the best part of the course.',
+      'এখন ফিজিক্স বুঝতে খুব সহজ লাগছে। লাইভ ডেমো এবং সমস্যা সমাধানের ক্লাসগুলো কোর্সের সবচেয়ে ভালো অংশ।',
   },
   {
     id: 'r5',
-    name: 'Sadia Afrin',
+    name: 'সাদিয়া আফরিন',
     avatar: 'https://i.pravatar.cc/150?img=36',
-    role: 'HSC Student',
+    role: 'এইচএসসি শিক্ষার্থী',
     rating: 5,
     comment:
-      'Great learning environment with a caring faculty. The regular tests kept me on track throughout the whole year.',
+      'খুব সুন্দর শেখার পরিবেশ এবং যত্নশীল শিক্ষকবৃন্দ। নিয়মিত টেস্টগুলো পুরো বছরের জন্য আমাকে ট্র্যাকেই রাখে।',
   },
   {
     id: 'r6',
-    name: 'Nafis Iqbal',
+    name: 'নাফিস ইকবাল',
     avatar: 'https://i.pravatar.cc/150?img=57',
-    role: 'Python Student',
+    role: 'পাইথন শিক্ষার্থী',
     rating: 5,
     comment:
-      'From zero coding knowledge to writing my own automation scripts. The instructors are patient and truly knowledgeable.',
+      'শূন্য কোডিং জ্ঞান থেকে আমার নিজের অটোমেশন স্ক্রিপ্ট লিখতে পারছি। প্রশিক্ষকরা ধৈর্যশীল এবং সত্যিই জ্ঞানী।',
   },
 ]
