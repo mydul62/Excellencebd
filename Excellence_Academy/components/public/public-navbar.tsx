@@ -11,12 +11,12 @@ import { useAuth } from '@/hooks/use-auth'
 import { cn } from '@/lib/utils'
 
 const navLinks = [
-  { href: '/', label: 'Home' },
-  { href: '/about', label: 'About' },
-  { href: '/courses', label: 'Courses' },
-  { href: '/teachers', label: 'Teachers' },
-  { href: '/notice', label: 'Notice' },
-  { href: '/contact', label: 'Contact' },
+  { href: '/', label: 'হোম' },
+  { href: '/about', label: 'আমাদের সম্পর্কে' },
+  { href: '/courses', label: 'কোর্সসমূহ' },
+  { href: '/teachers', label: 'শিক্ষকগণ' },
+  { href: '/notice', label: 'নোটিশ' },
+  { href: '/contact', label: 'যোগাযোগ' },
 ]
 
 export function PublicNavbar() {
@@ -30,8 +30,8 @@ export function PublicNavbar() {
     href === '/' ? pathname === '/' : pathname.startsWith(href)
 
   return (
-    <header className="sticky top-0 z-50 border-b border-border/60 bg-background/80 backdrop-blur-md">
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
+    <header className="sticky top-0 z-50 border-b border-border/60 bg-[#FFFFFF] shadow-[0_8px_30px_rgba(15,93,115,0.08)] backdrop-blur-md">
+      <div className="mx-auto container flex h-16 w-[95%] items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
         <Logo />
 
         <nav className="hidden items-center gap-1 md:flex">
@@ -40,10 +40,10 @@ export function PublicNavbar() {
               key={link.href}
               href={link.href}
               className={cn(
-                'rounded-lg px-3 py-2 text-sm font-medium transition-colors',
+                'rounded-xl px-3 py-2 text-sm font-semibold transition-all duration-300',
                 isActive(link.href)
-                  ? 'text-primary'
-                  : 'text-muted-foreground hover:text-foreground',
+                  ? 'bg-[#EAF2F4] text-[#0F5D73]'
+                  : 'text-[#0F5D73] hover:bg-[#EAF2F4] hover:text-[#146373]',
               )}
             >
               {link.label}
@@ -54,20 +54,20 @@ export function PublicNavbar() {
         <div className="hidden items-center gap-2 md:flex">
           {user ? (
             <>
-              <Button render={<Link href={`/dashboard/${user.role}`} />} variant="ghost" size="sm">
-                Dashboard
+              <Button render={<Link href={`/dashboard/${user.role}`} />} variant="ghost" size="sm" className="h-9 rounded-full border border-[#146373]/20 bg-[#FFFFFF] px-4 text-[#146373] hover:bg-[#EAF2F4] hover:text-[#0F5D73]">
+                ড্যাশবোর্ড
               </Button>
-              <Button variant="outline" size="sm" onClick={() => { logout(); router.push('/') }}>
-                Logout
+              <Button variant="outline" size="sm" className="h-9 rounded-full border-[#146373] bg-[#146373] px-4 text-white hover:bg-[#0F5D73]" onClick={() => { logout(); router.push('/') }}>
+                লগআউট
               </Button>
             </>
           ) : (
             <>
-              <Button render={<Link href={`/login?redirect=${loginRedirect}`} />} variant="ghost" size="sm">
-                Login
+              <Button render={<Link href={`/login?redirect=${loginRedirect}`} />} variant="ghost" size="sm" className="h-9 rounded-full border border-[#146373]/20 bg-[#FFFFFF] px-4 text-[#146373] hover:bg-[#EAF2F4] hover:text-[#0F5D73]">
+                লগইন
               </Button>
-              <Button render={<Link href="/register" />} size="sm">
-                Register
+              <Button render={<Link href="/register" />} size="sm" className="h-9 rounded-full bg-[#146373] px-4 text-white hover:bg-[#0F5D73]">
+                রেজিস্টার
               </Button>
             </>
           )}
@@ -110,7 +110,7 @@ export function PublicNavbar() {
                       render={<Link href={`/dashboard/${user.role}`} onClick={() => setOpen(false)} />}
                       variant="ghost"
                     >
-                      Dashboard
+                      ড্যাশবোর্ড
                     </Button>
                     <Button
                       variant="outline"
@@ -120,7 +120,7 @@ export function PublicNavbar() {
                         router.push('/')
                       }}
                     >
-                      Logout
+                      লগআউট
                     </Button>
                   </>
                 ) : (
@@ -129,10 +129,10 @@ export function PublicNavbar() {
                       render={<Link href={`/login?redirect=${loginRedirect}`} onClick={() => setOpen(false)} />}
                       variant="outline"
                     >
-                      Login
+                      লগইন
                     </Button>
                     <Button render={<Link href="/register" onClick={() => setOpen(false)} />}>
-                      Register
+                      রেজিস্টার
                     </Button>
                   </>
                 )}

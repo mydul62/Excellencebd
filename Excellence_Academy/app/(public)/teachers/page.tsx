@@ -6,7 +6,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "শিক্ষকবৃন্দ",
   description:
-    "Bright Future Coaching Center-এর অভিজ্ঞ, দক্ষ ও নিবেদিতপ্রাণ শিক্ষকবৃন্দের সাথে পরিচিত হোন।",
+    "Exellence Academy-এর অভিজ্ঞ, দক্ষ ও নিবেদিতপ্রাণ শিক্ষকবৃন্দের সাথে পরিচিত হোন।",
 };
 
 export default function TeachersPage() {

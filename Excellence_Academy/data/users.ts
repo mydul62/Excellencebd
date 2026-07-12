@@ -7,7 +7,7 @@ import type { User } from '@/types'
 export const demoUsers: (User & { password: string })[] = [
   {
     id: 'u-admin',
-    name: 'Admin User',
+    name: 'অ্যাডমিন ব্যবহারকারী',
     email: 'admin@demo.com',
     password: '123456',
     role: 'admin',
@@ -16,7 +16,7 @@ export const demoUsers: (User & { password: string })[] = [
   },
   {
     id: 't1',
-    name: 'Arif Hossain',
+    name: 'আরিফ হোসেন',
     email: 'teacher@demo.com',
     password: '123456',
     role: 'teacher',
@@ -25,7 +25,7 @@ export const demoUsers: (User & { password: string })[] = [
   },
   {
     id: 's1',
-    name: 'Tahsin Ahmed',
+    name: 'তাহসিন আহমেদ',
     email: 'student@demo.com',
     password: '123456',
     role: 'student',

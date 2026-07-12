@@ -7,7 +7,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "আমাদের সম্পর্কে",
   description:
-    "Bright Future Coaching Center সম্পর্কে জানুন—আমাদের লক্ষ্য, দৃষ্টিভঙ্গি এবং শিক্ষার্থীদের সাফল্যের প্রতি আমাদের অঙ্গীকার।",
+    "Exellence Academy সম্পর্কে জানুন—আমাদের লক্ষ্য, দৃষ্টিভঙ্গি এবং শিক্ষার্থীদের সাফল্যের প্রতি আমাদের অঙ্গীকার।",
 };
 
 const values = [
@@ -52,17 +52,17 @@ export default function AboutPage() {
         <div className="mx-auto max-w-7xl px-4 md:px-6">
           <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
             {values.map((value) => (
-              <Card key={value.title} className="border-border/60">
+              <Card key={value.title} className="border-[#E5E7EB] bg-white shadow-[0_10px_30px_rgba(1,15,63,0.05)]">
                 <CardContent className="flex flex-col gap-4 p-6">
-                  <div className="flex size-12 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                  <div className="flex size-12 items-center justify-center rounded-xl bg-[#EAF2F4] text-[#146373]">
                     <value.icon className="size-6" />
                   </div>
 
-                  <h2 className="font-display text-xl font-semibold text-foreground">
+                  <h2 className="font-display text-xl font-semibold text-[#010F3F]">
                     {value.title}
                   </h2>
 
-                  <p className="text-sm leading-relaxed text-muted-foreground">
+                  <p className="text-sm leading-relaxed text-[#5b6b7a]">
                     {value.description}
                   </p>
                 </CardContent>
@@ -72,14 +72,14 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="bg-secondary/50 py-16 md:py-24">
+      <section className="bg-[#F6F8FB] py-16 md:py-24">
         <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-12 px-4 md:px-6 lg:grid-cols-2">
           <div className="flex flex-col gap-6">
-            <h2 className="font-display text-3xl font-bold text-balance text-foreground">
+            <h2 className="font-display text-3xl font-bold text-balance text-[#010F3F]">
               কেন শিক্ষার্থী ও অভিভাবকরা আমাদের ওপর আস্থা রাখেন
             </h2>
 
-            <p className="leading-relaxed text-muted-foreground">
+            <p className="leading-relaxed text-[#5b6b7a]">
               Bright Future Coaching Center-এ আমরা অভিজ্ঞ শিক্ষকবৃন্দ, সহায়ক
               শিক্ষার পরিবেশ এবং ফলাফলভিত্তিক শিক্ষাদান পদ্ধতির মাধ্যমে প্রতিটি
               শিক্ষার্থীকে একাডেমিক ও ব্যক্তিগত জীবনে সফল হতে সহায়তা করি।
@@ -88,14 +88,14 @@ export default function AboutPage() {
             <ul className="flex flex-col gap-3">
               {highlights.map((item) => (
                 <li key={item} className="flex items-start gap-3">
-                  <CheckCircle2Icon className="mt-0.5 size-5 shrink-0 text-accent" />
+                  <CheckCircle2Icon className="mt-0.5 size-5 shrink-0 text-[#F9801D]" />
                   <span className="text-sm text-foreground">{item}</span>
                 </li>
               ))}
             </ul>
           </div>
 
-          <div className="overflow-hidden rounded-2xl border border-border">
+          <div className="overflow-hidden rounded-[1.5rem] border border-[#E5E7EB] shadow-[0_10px_30px_rgba(1,15,63,0.08)]">
             <img
               src="/students-studying-together-in-a-modern-classroom.png"
               alt="আধুনিক শ্রেণিকক্ষে একসাথে পড়াশোনা করছে শিক্ষার্থীরা"

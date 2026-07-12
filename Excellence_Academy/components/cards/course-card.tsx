@@ -11,9 +11,9 @@ import type { CourseWithTeacher } from '@/services'
 export function CourseCard({ course }: { course: CourseWithTeacher }) {
   const Icon = getCourseIcon(course.icon)
   return (
-    <Card className="group flex h-full flex-col overflow-hidden transition-all hover:-translate-y-1 hover:shadow-lg">
+    <Card className="group flex h-full flex-col overflow-hidden rounded-2xl border border-[#E5E7EB] bg-white shadow-[0_10px_30px_rgba(1,15,63,0.06)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_16px_40px_rgba(1,15,63,0.12)]">
       <CardHeader className="flex flex-row items-start justify-between gap-3">
-        <span className="flex size-12 items-center justify-center rounded-xl bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
+        <span className="flex size-12 items-center justify-center rounded-xl bg-[#EAF2F4] text-[#146373] transition-colors group-hover:bg-[#146373] group-hover:text-white">
           <Icon className="size-6" />
         </span>
         <Badge variant="secondary">{course.category}</Badge>
@@ -41,8 +41,8 @@ export function CourseCard({ course }: { course: CourseWithTeacher }) {
         <span className="font-display text-xl font-bold text-primary">
           {formatCurrency(course.price)}
         </span>
-        <Button render={<Link href={`/courses/${course.slug}`} />} size="sm" variant="outline">
-          View Details
+        <Button render={<Link href={`/courses/${course.slug}`} />} size="sm" className="rounded-full border-[#146373] bg-white text-[#146373] hover:bg-[#146373] hover:text-white">
+          বিস্তারিত
         </Button>
       </CardFooter>
     </Card>

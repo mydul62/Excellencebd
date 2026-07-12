@@ -18,8 +18,8 @@ export function Logo({
       </span>
       {!compact && (
         <span className="flex flex-col leading-none">
-          <span className="font-display text-base font-bold text-foreground">Bright Future</span>
-          <span className="text-[11px] font-medium text-muted-foreground">Coaching Center</span>
+          <span className="font-display text-base font-bold text-foreground">Exellence Academy</span>
+          <span className="text-[11px] font-medium text-muted-foreground">কোচিং সেন্টার</span>
         </span>
       )}
     </Link>
