@@ -14,7 +14,7 @@ export function Testimonials() {
         <SectionHeading
           eyebrow="শিক্ষার্থীদের মতামত"
           title="আমাদের শিক্ষার্থীরা যা বলছে"
-          description="আমাদের প্রতিষ্ঠানের মাধ্যমে সফলতার পথে এগিয়ে যাওয়া শিক্ষার্থীদের বাস্তব অভিজ্ঞতা।"
+          description="আমাদের প্রতিষ্ঠানের মাধ্যমে সফলতার পথে এগিয়ে যাওয়া শিক্ষার্থীদের বাস্তব অভিজ্ঞতা। "
         />
 
         <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
