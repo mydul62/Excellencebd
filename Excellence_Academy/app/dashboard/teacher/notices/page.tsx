@@ -28,7 +28,7 @@ export default function TeacherNoticesPage() {
       )}
       {!loading && error && <p className="text-sm text-destructive">{error}</p>}
       {!loading && !error && notices.length === 0 && (
-        <p className="text-sm text-muted-foreground">No notices for teachers yet.</p>
+        <p className="text-sm text-muted-foreground">No notices for teachers yet toukir  .</p>
       )}
       {!loading && !error && notices.length > 0 && (
         <div className="flex flex-col gap-3">
