@@ -25,20 +25,31 @@ export function LoginPage() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const redirectPath = searchParams.get('redirect') ?? ''
-  const { login, loginAs } = useAuth()
+  const { login } = useAuth()
   const {
     register,
     handleSubmit,
     formState: { isSubmitting },
   } = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
-    defaultValues: { email: 'admin@demo.com', password: '123456' },
+    defaultValues: { email: 'admin@demo.com', password: 'Admin@123456' },
   })
 
   async function onSubmit(values: LoginFormValues) {
     try {
       const user = await login(values.email, values.password)
       toast.success(`Welcome back, ${user.name}`)
+      const destination = redirectPath || `/dashboard/${user.role}`
+      router.replace(destination)
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : 'Login failed')
+    }
+  }
+
+  async function quickLogin(email: string, password: string) {
+    try {
+      const user = await login(email, password)
+      toast.success(`Signed in as ${user.name}`)
       const destination = redirectPath || `/dashboard/${user.role}`
       router.replace(destination)
     } catch (error) {
@@ -98,22 +109,13 @@ export function LoginPage() {
                 </Button>
               </form>
 
-              <div className="grid gap-2 sm:grid-cols-3">
-                {['admin', 'teacher', 'student'].map((role) => (
-                  <Button
-                key={role}
-                variant="outline"
-                onClick={() =>
-                  loginAs(role as 'admin' | 'teacher' | 'student').then((user) => {
-                    toast.success(`Signed in as ${user.name}`)
-                    const destination = redirectPath || `/dashboard/${user.role}`
-                    router.replace(destination)
-                  })
-                }
-              >
-                {role[0].toUpperCase() + role.slice(1)}
-              </Button>
-                ))}
+              <div className="grid gap-2 sm:grid-cols-1">
+                <Button
+                  variant="outline"
+                  onClick={() => quickLogin('admin@demo.com', 'Admin@123456')}
+                >
+                  Quick Login as Admin
+                </Button>
               </div>
 
               <p className="text-sm text-muted-foreground">

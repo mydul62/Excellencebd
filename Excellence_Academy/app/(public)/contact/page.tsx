@@ -42,7 +42,7 @@ export default function ContactPage() {
       />
 
       <section className="py-16 md:py-24">
-        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-8 px-4 md:px-6 lg:grid-cols-5">
+        <div className=" grid mx-auto container w-[95%] grid-cols-1 gap-8 px-4 md:px-6 lg:grid-cols-5">
           <div className="flex flex-col gap-4 lg:col-span-2">
             {info.map((item) => (
               <Card key={item.label} className="border-[#E5E7EB] bg-white shadow-[0_10px_30px_rgba(1,15,63,0.05)]">

@@ -1,34 +1,51 @@
-import { courses } from '@/data/courses'
-import { teachers } from '@/data/teachers'
-import { students } from '@/data/students'
-import { enrollments } from '@/data/enrollments'
-import { notices } from '@/data/notices'
-import { reviews } from '@/data/reviews'
-import type {
-  Course,
-  Enrollment,
-  Notice,
-  NoticeAudience,
-  Review,
-  Student,
-  Teacher,
-} from '@/types'
-
 /**
- * Simulated latency so the UI exercises loading states.
- * Swap the bodies of these functions with real fetch() calls to connect a backend.
+ * services/index.ts
+ * ─────────────────
+ * All data-fetching functions used by pages and components.
+ * Previously used static dummy data — now calls the real Accellence_server API
+ * via the serverdata layer.
  */
-const delay = (ms = 500) => new Promise((res) => setTimeout(res, ms))
 
-/* ----------------------------- Enriched types ----------------------------- */
+import {
+  getCourses as apiGetCourses,
+  getPopularCourses as apiGetPopularCourses,
+  type ServerCourse,
+} from '@/serverdata/courses'
+import {
+  getTeachers as apiGetTeachers,
+  type ServerTeacher,
+} from '@/serverdata/teachers'
+import {
+  getUsers as apiGetUsers,
+  type ServerUser,
+} from '@/serverdata/users'
+import {
+  getEnrollments as apiGetEnrollments,
+  getMyEnrollments as apiGetMyEnrollments,
+  type ServerEnrollment,
+} from '@/serverdata/enrollments'
+import {
+  getNotices as apiGetNotices,
+  type ServerNotice,
+  type NoticeAudience,
+} from '@/serverdata/notices'
+import {
+  getReviews as apiGetReviews,
+  type ServerReview,
+} from '@/serverdata/testimonials'
 
-export interface CourseWithTeacher extends Course {
-  teacher: Teacher | undefined
+// ─── Re-exported server types used by consumers ───────────────────────────────
+
+export type { ServerCourse, ServerTeacher, ServerUser, ServerEnrollment, ServerNotice, ServerReview }
+
+// ─── Enriched / derived types (kept for backward compat with existing pages) ──
+
+export interface CourseWithTeacher extends ServerCourse {
+  teacher: ServerTeacher | undefined
 }
 
-export interface EnrollmentDetail extends Enrollment {
-  student: Student | undefined
-  course: Course | undefined
+export interface EnrollmentDetail extends ServerEnrollment {
+  // user and course are already included from the server
 }
 
 export interface AdminStats {
@@ -51,113 +68,113 @@ export interface CourseStat {
 }
 
 export interface TeacherDashboardData {
-  teacher: Teacher | undefined
+  teacher: ServerTeacher | undefined
   courses: CourseWithTeacher[]
   totalStudents: number
-  notices: Notice[]
+  notices: ServerNotice[]
   courseStudentCounts: { course: string; students: number }[]
 }
 
 export interface StudentDashboardData {
-  student: Student | undefined
+  student: ServerUser | undefined
   enrollments: EnrollmentDetail[]
   approvedCount: number
   pendingCount: number
   dueAmount: number
-  notices: Notice[]
+  notices: ServerNotice[]
 }
 
-/* --------------------------------- Helpers -------------------------------- */
-
-function enrichCourse(course: Course): CourseWithTeacher {
-  return { ...course, teacher: teachers.find((t) => t.id === course.teacherId) }
-}
-
-function enrichEnrollment(e: Enrollment): EnrollmentDetail {
-  return {
-    ...e,
-    student: students.find((s) => s.id === e.studentId),
-    course: courses.find((c) => c.id === e.courseId),
-  }
-}
-
-/* ------------------------------- Courses ---------------------------------- */
+// ─── Courses ──────────────────────────────────────────────────────────────────
 
 export async function getCourses(): Promise<CourseWithTeacher[]> {
-  await delay()
-  return courses.map(enrichCourse)
+  const result = await apiGetCourses({ limit: 100 })
+  // Teacher detail is not included in the list endpoint — attach undefined for now
+  return result.data.map((c) => ({ ...c, teacher: undefined }))
 }
 
 export async function getCourseBySlug(slug: string): Promise<CourseWithTeacher | undefined> {
-  await delay(300)
-  const course = courses.find((c) => c.slug === slug)
-  return course ? enrichCourse(course) : undefined
+  const result = await apiGetCourses({ limit: 100 })
+  const course = result.data.find((c) => c.slug === slug)
+  return course ? { ...course, teacher: undefined } : undefined
 }
 
-/* ------------------------------- Teachers --------------------------------- */
+// ─── Teachers ─────────────────────────────────────────────────────────────────
 
-export async function getTeachers(): Promise<Teacher[]> {
-  await delay()
-  return teachers
+export async function getTeachers(): Promise<ServerTeacher[]> {
+  const result = await apiGetTeachers({ limit: 100 })
+  return result.data
 }
 
-export async function getTeacherById(id: string): Promise<Teacher | undefined> {
-  await delay(300)
-  return teachers.find((t) => t.id === id)
+export async function getTeacherById(id: string): Promise<ServerTeacher | undefined> {
+  const result = await apiGetTeachers({ limit: 100 })
+  return result.data.find((t) => t.id === id)
 }
 
-/* ------------------------------- Students --------------------------------- */
+// ─── Students (users with STUDENT role) ───────────────────────────────────────
 
-export async function getStudents(): Promise<Student[]> {
-  await delay()
-  return students
+export async function getStudents(): Promise<ServerUser[]> {
+  const result = await apiGetUsers({ role: 'STUDENT', limit: 100 })
+  return result.data
 }
 
-/* ------------------------------ Enrollments ------------------------------- */
+// ─── Enrollments ──────────────────────────────────────────────────────────────
 
 export async function getEnrollments(): Promise<EnrollmentDetail[]> {
-  await delay()
-  return enrollments.map(enrichEnrollment)
+  const result = await apiGetEnrollments({ limit: 100 })
+  return result.data
 }
 
-/* -------------------------------- Notices --------------------------------- */
+// ─── Notices ─────────────────────────────────────────────────────────────────
 
-export async function getNotices(audience?: NoticeAudience): Promise<Notice[]> {
-  await delay()
-  const sorted = [...notices].sort(
+export async function getNotices(audience?: NoticeAudience): Promise<ServerNotice[]> {
+  const result = await apiGetNotices({ limit: 100 })
+  const sorted = [...result.data].sort(
     (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
   )
   if (!audience || audience === 'all') return sorted
   return sorted.filter((n) => n.audience === 'all' || n.audience === audience)
 }
 
-/* -------------------------------- Reviews --------------------------------- */
+// ─── Reviews ─────────────────────────────────────────────────────────────────
 
-export async function getReviews(): Promise<Review[]> {
-  await delay(300)
-  return reviews
+export async function getReviews(): Promise<ServerReview[]> {
+  const result = await apiGetReviews({ limit: 50 })
+  return result.data
 }
 
-/* ------------------------------ Admin stats ------------------------------- */
+// ─── Admin stats ──────────────────────────────────────────────────────────────
 
 export async function getAdminStats(): Promise<AdminStats> {
-  await delay()
+  const [studentsRes, teachersRes, coursesRes, enrollmentsRes] = await Promise.all([
+    apiGetUsers({ role: 'STUDENT', limit: 1 }),
+    apiGetTeachers({ limit: 1 }),
+    apiGetCourses({ limit: 1 }),
+    apiGetEnrollments({ limit: 1 }),
+  ])
+
+  // Fetch pending enrollments count separately
+  const pendingRes = await apiGetEnrollments({ status: 'pending', limit: 1 })
+
+  // Revenue: sum amountPaid across all enrollments (fetch full list)
+  const allEnrollments = await apiGetEnrollments({ limit: 200 })
+  const totalRevenue = allEnrollments.data.reduce((sum, e) => sum + e.amountPaid, 0)
+
   return {
-    totalStudents: students.length,
-    totalTeachers: teachers.length,
-    totalCourses: courses.length,
-    totalEnrollments: enrollments.length,
-    totalRevenue: enrollments.reduce((sum, e) => sum + e.amountPaid, 0),
-    pendingEnrollments: enrollments.filter((e) => e.status === 'pending').length,
+    totalStudents: studentsRes.meta.total,
+    totalTeachers: teachersRes.meta.total,
+    totalCourses: coursesRes.meta.total,
+    totalEnrollments: enrollmentsRes.meta.total,
+    totalRevenue,
+    pendingEnrollments: pendingRes.meta.total,
   }
 }
 
 export async function getEnrollmentTrend(): Promise<TrendPoint[]> {
-  await delay()
+  const result = await apiGetEnrollments({ limit: 200 })
   const buckets = new Map<string, number>()
-  const order = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun']
+  const order = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
   order.forEach((m) => buckets.set(m, 0))
-  enrollments.forEach((e) => {
+  result.data.forEach((e) => {
     const m = new Date(e.enrolledAt).toLocaleDateString('en-US', { month: 'short' })
     if (buckets.has(m)) buckets.set(m, (buckets.get(m) ?? 0) + 1)
   })
@@ -165,48 +182,58 @@ export async function getEnrollmentTrend(): Promise<TrendPoint[]> {
 }
 
 export async function getCourseStats(): Promise<CourseStat[]> {
-  await delay()
-  return courses
+  const [coursesResult, enrollmentsResult] = await Promise.all([
+    apiGetCourses({ limit: 100 }),
+    apiGetEnrollments({ limit: 200 }),
+  ])
+  return coursesResult.data
     .map((c) => ({
       course: c.title,
-      students: enrollments.filter((e) => e.courseId === c.id).length,
+      students: enrollmentsResult.data.filter((e) => e.courseId === c.id).length,
     }))
     .filter((s) => s.students > 0)
     .sort((a, b) => b.students - a.students)
     .slice(0, 6)
 }
 
-export async function getRecentStudents(limit = 5): Promise<Student[]> {
-  await delay()
-  return [...students]
-    .sort((a, b) => new Date(b.joinedAt).getTime() - new Date(a.joinedAt).getTime())
-    .slice(0, limit)
+export async function getRecentStudents(limit = 5): Promise<ServerUser[]> {
+  const result = await apiGetUsers({ role: 'STUDENT', limit })
+  return result.data
 }
 
 export async function getRecentEnrollments(limit = 5): Promise<EnrollmentDetail[]> {
-  await delay()
-  return [...enrollments]
-    .sort((a, b) => new Date(b.enrolledAt).getTime() - new Date(a.enrolledAt).getTime())
-    .slice(0, limit)
-    .map(enrichEnrollment)
+  const result = await apiGetEnrollments({ limit })
+  return result.data
 }
 
-/* --------------------------- Teacher dashboard ---------------------------- */
+// ─── Teacher dashboard ────────────────────────────────────────────────────────
 
 export async function getTeacherDashboard(teacherId: string): Promise<TeacherDashboardData> {
-  await delay()
-  const teacher = teachers.find((t) => t.id === teacherId)
-  const teacherCourses = courses
-    .filter((c) => c.teacherId === teacherId)
-    .map(enrichCourse)
+  const [teachersResult, coursesResult, enrollmentsResult, noticesResult] = await Promise.all([
+    apiGetTeachers({ limit: 100 }),
+    apiGetCourses({ limit: 100 }),
+    apiGetEnrollments({ limit: 200 }),
+    apiGetNotices({ limit: 50 }),
+  ])
+
+  // teacherId here is actually the User ID from auth — match on userId field
+  const teacher = teachersResult.data.find((t) => t.userId === teacherId || t.id === teacherId)
+
+  // Courses taught by this teacher — server stores teacher profile id on course
+  const teacherCourses: CourseWithTeacher[] = coursesResult.data
+    .filter((c) => c.teacherId === teacher?.id)
+    .map((c) => ({ ...c, teacher }))
+
   const courseIds = teacherCourses.map((c) => c.id)
-  const relevantEnrollments = enrollments.filter((e) => courseIds.includes(e.courseId))
-  const uniqueStudents = new Set(relevantEnrollments.map((e) => e.studentId))
+  const relevantEnrollments = enrollmentsResult.data.filter((e) => courseIds.includes(e.courseId))
+  const uniqueStudents = new Set(relevantEnrollments.map((e) => e.userId))
+
   const courseStudentCounts = teacherCourses.map((c) => ({
     course: c.title,
-    students: enrollments.filter((e) => e.courseId === c.id).length,
+    students: enrollmentsResult.data.filter((e) => e.courseId === c.id).length,
   }))
-  const teacherNotices = [...notices]
+
+  const teacherNotices = [...noticesResult.data]
     .filter((n) => n.audience === 'all' || n.audience === 'teachers')
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
 
@@ -219,21 +246,33 @@ export async function getTeacherDashboard(teacherId: string): Promise<TeacherDas
   }
 }
 
-/* --------------------------- Student dashboard ---------------------------- */
+// ─── Student dashboard ────────────────────────────────────────────────────────
 
 export async function getStudentDashboard(studentId: string): Promise<StudentDashboardData> {
-  await delay()
-  const student = students.find((s) => s.id === studentId)
-  const studentEnrollments = enrollments
-    .filter((e) => e.studentId === studentId)
-    .map(enrichEnrollment)
+  const [enrollmentsResult, noticesResult] = await Promise.all([
+    apiGetMyEnrollments({ limit: 100 }),   // uses /enrollments/mine — no ADMIN needed
+    apiGetNotices({ limit: 50 }),
+  ])
+
+  // Fetch the student's own profile
+  let student: ServerUser | undefined
+  try {
+    const { getUser } = await import('@/serverdata/users')
+    student = await getUser(studentId)
+  } catch {
+    student = undefined
+  }
+
+  const studentEnrollments = enrollmentsResult.data
+
   const approvedCount = studentEnrollments.filter((e) => e.status === 'approved').length
-  const pendingCount = studentEnrollments.filter((e) => e.status === 'pending').length
-  const dueAmount = studentEnrollments.reduce((sum, e) => {
+  const pendingCount  = studentEnrollments.filter((e) => e.status === 'pending').length
+  const dueAmount     = studentEnrollments.reduce((sum, e) => {
     const price = e.course?.price ?? 0
     return sum + Math.max(price - e.amountPaid, 0)
   }, 0)
-  const studentNotices = [...notices]
+
+  const studentNotices = [...noticesResult.data]
     .filter((n) => n.audience === 'all' || n.audience === 'students')
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
 

@@ -1,0 +1,229 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─── Auth User (all roles share this table) ───────────────────────────────────
+model User {
+  id             String       @id @default(uuid())
+  name           String
+  email          String       @unique
+  password       String
+  role           Role         @default(STUDENT)
+  avatar         String?
+  phone          String?
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  // profile relations
+  studentProfile Student?
+  teacherProfile Teacher?
+  adminProfile   Admin?
+  profile        Profile?
+  enrollments    Enrollment[]
+  reviews        Review[]
+  results        Result[]
+  attendances    Attendance[]
+}
+
+// ─── Teacher profile (linked to User) ────────────────────────────────────────
+model Teacher {
+  id              String    @id @default(uuid())
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId          String    @unique
+  subject         String
+  bio             String?
+  experienceYears Int       @default(0)
+  qualification   String?
+  department      String?
+  designation     String?
+  joinedAt        DateTime  @default(now())
+  courses         Course[]
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+}
+
+// ─── Course ───────────────────────────────────────────────────────────────────
+model Course {
+  id          String       @id @default(uuid())
+  title       String
+  slug        String       @unique
+  category    String
+  description String
+  duration    String
+  price       Float
+  level       CourseLevel  @default(Beginner)
+  icon        String?
+  seats       Int          @default(30)
+  rating      Float        @default(0)
+  popular     Boolean      @default(false)
+  teacher     Teacher?     @relation(fields: [teacherId], references: [id])
+  teacherId   String?
+  enrollments Enrollment[]
+  reviews     Review[]
+  results     Result[]
+  attendances Attendance[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+}
+
+// ─── Enrollment (Student User enrolls in Course) ─────────────────────────────
+model Enrollment {
+  id            String           @id @default(uuid())
+  user          User             @relation(fields: [userId], references: [id])
+  userId        String
+  course        Course           @relation(fields: [courseId], references: [id])
+  courseId      String
+
+  // form data from frontend
+  name          String
+  email         String
+  phone         String
+  paymentMethod String           // e.g. nagad, bkash, rocket, bank
+  transactionId String
+  notes         String?
+  screenshotUrl String?          // cloudinary url of payment screenshot
+
+  status        EnrollmentStatus @default(pending)
+  paymentStatus PaymentStatus    @default(unpaid)
+  amountPaid    Float            @default(0)
+  enrolledAt    DateTime         @default(now())
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+}
+
+// ─── Notice ───────────────────────────────────────────────────────────────────
+model Notice {
+  id        String         @id @default(uuid())
+  title     String
+  content   String
+  category  NoticeCategory @default(general)
+  audience  NoticeAudience @default(all)
+  date      DateTime       @default(now())
+  author    String
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+}
+
+// ─── Review (User reviews a Course) ──────────────────────────────────────────
+model Review {
+  id        String   @id @default(uuid())
+  user      User?    @relation(fields: [userId], references: [id])
+  userId    String?
+  course    Course?  @relation(fields: [courseId], references: [id])
+  courseId  String?
+  name      String
+  avatar    String?
+  role      String?
+  rating    Int
+  comment   String
+  featured  Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ─── Enums ────────────────────────────────────────────────────────────────────
+enum Role {
+  ADMIN
+  STUDENT
+  TEACHER
+}
+
+enum CourseLevel {
+  Beginner
+  Intermediate
+  Advanced
+}
+
+enum EnrollmentStatus {
+  pending
+  approved
+  rejected
+}
+
+enum PaymentStatus {
+  unpaid
+  paid
+  partial
+}
+
+enum NoticeCategory {
+  general
+  academic
+  exam
+  holiday
+  event
+}
+
+enum NoticeAudience {
+  all
+  students
+  teachers
+  parents
+}
+
+model Student {
+  id        String   @id @default(uuid())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String   @unique
+  guardian  String?
+  address   String?
+  status    String?  @default("active")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Admin {
+  id        String   @id @default(uuid())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Profile {
+  id               String   @id @default(uuid())
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId           String   @unique
+  address          String?
+  gender           String?
+  dateOfBirth      String?
+  department       String?
+  subject          String?
+  designation      String?
+  bloodGroup       String?
+  emergencyContact String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
+
+model Result {
+  id        String   @id @default(uuid())
+  student   User     @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  studentId String
+  course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  courseId  String
+  marks     Float
+  grade     String
+  remarks   String?
+  examDate  DateTime @default(now())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Attendance {
+  id        String   @id @default(uuid())
+  student   User     @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  studentId String
+  course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  courseId  String
+  date      DateTime
+  status    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

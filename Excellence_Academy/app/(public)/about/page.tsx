@@ -49,7 +49,7 @@ export default function AboutPage() {
       />
 
       <section className="py-16 md:py-24">
-        <div className="mx-auto max-w-7xl px-4 md:px-6">
+        <div className="mx-auto container w-[95%] px-4 md:px-6">
           <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
             {values.map((value) => (
               <Card key={value.title} className="border-[#E5E7EB] bg-white shadow-[0_10px_30px_rgba(1,15,63,0.05)]">

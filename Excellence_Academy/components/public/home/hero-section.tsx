@@ -19,7 +19,8 @@ export function HeroSection() {
         <div className="absolute left-[-5%] top-0 h-40 w-40 rounded-full border border-[#233943]" />
         <div className="absolute bottom-10 right-0 h-56 w-56 rounded-full border border-[#233943]" />
       </div>
-      <div className="container mx-auto grid w-[95%] gap-12 px-4 py-16 sm:px-6 lg:grid-cols-2 lg:items-end lg:py-24 lg:px-8">
+      <div className='container mx-auto grid lg:grid-cols-2 lg:items-end w-[95%] gap-12 '>
+        <div className="px-4 py-16 sm:px-6  lg:py-16 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
@@ -77,7 +78,9 @@ export function HeroSection() {
           </ul>
         </motion.div>
 
-        {/* Image */}
+       
+      </div>
+       {/* Image */}
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -88,8 +91,8 @@ export function HeroSection() {
             <Image
               src="/st.png"
               alt="Excellence Academic & Admission Coaching"
-              width={820}
-              height={700}
+              width={1020}
+              height={900}
               priority
               className="h-full w-full object-cover"
             />
