@@ -1,4 +1,6 @@
 import prisma from '../../app/shared/prisma';
+import ApiError from '../../app/error/ApiError';
+import httpStatus from 'http-status';
 import { IEnrollment, IEnrollmentFilters } from './enrollments.interface';
 
 const enrollmentInclude = {
@@ -87,6 +89,70 @@ const updateEnrollmentInDb = async (id: string, payload: Partial<IEnrollment>) =
   return result;
 };
 
+const INVALID_TRANSACTION_ID_MESSAGE = 'Transaction ID is not valid. Please provide a valid TRX ID.';
+
+const isValidTransactionId = (transactionId?: string | null) => {
+  const value = transactionId?.trim();
+  if (!value) return false;
+
+  const normalized = value.toLowerCase();
+  if (['pending', 'unpaid', 'n/a', 'na', 'null', 'undefined', 'none'].includes(normalized)) {
+    return false;
+  }
+
+  return /^[A-Za-z0-9._-]{3,}$/.test(value);
+};
+
+const approveEnrollmentInDb = async (id: string, reason?: string) => {
+  const enrollment = await prisma.enrollment.findUniqueOrThrow({
+    where: { id },
+    include: { course: true },
+  });
+
+  if (enrollment.status !== 'pending') {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Only pending enrollments can be approved');
+  }
+
+  if (!isValidTransactionId(enrollment.transactionId)) {
+    return rejectEnrollmentInDb(id, reason ?? INVALID_TRANSACTION_ID_MESSAGE);
+  }
+
+  const amountPaid = enrollment.amountPaid >= enrollment.course.price ? enrollment.amountPaid : enrollment.course.price;
+
+  const result = await prisma.enrollment.update({
+    where: { id },
+    data: {
+      status: 'approved',
+      paymentStatus: 'paid',
+      amountPaid,
+      notes: enrollment.notes || 'Payment verified by admin',
+    },
+    include: enrollmentInclude,
+  });
+  return result;
+};
+
+const rejectEnrollmentInDb = async (id: string, reason?: string) => {
+  const enrollment = await prisma.enrollment.findUniqueOrThrow({
+    where: { id },
+  });
+
+  if (enrollment.status !== 'pending') {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Only pending enrollments can be rejected');
+  }
+
+  const result = await prisma.enrollment.update({
+    where: { id },
+    data: {
+      status: 'rejected',
+      paymentStatus: 'unpaid',
+      notes: reason || 'Enrollment rejected by admin',
+    },
+    include: enrollmentInclude,
+  });
+  return result;
+};
+
 const deleteEnrollmentFromDb = async (id: string) => {
   const result = await prisma.enrollment.delete({ where: { id } });
   return result;
@@ -106,6 +172,8 @@ export const EnrollmentService = {
   getAllEnrollmentsFromDb,
   getSingleEnrollmentFromDb,
   updateEnrollmentInDb,
+  approveEnrollmentInDb,
+  rejectEnrollmentInDb,
   deleteEnrollmentFromDb,
   checkEnrollmentExists,
 };

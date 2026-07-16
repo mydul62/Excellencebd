@@ -11,6 +11,7 @@ import { AttendanceRoutes } from '../../modules/attendance/attendance.routes';
 import { EnrollmentRoutes } from '../../modules/enrollments/enrollments.routes';
 import { NoticeRoutes } from '../../modules/notices/notices.routes';
 import { ReviewRoutes } from '../../modules/reviews/reviews.routes';
+import { PhotoGalleryRoutes } from '../../modules/photoGallery/photoGallery.routes';
 
 const router = express.Router();
 
@@ -27,6 +28,7 @@ const moduleRoutes = [
   { path: '/enrollments', route: EnrollmentRoutes },
   { path: '/notices', route: NoticeRoutes },
   { path: '/reviews', route: ReviewRoutes },
+  { path: '/photo-gallery', route: PhotoGalleryRoutes },
 ];
 
 moduleRoutes.forEach((route) => router.use(route.path, route.route));

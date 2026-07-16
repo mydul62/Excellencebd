@@ -8,33 +8,28 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// ─── Auth User (all roles share this table) ───────────────────────────────────
 model User {
-  id        String   @id @default(uuid())
-  name      String
-  email     String   @unique
-  password  String
-  role      Role     @default(STUDENT)
-  avatar    String?
-  phone     String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  // profile relations
+  id             String       @id @default(uuid())
+  name           String
+  email          String       @unique
+  password       String
+  role           Role         @default(STUDENT)
+  avatar         String?
+  phone          String?
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  adminProfile   Admin?
+  attendances    Attendance[]
+  enrollments    Enrollment[]
+  profile        Profile?
+  results        Result[]
+  reviews        Review[]
   studentProfile Student?
   teacherProfile Teacher?
-  adminProfile   Admin?
-  profile        Profile?
-  enrollments    Enrollment[]
-  reviews        Review[]
-  results        Result[]
-  attendances    Attendance[]
 }
 
-// ─── Teacher profile (linked to User) ────────────────────────────────────────
 model Teacher {
   id              String   @id @default(uuid())
-  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId          String   @unique
   subject         String
   bio             String?
@@ -43,12 +38,12 @@ model Teacher {
   department      String?
   designation     String?
   joinedAt        DateTime @default(now())
-  courses         Course[]
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
+  courses         Course[]
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
-// ─── Course ───────────────────────────────────────────────────────────────────
 model Course {
   id          String       @id @default(uuid())
   title       String
@@ -62,42 +57,37 @@ model Course {
   seats       Int          @default(30)
   rating      Float        @default(0)
   popular     Boolean      @default(false)
-  teacher     Teacher?     @relation(fields: [teacherId], references: [id])
   teacherId   String?
-  enrollments Enrollment[]
-  reviews     Review[]
-  results     Result[]
-  attendances Attendance[]
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
+  attendances Attendance[]
+  teacher     Teacher?     @relation(fields: [teacherId], references: [id])
+  enrollments Enrollment[]
+  results     Result[]
+  reviews     Review[]
 }
 
-// ─── Enrollment (Student User enrolls in Course) ─────────────────────────────
 model Enrollment {
-  id       String @id @default(uuid())
-  user     User   @relation(fields: [userId], references: [id])
-  userId   String
-  course   Course @relation(fields: [courseId], references: [id])
-  courseId String
-
-  // form data from frontend
+  id            String           @id @default(uuid())
+  userId        String
+  courseId      String
   name          String
   email         String
   phone         String
-  paymentMethod String // e.g. nagad, bkash, rocket, bank
+  paymentMethod String
   transactionId String
   notes         String?
-  screenshotUrl String? // cloudinary url of payment screenshot
-
+  screenshotUrl String?
   status        EnrollmentStatus @default(pending)
   paymentStatus PaymentStatus    @default(unpaid)
   amountPaid    Float            @default(0)
   enrolledAt    DateTime         @default(now())
   createdAt     DateTime         @default(now())
   updatedAt     DateTime         @updatedAt
+  course        Course           @relation(fields: [courseId], references: [id])
+  user          User             @relation(fields: [userId], references: [id])
 }
 
-// ─── Notice ───────────────────────────────────────────────────────────────────
 model Notice {
   id        String         @id @default(uuid())
   title     String
@@ -110,12 +100,9 @@ model Notice {
   updatedAt DateTime       @updatedAt
 }
 
-// ─── Review (User reviews a Course) ──────────────────────────────────────────
 model Review {
   id        String   @id @default(uuid())
-  user      User?    @relation(fields: [userId], references: [id])
   userId    String?
-  course    Course?  @relation(fields: [courseId], references: [id])
   courseId  String?
   name      String
   avatar    String?
@@ -125,9 +112,82 @@ model Review {
   featured  Boolean  @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  course    Course?  @relation(fields: [courseId], references: [id])
+  user      User?    @relation(fields: [userId], references: [id])
 }
 
-// ─── Enums ────────────────────────────────────────────────────────────────────
+model PhotoGallery {
+  id          String   @id @default(uuid())
+  title       String?
+  description String?
+  category    String   @default("memories")
+  imageUrl    String
+  publicId    String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Student {
+  id        String   @id @default(uuid())
+  userId    String   @unique
+  guardian  String?
+  address   String?
+  status    String?  @default("active")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Admin {
+  id        String   @id @default(uuid())
+  userId    String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Profile {
+  id               String   @id @default(uuid())
+  userId           String   @unique
+  address          String?
+  gender           String?
+  dateOfBirth      String?
+  department       String?
+  subject          String?
+  designation      String?
+  bloodGroup       String?
+  emergencyContact String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Result {
+  id        String   @id @default(uuid())
+  studentId String
+  courseId  String
+  marks     Float
+  grade     String
+  remarks   String?
+  examDate  DateTime @default(now())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  student   User     @relation(fields: [studentId], references: [id], onDelete: Cascade)
+}
+
+model Attendance {
+  id        String   @id @default(uuid())
+  studentId String
+  courseId  String
+  date      DateTime
+  status    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  student   User     @relation(fields: [studentId], references: [id], onDelete: Cascade)
+}
+
 enum Role {
   ADMIN
   STUDENT
@@ -165,65 +225,4 @@ enum NoticeAudience {
   students
   teachers
   parents
-}
-
-model Student {
-  id        String   @id @default(uuid())
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId    String   @unique
-  guardian  String?
-  address   String?
-  status    String?  @default("active")
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model Admin {
-  id        String   @id @default(uuid())
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId    String   @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model Profile {
-  id               String   @id @default(uuid())
-  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId           String   @unique
-  address          String?
-  gender           String?
-  dateOfBirth      String?
-  department       String?
-  subject          String?
-  designation      String?
-  bloodGroup       String?
-  emergencyContact String?
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
-}
-
-model Result {
-  id        String   @id @default(uuid())
-  student   User     @relation(fields: [studentId], references: [id], onDelete: Cascade)
-  studentId String
-  course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
-  courseId  String
-  marks     Float
-  grade     String
-  remarks   String?
-  examDate  DateTime @default(now())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model Attendance {
-  id        String   @id @default(uuid())
-  student   User     @relation(fields: [studentId], references: [id], onDelete: Cascade)
-  studentId String
-  course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
-  courseId  String
-  date      DateTime
-  status    String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
 }

@@ -78,23 +78,10 @@ const authLogingInToDb = async (payload: ILoginPayload) => {
   const { email, password } = payload;
 
   const isExistUser = await prisma.user.findFirst({ where: { email } });
-  console.log("isExistUser", isExistUser);
   if (!isExistUser) {
     throw new ApiError(httpStatus.UNAUTHORIZED, 'Invalid email or password');
   }
 
-
-console.log("DB User:", isExistUser);
-
-console.log(
-  "Direct Compare:",
-  await bcrypt.compare("Mk1234567", isExistUser!.password)
-);
-
-console.log(
-  "Payload Compare:",
-  await bcrypt.compare(password, isExistUser!.password)
-);
   const checkPassword = await bcrypt.compare(password, isExistUser.password);
   if (!checkPassword) {
     throw new ApiError(httpStatus.UNAUTHORIZED, 'Invalid email or password');

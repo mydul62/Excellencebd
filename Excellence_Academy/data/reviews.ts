@@ -1,10 +1,10 @@
-import type { Review } from '@/types'
+﻿import type { Review } from '@/types'
 
 export const reviews: Review[] = [
   {
     id: 'r1',
     name: 'নুসরাত জাহান',
-    avatar: 'https://i.pravatar.cc/150?img=44',
+    avatar: null,
     role: 'এইচএসসি শিক্ষার্থী',
     rating: 5,
     featured: true,
@@ -14,7 +14,7 @@ export const reviews: Review[] = [
   {
     id: 'r2',
     name: 'ফাহিম রহমান',
-    avatar: 'https://i.pravatar.cc/150?img=60',
+    avatar: null,
     role: 'ওয়েব ডেভেলপমেন্ট শিক্ষার্থী',
     rating: 5,
     featured: true,
@@ -24,7 +24,7 @@ export const reviews: Review[] = [
   {
     id: 'r3',
     name: 'মিম আক্তার',
-    avatar: 'https://i.pravatar.cc/150?img=32',
+    avatar: null,
     role: 'IELTS শিক্ষার্থী',
     rating: 5,
     featured: true,
@@ -34,7 +34,7 @@ export const reviews: Review[] = [
   {
     id: 'r4',
     name: 'রিয়াদ হোসেন',
-    avatar: 'https://i.pravatar.cc/150?img=59',
+    avatar: null,
     role: 'ফিজিক্স শিক্ষার্থী',
     rating: 4,
     comment:
@@ -43,7 +43,7 @@ export const reviews: Review[] = [
   {
     id: 'r5',
     name: 'সাদিয়া আফরিন',
-    avatar: 'https://i.pravatar.cc/150?img=36',
+    avatar: null,
     role: 'এইচএসসি শিক্ষার্থী',
     rating: 5,
     comment:
@@ -52,7 +52,7 @@ export const reviews: Review[] = [
   {
     id: 'r6',
     name: 'নাফিস ইকবাল',
-    avatar: 'https://i.pravatar.cc/150?img=57',
+    avatar: null,
     role: 'পাইথন শিক্ষার্থী',
     rating: 5,
     comment:

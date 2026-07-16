@@ -1,4 +1,5 @@
 import { apiGet, apiPut, apiDelete } from './api'
+import { uploadAvatarToCloudinary } from './avatar-upload'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -29,7 +30,8 @@ export interface UsersResult {
 
 export interface UpdateUserPayload {
   name?: string
-  avatar?: string
+  /** Pass a URL string to set directly, or a File to upload first then set */
+  avatar?: string | File
   phone?: string
 }
 
@@ -64,13 +66,27 @@ export async function getUser(id: string): Promise<ServerUser> {
 
 /**
  * PUT /api/users/:id — ADMIN or own account.
- * Note: password and role cannot be changed via this endpoint.
+ * Accepts either a URL string or a File for `avatar`.
+ * If a File is provided, it is uploaded to Cloudinary first and the returned
+ * URL is saved.
  */
 export async function updateUser(
   id: string,
   payload: UpdateUserPayload,
 ): Promise<ServerUser> {
-  const res = await apiPut<ServerUser>(`/users/${id}`, payload)
+  let avatarUrl: string | undefined
+
+  if (payload.avatar instanceof File) {
+    avatarUrl = await uploadAvatarToCloudinary(payload.avatar)
+  } else {
+    avatarUrl = payload.avatar
+  }
+
+  const res = await apiPut<ServerUser>(`/users/${id}`, {
+    name: payload.name,
+    phone: payload.phone,
+    avatar: avatarUrl,
+  })
   return res.data
 }
 

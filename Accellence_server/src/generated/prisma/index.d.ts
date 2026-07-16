@@ -44,6 +44,11 @@ export type Notice = $Result.DefaultSelection<Prisma.$NoticePayload>
  */
 export type Review = $Result.DefaultSelection<Prisma.$ReviewPayload>
 /**
+ * Model PhotoGallery
+ * 
+ */
+export type PhotoGallery = $Result.DefaultSelection<Prisma.$PhotoGalleryPayload>
+/**
  * Model Student
  * 
  */
@@ -339,6 +344,16 @@ export class PrismaClient<
     * ```
     */
   get review(): Prisma.ReviewDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.photoGallery`: Exposes CRUD operations for the **PhotoGallery** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more PhotoGalleries
+    * const photoGalleries = await prisma.photoGallery.findMany()
+    * ```
+    */
+  get photoGallery(): Prisma.PhotoGalleryDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.student`: Exposes CRUD operations for the **Student** model.
@@ -835,6 +850,7 @@ export namespace Prisma {
     Enrollment: 'Enrollment',
     Notice: 'Notice',
     Review: 'Review',
+    PhotoGallery: 'PhotoGallery',
     Student: 'Student',
     Admin: 'Admin',
     Profile: 'Profile',
@@ -858,7 +874,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "teacher" | "course" | "enrollment" | "notice" | "review" | "student" | "admin" | "profile" | "result" | "attendance"
+      modelProps: "user" | "teacher" | "course" | "enrollment" | "notice" | "review" | "photoGallery" | "student" | "admin" | "profile" | "result" | "attendance"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1303,6 +1319,80 @@ export namespace Prisma {
           count: {
             args: Prisma.ReviewCountArgs<ExtArgs>
             result: $Utils.Optional<ReviewCountAggregateOutputType> | number
+          }
+        }
+      }
+      PhotoGallery: {
+        payload: Prisma.$PhotoGalleryPayload<ExtArgs>
+        fields: Prisma.PhotoGalleryFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.PhotoGalleryFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PhotoGalleryPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.PhotoGalleryFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PhotoGalleryPayload>
+          }
+          findFirst: {
+            args: Prisma.PhotoGalleryFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PhotoGalleryPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.PhotoGalleryFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PhotoGalleryPayload>
+          }
+          findMany: {
+            args: Prisma.PhotoGalleryFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PhotoGalleryPayload>[]
+          }
+          create: {
+            args: Prisma.PhotoGalleryCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PhotoGalleryPayload>
+          }
+          createMany: {
+            args: Prisma.PhotoGalleryCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.PhotoGalleryCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PhotoGalleryPayload>[]
+          }
+          delete: {
+            args: Prisma.PhotoGalleryDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PhotoGalleryPayload>
+          }
+          update: {
+            args: Prisma.PhotoGalleryUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PhotoGalleryPayload>
+          }
+          deleteMany: {
+            args: Prisma.PhotoGalleryDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.PhotoGalleryUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.PhotoGalleryUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PhotoGalleryPayload>[]
+          }
+          upsert: {
+            args: Prisma.PhotoGalleryUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PhotoGalleryPayload>
+          }
+          aggregate: {
+            args: Prisma.PhotoGalleryAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregatePhotoGallery>
+          }
+          groupBy: {
+            args: Prisma.PhotoGalleryGroupByArgs<ExtArgs>
+            result: $Utils.Optional<PhotoGalleryGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.PhotoGalleryCountArgs<ExtArgs>
+            result: $Utils.Optional<PhotoGalleryCountAggregateOutputType> | number
           }
         }
       }
@@ -1766,6 +1856,7 @@ export namespace Prisma {
     enrollment?: EnrollmentOmit
     notice?: NoticeOmit
     review?: ReviewOmit
+    photoGallery?: PhotoGalleryOmit
     student?: StudentOmit
     admin?: AdminOmit
     profile?: ProfileOmit
@@ -1865,17 +1956,17 @@ export namespace Prisma {
    */
 
   export type UserCountOutputType = {
-    enrollments: number
-    reviews: number
-    results: number
     attendances: number
+    enrollments: number
+    results: number
+    reviews: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    enrollments?: boolean | UserCountOutputTypeCountEnrollmentsArgs
-    reviews?: boolean | UserCountOutputTypeCountReviewsArgs
-    results?: boolean | UserCountOutputTypeCountResultsArgs
     attendances?: boolean | UserCountOutputTypeCountAttendancesArgs
+    enrollments?: boolean | UserCountOutputTypeCountEnrollmentsArgs
+    results?: boolean | UserCountOutputTypeCountResultsArgs
+    reviews?: boolean | UserCountOutputTypeCountReviewsArgs
   }
 
   // Custom InputTypes
@@ -1892,15 +1983,15 @@ export namespace Prisma {
   /**
    * UserCountOutputType without action
    */
-  export type UserCountOutputTypeCountEnrollmentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: EnrollmentWhereInput
+  export type UserCountOutputTypeCountAttendancesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AttendanceWhereInput
   }
 
   /**
    * UserCountOutputType without action
    */
-  export type UserCountOutputTypeCountReviewsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: ReviewWhereInput
+  export type UserCountOutputTypeCountEnrollmentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EnrollmentWhereInput
   }
 
   /**
@@ -1913,8 +2004,8 @@ export namespace Prisma {
   /**
    * UserCountOutputType without action
    */
-  export type UserCountOutputTypeCountAttendancesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: AttendanceWhereInput
+  export type UserCountOutputTypeCountReviewsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ReviewWhereInput
   }
 
 
@@ -1954,17 +2045,17 @@ export namespace Prisma {
    */
 
   export type CourseCountOutputType = {
-    enrollments: number
-    reviews: number
-    results: number
     attendances: number
+    enrollments: number
+    results: number
+    reviews: number
   }
 
   export type CourseCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    enrollments?: boolean | CourseCountOutputTypeCountEnrollmentsArgs
-    reviews?: boolean | CourseCountOutputTypeCountReviewsArgs
-    results?: boolean | CourseCountOutputTypeCountResultsArgs
     attendances?: boolean | CourseCountOutputTypeCountAttendancesArgs
+    enrollments?: boolean | CourseCountOutputTypeCountEnrollmentsArgs
+    results?: boolean | CourseCountOutputTypeCountResultsArgs
+    reviews?: boolean | CourseCountOutputTypeCountReviewsArgs
   }
 
   // Custom InputTypes
@@ -1981,15 +2072,15 @@ export namespace Prisma {
   /**
    * CourseCountOutputType without action
    */
-  export type CourseCountOutputTypeCountEnrollmentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: EnrollmentWhereInput
+  export type CourseCountOutputTypeCountAttendancesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AttendanceWhereInput
   }
 
   /**
    * CourseCountOutputType without action
    */
-  export type CourseCountOutputTypeCountReviewsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: ReviewWhereInput
+  export type CourseCountOutputTypeCountEnrollmentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EnrollmentWhereInput
   }
 
   /**
@@ -2002,8 +2093,8 @@ export namespace Prisma {
   /**
    * CourseCountOutputType without action
    */
-  export type CourseCountOutputTypeCountAttendancesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: AttendanceWhereInput
+  export type CourseCountOutputTypeCountReviewsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ReviewWhereInput
   }
 
 
@@ -2207,14 +2298,14 @@ export namespace Prisma {
     phone?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    adminProfile?: boolean | User$adminProfileArgs<ExtArgs>
+    attendances?: boolean | User$attendancesArgs<ExtArgs>
+    enrollments?: boolean | User$enrollmentsArgs<ExtArgs>
+    profile?: boolean | User$profileArgs<ExtArgs>
+    results?: boolean | User$resultsArgs<ExtArgs>
+    reviews?: boolean | User$reviewsArgs<ExtArgs>
     studentProfile?: boolean | User$studentProfileArgs<ExtArgs>
     teacherProfile?: boolean | User$teacherProfileArgs<ExtArgs>
-    adminProfile?: boolean | User$adminProfileArgs<ExtArgs>
-    profile?: boolean | User$profileArgs<ExtArgs>
-    enrollments?: boolean | User$enrollmentsArgs<ExtArgs>
-    reviews?: boolean | User$reviewsArgs<ExtArgs>
-    results?: boolean | User$resultsArgs<ExtArgs>
-    attendances?: boolean | User$attendancesArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -2256,14 +2347,14 @@ export namespace Prisma {
 
   export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "password" | "role" | "avatar" | "phone" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    adminProfile?: boolean | User$adminProfileArgs<ExtArgs>
+    attendances?: boolean | User$attendancesArgs<ExtArgs>
+    enrollments?: boolean | User$enrollmentsArgs<ExtArgs>
+    profile?: boolean | User$profileArgs<ExtArgs>
+    results?: boolean | User$resultsArgs<ExtArgs>
+    reviews?: boolean | User$reviewsArgs<ExtArgs>
     studentProfile?: boolean | User$studentProfileArgs<ExtArgs>
     teacherProfile?: boolean | User$teacherProfileArgs<ExtArgs>
-    adminProfile?: boolean | User$adminProfileArgs<ExtArgs>
-    profile?: boolean | User$profileArgs<ExtArgs>
-    enrollments?: boolean | User$enrollmentsArgs<ExtArgs>
-    reviews?: boolean | User$reviewsArgs<ExtArgs>
-    results?: boolean | User$resultsArgs<ExtArgs>
-    attendances?: boolean | User$attendancesArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -2272,14 +2363,14 @@ export namespace Prisma {
   export type $UserPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "User"
     objects: {
+      adminProfile: Prisma.$AdminPayload<ExtArgs> | null
+      attendances: Prisma.$AttendancePayload<ExtArgs>[]
+      enrollments: Prisma.$EnrollmentPayload<ExtArgs>[]
+      profile: Prisma.$ProfilePayload<ExtArgs> | null
+      results: Prisma.$ResultPayload<ExtArgs>[]
+      reviews: Prisma.$ReviewPayload<ExtArgs>[]
       studentProfile: Prisma.$StudentPayload<ExtArgs> | null
       teacherProfile: Prisma.$TeacherPayload<ExtArgs> | null
-      adminProfile: Prisma.$AdminPayload<ExtArgs> | null
-      profile: Prisma.$ProfilePayload<ExtArgs> | null
-      enrollments: Prisma.$EnrollmentPayload<ExtArgs>[]
-      reviews: Prisma.$ReviewPayload<ExtArgs>[]
-      results: Prisma.$ResultPayload<ExtArgs>[]
-      attendances: Prisma.$AttendancePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -2685,14 +2776,14 @@ export namespace Prisma {
    */
   export interface Prisma__UserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    adminProfile<T extends User$adminProfileArgs<ExtArgs> = {}>(args?: Subset<T, User$adminProfileArgs<ExtArgs>>): Prisma__AdminClient<$Result.GetResult<Prisma.$AdminPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    attendances<T extends User$attendancesArgs<ExtArgs> = {}>(args?: Subset<T, User$attendancesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AttendancePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    enrollments<T extends User$enrollmentsArgs<ExtArgs> = {}>(args?: Subset<T, User$enrollmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EnrollmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    profile<T extends User$profileArgs<ExtArgs> = {}>(args?: Subset<T, User$profileArgs<ExtArgs>>): Prisma__ProfileClient<$Result.GetResult<Prisma.$ProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    results<T extends User$resultsArgs<ExtArgs> = {}>(args?: Subset<T, User$resultsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ResultPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    reviews<T extends User$reviewsArgs<ExtArgs> = {}>(args?: Subset<T, User$reviewsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     studentProfile<T extends User$studentProfileArgs<ExtArgs> = {}>(args?: Subset<T, User$studentProfileArgs<ExtArgs>>): Prisma__StudentClient<$Result.GetResult<Prisma.$StudentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     teacherProfile<T extends User$teacherProfileArgs<ExtArgs> = {}>(args?: Subset<T, User$teacherProfileArgs<ExtArgs>>): Prisma__TeacherClient<$Result.GetResult<Prisma.$TeacherPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-    adminProfile<T extends User$adminProfileArgs<ExtArgs> = {}>(args?: Subset<T, User$adminProfileArgs<ExtArgs>>): Prisma__AdminClient<$Result.GetResult<Prisma.$AdminPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-    profile<T extends User$profileArgs<ExtArgs> = {}>(args?: Subset<T, User$profileArgs<ExtArgs>>): Prisma__ProfileClient<$Result.GetResult<Prisma.$ProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-    enrollments<T extends User$enrollmentsArgs<ExtArgs> = {}>(args?: Subset<T, User$enrollmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EnrollmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    reviews<T extends User$reviewsArgs<ExtArgs> = {}>(args?: Subset<T, User$reviewsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    results<T extends User$resultsArgs<ExtArgs> = {}>(args?: Subset<T, User$resultsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ResultPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    attendances<T extends User$attendancesArgs<ExtArgs> = {}>(args?: Subset<T, User$attendancesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AttendancePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3119,6 +3210,140 @@ export namespace Prisma {
   }
 
   /**
+   * User.adminProfile
+   */
+  export type User$adminProfileArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Admin
+     */
+    select?: AdminSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Admin
+     */
+    omit?: AdminOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AdminInclude<ExtArgs> | null
+    where?: AdminWhereInput
+  }
+
+  /**
+   * User.attendances
+   */
+  export type User$attendancesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Attendance
+     */
+    select?: AttendanceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Attendance
+     */
+    omit?: AttendanceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AttendanceInclude<ExtArgs> | null
+    where?: AttendanceWhereInput
+    orderBy?: AttendanceOrderByWithRelationInput | AttendanceOrderByWithRelationInput[]
+    cursor?: AttendanceWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AttendanceScalarFieldEnum | AttendanceScalarFieldEnum[]
+  }
+
+  /**
+   * User.enrollments
+   */
+  export type User$enrollmentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Enrollment
+     */
+    select?: EnrollmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Enrollment
+     */
+    omit?: EnrollmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EnrollmentInclude<ExtArgs> | null
+    where?: EnrollmentWhereInput
+    orderBy?: EnrollmentOrderByWithRelationInput | EnrollmentOrderByWithRelationInput[]
+    cursor?: EnrollmentWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: EnrollmentScalarFieldEnum | EnrollmentScalarFieldEnum[]
+  }
+
+  /**
+   * User.profile
+   */
+  export type User$profileArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Profile
+     */
+    select?: ProfileSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Profile
+     */
+    omit?: ProfileOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProfileInclude<ExtArgs> | null
+    where?: ProfileWhereInput
+  }
+
+  /**
+   * User.results
+   */
+  export type User$resultsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Result
+     */
+    select?: ResultSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Result
+     */
+    omit?: ResultOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ResultInclude<ExtArgs> | null
+    where?: ResultWhereInput
+    orderBy?: ResultOrderByWithRelationInput | ResultOrderByWithRelationInput[]
+    cursor?: ResultWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ResultScalarFieldEnum | ResultScalarFieldEnum[]
+  }
+
+  /**
+   * User.reviews
+   */
+  export type User$reviewsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Review
+     */
+    select?: ReviewSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Review
+     */
+    omit?: ReviewOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReviewInclude<ExtArgs> | null
+    where?: ReviewWhereInput
+    orderBy?: ReviewOrderByWithRelationInput | ReviewOrderByWithRelationInput[]
+    cursor?: ReviewWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ReviewScalarFieldEnum | ReviewScalarFieldEnum[]
+  }
+
+  /**
    * User.studentProfile
    */
   export type User$studentProfileArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3154,140 +3379,6 @@ export namespace Prisma {
      */
     include?: TeacherInclude<ExtArgs> | null
     where?: TeacherWhereInput
-  }
-
-  /**
-   * User.adminProfile
-   */
-  export type User$adminProfileArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Admin
-     */
-    select?: AdminSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Admin
-     */
-    omit?: AdminOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AdminInclude<ExtArgs> | null
-    where?: AdminWhereInput
-  }
-
-  /**
-   * User.profile
-   */
-  export type User$profileArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Profile
-     */
-    select?: ProfileSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Profile
-     */
-    omit?: ProfileOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ProfileInclude<ExtArgs> | null
-    where?: ProfileWhereInput
-  }
-
-  /**
-   * User.enrollments
-   */
-  export type User$enrollmentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Enrollment
-     */
-    select?: EnrollmentSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Enrollment
-     */
-    omit?: EnrollmentOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: EnrollmentInclude<ExtArgs> | null
-    where?: EnrollmentWhereInput
-    orderBy?: EnrollmentOrderByWithRelationInput | EnrollmentOrderByWithRelationInput[]
-    cursor?: EnrollmentWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: EnrollmentScalarFieldEnum | EnrollmentScalarFieldEnum[]
-  }
-
-  /**
-   * User.reviews
-   */
-  export type User$reviewsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Review
-     */
-    select?: ReviewSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Review
-     */
-    omit?: ReviewOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ReviewInclude<ExtArgs> | null
-    where?: ReviewWhereInput
-    orderBy?: ReviewOrderByWithRelationInput | ReviewOrderByWithRelationInput[]
-    cursor?: ReviewWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: ReviewScalarFieldEnum | ReviewScalarFieldEnum[]
-  }
-
-  /**
-   * User.results
-   */
-  export type User$resultsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Result
-     */
-    select?: ResultSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Result
-     */
-    omit?: ResultOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ResultInclude<ExtArgs> | null
-    where?: ResultWhereInput
-    orderBy?: ResultOrderByWithRelationInput | ResultOrderByWithRelationInput[]
-    cursor?: ResultWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: ResultScalarFieldEnum | ResultScalarFieldEnum[]
-  }
-
-  /**
-   * User.attendances
-   */
-  export type User$attendancesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Attendance
-     */
-    select?: AttendanceSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Attendance
-     */
-    omit?: AttendanceOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AttendanceInclude<ExtArgs> | null
-    where?: AttendanceWhereInput
-    orderBy?: AttendanceOrderByWithRelationInput | AttendanceOrderByWithRelationInput[]
-    cursor?: AttendanceWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: AttendanceScalarFieldEnum | AttendanceScalarFieldEnum[]
   }
 
   /**
@@ -3555,8 +3646,8 @@ export namespace Prisma {
     joinedAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
     courses?: boolean | Teacher$coursesArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
     _count?: boolean | TeacherCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["teacher"]>
 
@@ -3606,8 +3697,8 @@ export namespace Prisma {
 
   export type TeacherOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "subject" | "bio" | "experienceYears" | "qualification" | "department" | "designation" | "joinedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["teacher"]>
   export type TeacherInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
     courses?: boolean | Teacher$coursesArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
     _count?: boolean | TeacherCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type TeacherIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3620,8 +3711,8 @@ export namespace Prisma {
   export type $TeacherPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Teacher"
     objects: {
-      user: Prisma.$UserPayload<ExtArgs>
       courses: Prisma.$CoursePayload<ExtArgs>[]
+      user: Prisma.$UserPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -4029,8 +4120,8 @@ export namespace Prisma {
    */
   export interface Prisma__TeacherClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     courses<T extends Teacher$coursesArgs<ExtArgs> = {}>(args?: Subset<T, Teacher$coursesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CoursePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4795,11 +4886,11 @@ export namespace Prisma {
     teacherId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    attendances?: boolean | Course$attendancesArgs<ExtArgs>
     teacher?: boolean | Course$teacherArgs<ExtArgs>
     enrollments?: boolean | Course$enrollmentsArgs<ExtArgs>
-    reviews?: boolean | Course$reviewsArgs<ExtArgs>
     results?: boolean | Course$resultsArgs<ExtArgs>
-    attendances?: boolean | Course$attendancesArgs<ExtArgs>
+    reviews?: boolean | Course$reviewsArgs<ExtArgs>
     _count?: boolean | CourseCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["course"]>
 
@@ -4861,11 +4952,11 @@ export namespace Prisma {
 
   export type CourseOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "slug" | "category" | "description" | "duration" | "price" | "level" | "icon" | "seats" | "rating" | "popular" | "teacherId" | "createdAt" | "updatedAt", ExtArgs["result"]["course"]>
   export type CourseInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    attendances?: boolean | Course$attendancesArgs<ExtArgs>
     teacher?: boolean | Course$teacherArgs<ExtArgs>
     enrollments?: boolean | Course$enrollmentsArgs<ExtArgs>
-    reviews?: boolean | Course$reviewsArgs<ExtArgs>
     results?: boolean | Course$resultsArgs<ExtArgs>
-    attendances?: boolean | Course$attendancesArgs<ExtArgs>
+    reviews?: boolean | Course$reviewsArgs<ExtArgs>
     _count?: boolean | CourseCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type CourseIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4878,11 +4969,11 @@ export namespace Prisma {
   export type $CoursePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Course"
     objects: {
+      attendances: Prisma.$AttendancePayload<ExtArgs>[]
       teacher: Prisma.$TeacherPayload<ExtArgs> | null
       enrollments: Prisma.$EnrollmentPayload<ExtArgs>[]
-      reviews: Prisma.$ReviewPayload<ExtArgs>[]
       results: Prisma.$ResultPayload<ExtArgs>[]
-      attendances: Prisma.$AttendancePayload<ExtArgs>[]
+      reviews: Prisma.$ReviewPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -5294,11 +5385,11 @@ export namespace Prisma {
    */
   export interface Prisma__CourseClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    attendances<T extends Course$attendancesArgs<ExtArgs> = {}>(args?: Subset<T, Course$attendancesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AttendancePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     teacher<T extends Course$teacherArgs<ExtArgs> = {}>(args?: Subset<T, Course$teacherArgs<ExtArgs>>): Prisma__TeacherClient<$Result.GetResult<Prisma.$TeacherPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     enrollments<T extends Course$enrollmentsArgs<ExtArgs> = {}>(args?: Subset<T, Course$enrollmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EnrollmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    reviews<T extends Course$reviewsArgs<ExtArgs> = {}>(args?: Subset<T, Course$reviewsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     results<T extends Course$resultsArgs<ExtArgs> = {}>(args?: Subset<T, Course$resultsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ResultPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    attendances<T extends Course$attendancesArgs<ExtArgs> = {}>(args?: Subset<T, Course$attendancesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AttendancePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    reviews<T extends Course$reviewsArgs<ExtArgs> = {}>(args?: Subset<T, Course$reviewsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -5739,6 +5830,30 @@ export namespace Prisma {
   }
 
   /**
+   * Course.attendances
+   */
+  export type Course$attendancesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Attendance
+     */
+    select?: AttendanceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Attendance
+     */
+    omit?: AttendanceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AttendanceInclude<ExtArgs> | null
+    where?: AttendanceWhereInput
+    orderBy?: AttendanceOrderByWithRelationInput | AttendanceOrderByWithRelationInput[]
+    cursor?: AttendanceWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AttendanceScalarFieldEnum | AttendanceScalarFieldEnum[]
+  }
+
+  /**
    * Course.teacher
    */
   export type Course$teacherArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -5782,30 +5897,6 @@ export namespace Prisma {
   }
 
   /**
-   * Course.reviews
-   */
-  export type Course$reviewsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Review
-     */
-    select?: ReviewSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Review
-     */
-    omit?: ReviewOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ReviewInclude<ExtArgs> | null
-    where?: ReviewWhereInput
-    orderBy?: ReviewOrderByWithRelationInput | ReviewOrderByWithRelationInput[]
-    cursor?: ReviewWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: ReviewScalarFieldEnum | ReviewScalarFieldEnum[]
-  }
-
-  /**
    * Course.results
    */
   export type Course$resultsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -5830,27 +5921,27 @@ export namespace Prisma {
   }
 
   /**
-   * Course.attendances
+   * Course.reviews
    */
-  export type Course$attendancesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Course$reviewsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Attendance
+     * Select specific fields to fetch from the Review
      */
-    select?: AttendanceSelect<ExtArgs> | null
+    select?: ReviewSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Attendance
+     * Omit specific fields from the Review
      */
-    omit?: AttendanceOmit<ExtArgs> | null
+    omit?: ReviewOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: AttendanceInclude<ExtArgs> | null
-    where?: AttendanceWhereInput
-    orderBy?: AttendanceOrderByWithRelationInput | AttendanceOrderByWithRelationInput[]
-    cursor?: AttendanceWhereUniqueInput
+    include?: ReviewInclude<ExtArgs> | null
+    where?: ReviewWhereInput
+    orderBy?: ReviewOrderByWithRelationInput | ReviewOrderByWithRelationInput[]
+    cursor?: ReviewWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: AttendanceScalarFieldEnum | AttendanceScalarFieldEnum[]
+    distinct?: ReviewScalarFieldEnum | ReviewScalarFieldEnum[]
   }
 
   /**
@@ -6158,8 +6249,8 @@ export namespace Prisma {
     enrolledAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
     course?: boolean | CourseDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["enrollment"]>
 
   export type EnrollmentSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -6179,8 +6270,8 @@ export namespace Prisma {
     enrolledAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
     course?: boolean | CourseDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["enrollment"]>
 
   export type EnrollmentSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -6200,8 +6291,8 @@ export namespace Prisma {
     enrolledAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
     course?: boolean | CourseDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["enrollment"]>
 
   export type EnrollmentSelectScalar = {
@@ -6225,23 +6316,23 @@ export namespace Prisma {
 
   export type EnrollmentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "courseId" | "name" | "email" | "phone" | "paymentMethod" | "transactionId" | "notes" | "screenshotUrl" | "status" | "paymentStatus" | "amountPaid" | "enrolledAt" | "createdAt" | "updatedAt", ExtArgs["result"]["enrollment"]>
   export type EnrollmentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
     course?: boolean | CourseDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type EnrollmentIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
     course?: boolean | CourseDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type EnrollmentIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
     course?: boolean | CourseDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
 
   export type $EnrollmentPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Enrollment"
     objects: {
-      user: Prisma.$UserPayload<ExtArgs>
       course: Prisma.$CoursePayload<ExtArgs>
+      user: Prisma.$UserPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -6654,8 +6745,8 @@ export namespace Prisma {
    */
   export interface Prisma__EnrollmentClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     course<T extends CourseDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CourseDefaultArgs<ExtArgs>>): Prisma__CourseClient<$Result.GetResult<Prisma.$CoursePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -8408,8 +8499,8 @@ export namespace Prisma {
     featured?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    user?: boolean | Review$userArgs<ExtArgs>
     course?: boolean | Review$courseArgs<ExtArgs>
+    user?: boolean | Review$userArgs<ExtArgs>
   }, ExtArgs["result"]["review"]>
 
   export type ReviewSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -8424,8 +8515,8 @@ export namespace Prisma {
     featured?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    user?: boolean | Review$userArgs<ExtArgs>
     course?: boolean | Review$courseArgs<ExtArgs>
+    user?: boolean | Review$userArgs<ExtArgs>
   }, ExtArgs["result"]["review"]>
 
   export type ReviewSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -8440,8 +8531,8 @@ export namespace Prisma {
     featured?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    user?: boolean | Review$userArgs<ExtArgs>
     course?: boolean | Review$courseArgs<ExtArgs>
+    user?: boolean | Review$userArgs<ExtArgs>
   }, ExtArgs["result"]["review"]>
 
   export type ReviewSelectScalar = {
@@ -8460,23 +8551,23 @@ export namespace Prisma {
 
   export type ReviewOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "courseId" | "name" | "avatar" | "role" | "rating" | "comment" | "featured" | "createdAt" | "updatedAt", ExtArgs["result"]["review"]>
   export type ReviewInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | Review$userArgs<ExtArgs>
     course?: boolean | Review$courseArgs<ExtArgs>
+    user?: boolean | Review$userArgs<ExtArgs>
   }
   export type ReviewIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | Review$userArgs<ExtArgs>
     course?: boolean | Review$courseArgs<ExtArgs>
+    user?: boolean | Review$userArgs<ExtArgs>
   }
   export type ReviewIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | Review$userArgs<ExtArgs>
     course?: boolean | Review$courseArgs<ExtArgs>
+    user?: boolean | Review$userArgs<ExtArgs>
   }
 
   export type $ReviewPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Review"
     objects: {
-      user: Prisma.$UserPayload<ExtArgs> | null
       course: Prisma.$CoursePayload<ExtArgs> | null
+      user: Prisma.$UserPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -8884,8 +8975,8 @@ export namespace Prisma {
    */
   export interface Prisma__ReviewClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    user<T extends Review$userArgs<ExtArgs> = {}>(args?: Subset<T, Review$userArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     course<T extends Review$courseArgs<ExtArgs> = {}>(args?: Subset<T, Review$courseArgs<ExtArgs>>): Prisma__CourseClient<$Result.GetResult<Prisma.$CoursePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    user<T extends Review$userArgs<ExtArgs> = {}>(args?: Subset<T, Review$userArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -9322,25 +9413,6 @@ export namespace Prisma {
   }
 
   /**
-   * Review.user
-   */
-  export type Review$userArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the User
-     */
-    select?: UserSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the User
-     */
-    omit?: UserOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserInclude<ExtArgs> | null
-    where?: UserWhereInput
-  }
-
-  /**
    * Review.course
    */
   export type Review$courseArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -9360,6 +9432,25 @@ export namespace Prisma {
   }
 
   /**
+   * Review.user
+   */
+  export type Review$userArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
    * Review without action
    */
   export type ReviewDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -9375,6 +9466,1040 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: ReviewInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model PhotoGallery
+   */
+
+  export type AggregatePhotoGallery = {
+    _count: PhotoGalleryCountAggregateOutputType | null
+    _min: PhotoGalleryMinAggregateOutputType | null
+    _max: PhotoGalleryMaxAggregateOutputType | null
+  }
+
+  export type PhotoGalleryMinAggregateOutputType = {
+    id: string | null
+    title: string | null
+    description: string | null
+    category: string | null
+    imageUrl: string | null
+    publicId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type PhotoGalleryMaxAggregateOutputType = {
+    id: string | null
+    title: string | null
+    description: string | null
+    category: string | null
+    imageUrl: string | null
+    publicId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type PhotoGalleryCountAggregateOutputType = {
+    id: number
+    title: number
+    description: number
+    category: number
+    imageUrl: number
+    publicId: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type PhotoGalleryMinAggregateInputType = {
+    id?: true
+    title?: true
+    description?: true
+    category?: true
+    imageUrl?: true
+    publicId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type PhotoGalleryMaxAggregateInputType = {
+    id?: true
+    title?: true
+    description?: true
+    category?: true
+    imageUrl?: true
+    publicId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type PhotoGalleryCountAggregateInputType = {
+    id?: true
+    title?: true
+    description?: true
+    category?: true
+    imageUrl?: true
+    publicId?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type PhotoGalleryAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PhotoGallery to aggregate.
+     */
+    where?: PhotoGalleryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PhotoGalleries to fetch.
+     */
+    orderBy?: PhotoGalleryOrderByWithRelationInput | PhotoGalleryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: PhotoGalleryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PhotoGalleries from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PhotoGalleries.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned PhotoGalleries
+    **/
+    _count?: true | PhotoGalleryCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: PhotoGalleryMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: PhotoGalleryMaxAggregateInputType
+  }
+
+  export type GetPhotoGalleryAggregateType<T extends PhotoGalleryAggregateArgs> = {
+        [P in keyof T & keyof AggregatePhotoGallery]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregatePhotoGallery[P]>
+      : GetScalarType<T[P], AggregatePhotoGallery[P]>
+  }
+
+
+
+
+  export type PhotoGalleryGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PhotoGalleryWhereInput
+    orderBy?: PhotoGalleryOrderByWithAggregationInput | PhotoGalleryOrderByWithAggregationInput[]
+    by: PhotoGalleryScalarFieldEnum[] | PhotoGalleryScalarFieldEnum
+    having?: PhotoGalleryScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: PhotoGalleryCountAggregateInputType | true
+    _min?: PhotoGalleryMinAggregateInputType
+    _max?: PhotoGalleryMaxAggregateInputType
+  }
+
+  export type PhotoGalleryGroupByOutputType = {
+    id: string
+    title: string | null
+    description: string | null
+    category: string
+    imageUrl: string
+    publicId: string
+    createdAt: Date
+    updatedAt: Date
+    _count: PhotoGalleryCountAggregateOutputType | null
+    _min: PhotoGalleryMinAggregateOutputType | null
+    _max: PhotoGalleryMaxAggregateOutputType | null
+  }
+
+  type GetPhotoGalleryGroupByPayload<T extends PhotoGalleryGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<PhotoGalleryGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof PhotoGalleryGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], PhotoGalleryGroupByOutputType[P]>
+            : GetScalarType<T[P], PhotoGalleryGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type PhotoGallerySelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    title?: boolean
+    description?: boolean
+    category?: boolean
+    imageUrl?: boolean
+    publicId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["photoGallery"]>
+
+  export type PhotoGallerySelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    title?: boolean
+    description?: boolean
+    category?: boolean
+    imageUrl?: boolean
+    publicId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["photoGallery"]>
+
+  export type PhotoGallerySelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    title?: boolean
+    description?: boolean
+    category?: boolean
+    imageUrl?: boolean
+    publicId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["photoGallery"]>
+
+  export type PhotoGallerySelectScalar = {
+    id?: boolean
+    title?: boolean
+    description?: boolean
+    category?: boolean
+    imageUrl?: boolean
+    publicId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type PhotoGalleryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "category" | "imageUrl" | "publicId" | "createdAt" | "updatedAt", ExtArgs["result"]["photoGallery"]>
+
+  export type $PhotoGalleryPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "PhotoGallery"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      title: string | null
+      description: string | null
+      category: string
+      imageUrl: string
+      publicId: string
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["photoGallery"]>
+    composites: {}
+  }
+
+  type PhotoGalleryGetPayload<S extends boolean | null | undefined | PhotoGalleryDefaultArgs> = $Result.GetResult<Prisma.$PhotoGalleryPayload, S>
+
+  type PhotoGalleryCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<PhotoGalleryFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: PhotoGalleryCountAggregateInputType | true
+    }
+
+  export interface PhotoGalleryDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['PhotoGallery'], meta: { name: 'PhotoGallery' } }
+    /**
+     * Find zero or one PhotoGallery that matches the filter.
+     * @param {PhotoGalleryFindUniqueArgs} args - Arguments to find a PhotoGallery
+     * @example
+     * // Get one PhotoGallery
+     * const photoGallery = await prisma.photoGallery.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends PhotoGalleryFindUniqueArgs>(args: SelectSubset<T, PhotoGalleryFindUniqueArgs<ExtArgs>>): Prisma__PhotoGalleryClient<$Result.GetResult<Prisma.$PhotoGalleryPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one PhotoGallery that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {PhotoGalleryFindUniqueOrThrowArgs} args - Arguments to find a PhotoGallery
+     * @example
+     * // Get one PhotoGallery
+     * const photoGallery = await prisma.photoGallery.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends PhotoGalleryFindUniqueOrThrowArgs>(args: SelectSubset<T, PhotoGalleryFindUniqueOrThrowArgs<ExtArgs>>): Prisma__PhotoGalleryClient<$Result.GetResult<Prisma.$PhotoGalleryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PhotoGallery that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PhotoGalleryFindFirstArgs} args - Arguments to find a PhotoGallery
+     * @example
+     * // Get one PhotoGallery
+     * const photoGallery = await prisma.photoGallery.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends PhotoGalleryFindFirstArgs>(args?: SelectSubset<T, PhotoGalleryFindFirstArgs<ExtArgs>>): Prisma__PhotoGalleryClient<$Result.GetResult<Prisma.$PhotoGalleryPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PhotoGallery that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PhotoGalleryFindFirstOrThrowArgs} args - Arguments to find a PhotoGallery
+     * @example
+     * // Get one PhotoGallery
+     * const photoGallery = await prisma.photoGallery.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends PhotoGalleryFindFirstOrThrowArgs>(args?: SelectSubset<T, PhotoGalleryFindFirstOrThrowArgs<ExtArgs>>): Prisma__PhotoGalleryClient<$Result.GetResult<Prisma.$PhotoGalleryPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more PhotoGalleries that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PhotoGalleryFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all PhotoGalleries
+     * const photoGalleries = await prisma.photoGallery.findMany()
+     * 
+     * // Get first 10 PhotoGalleries
+     * const photoGalleries = await prisma.photoGallery.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const photoGalleryWithIdOnly = await prisma.photoGallery.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends PhotoGalleryFindManyArgs>(args?: SelectSubset<T, PhotoGalleryFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PhotoGalleryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a PhotoGallery.
+     * @param {PhotoGalleryCreateArgs} args - Arguments to create a PhotoGallery.
+     * @example
+     * // Create one PhotoGallery
+     * const PhotoGallery = await prisma.photoGallery.create({
+     *   data: {
+     *     // ... data to create a PhotoGallery
+     *   }
+     * })
+     * 
+     */
+    create<T extends PhotoGalleryCreateArgs>(args: SelectSubset<T, PhotoGalleryCreateArgs<ExtArgs>>): Prisma__PhotoGalleryClient<$Result.GetResult<Prisma.$PhotoGalleryPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many PhotoGalleries.
+     * @param {PhotoGalleryCreateManyArgs} args - Arguments to create many PhotoGalleries.
+     * @example
+     * // Create many PhotoGalleries
+     * const photoGallery = await prisma.photoGallery.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends PhotoGalleryCreateManyArgs>(args?: SelectSubset<T, PhotoGalleryCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many PhotoGalleries and returns the data saved in the database.
+     * @param {PhotoGalleryCreateManyAndReturnArgs} args - Arguments to create many PhotoGalleries.
+     * @example
+     * // Create many PhotoGalleries
+     * const photoGallery = await prisma.photoGallery.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many PhotoGalleries and only return the `id`
+     * const photoGalleryWithIdOnly = await prisma.photoGallery.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends PhotoGalleryCreateManyAndReturnArgs>(args?: SelectSubset<T, PhotoGalleryCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PhotoGalleryPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a PhotoGallery.
+     * @param {PhotoGalleryDeleteArgs} args - Arguments to delete one PhotoGallery.
+     * @example
+     * // Delete one PhotoGallery
+     * const PhotoGallery = await prisma.photoGallery.delete({
+     *   where: {
+     *     // ... filter to delete one PhotoGallery
+     *   }
+     * })
+     * 
+     */
+    delete<T extends PhotoGalleryDeleteArgs>(args: SelectSubset<T, PhotoGalleryDeleteArgs<ExtArgs>>): Prisma__PhotoGalleryClient<$Result.GetResult<Prisma.$PhotoGalleryPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one PhotoGallery.
+     * @param {PhotoGalleryUpdateArgs} args - Arguments to update one PhotoGallery.
+     * @example
+     * // Update one PhotoGallery
+     * const photoGallery = await prisma.photoGallery.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends PhotoGalleryUpdateArgs>(args: SelectSubset<T, PhotoGalleryUpdateArgs<ExtArgs>>): Prisma__PhotoGalleryClient<$Result.GetResult<Prisma.$PhotoGalleryPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more PhotoGalleries.
+     * @param {PhotoGalleryDeleteManyArgs} args - Arguments to filter PhotoGalleries to delete.
+     * @example
+     * // Delete a few PhotoGalleries
+     * const { count } = await prisma.photoGallery.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends PhotoGalleryDeleteManyArgs>(args?: SelectSubset<T, PhotoGalleryDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PhotoGalleries.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PhotoGalleryUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many PhotoGalleries
+     * const photoGallery = await prisma.photoGallery.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends PhotoGalleryUpdateManyArgs>(args: SelectSubset<T, PhotoGalleryUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PhotoGalleries and returns the data updated in the database.
+     * @param {PhotoGalleryUpdateManyAndReturnArgs} args - Arguments to update many PhotoGalleries.
+     * @example
+     * // Update many PhotoGalleries
+     * const photoGallery = await prisma.photoGallery.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more PhotoGalleries and only return the `id`
+     * const photoGalleryWithIdOnly = await prisma.photoGallery.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends PhotoGalleryUpdateManyAndReturnArgs>(args: SelectSubset<T, PhotoGalleryUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PhotoGalleryPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one PhotoGallery.
+     * @param {PhotoGalleryUpsertArgs} args - Arguments to update or create a PhotoGallery.
+     * @example
+     * // Update or create a PhotoGallery
+     * const photoGallery = await prisma.photoGallery.upsert({
+     *   create: {
+     *     // ... data to create a PhotoGallery
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the PhotoGallery we want to update
+     *   }
+     * })
+     */
+    upsert<T extends PhotoGalleryUpsertArgs>(args: SelectSubset<T, PhotoGalleryUpsertArgs<ExtArgs>>): Prisma__PhotoGalleryClient<$Result.GetResult<Prisma.$PhotoGalleryPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of PhotoGalleries.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PhotoGalleryCountArgs} args - Arguments to filter PhotoGalleries to count.
+     * @example
+     * // Count the number of PhotoGalleries
+     * const count = await prisma.photoGallery.count({
+     *   where: {
+     *     // ... the filter for the PhotoGalleries we want to count
+     *   }
+     * })
+    **/
+    count<T extends PhotoGalleryCountArgs>(
+      args?: Subset<T, PhotoGalleryCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], PhotoGalleryCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a PhotoGallery.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PhotoGalleryAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends PhotoGalleryAggregateArgs>(args: Subset<T, PhotoGalleryAggregateArgs>): Prisma.PrismaPromise<GetPhotoGalleryAggregateType<T>>
+
+    /**
+     * Group by PhotoGallery.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PhotoGalleryGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends PhotoGalleryGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: PhotoGalleryGroupByArgs['orderBy'] }
+        : { orderBy?: PhotoGalleryGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, PhotoGalleryGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPhotoGalleryGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the PhotoGallery model
+   */
+  readonly fields: PhotoGalleryFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for PhotoGallery.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__PhotoGalleryClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the PhotoGallery model
+   */
+  interface PhotoGalleryFieldRefs {
+    readonly id: FieldRef<"PhotoGallery", 'String'>
+    readonly title: FieldRef<"PhotoGallery", 'String'>
+    readonly description: FieldRef<"PhotoGallery", 'String'>
+    readonly category: FieldRef<"PhotoGallery", 'String'>
+    readonly imageUrl: FieldRef<"PhotoGallery", 'String'>
+    readonly publicId: FieldRef<"PhotoGallery", 'String'>
+    readonly createdAt: FieldRef<"PhotoGallery", 'DateTime'>
+    readonly updatedAt: FieldRef<"PhotoGallery", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * PhotoGallery findUnique
+   */
+  export type PhotoGalleryFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PhotoGallery
+     */
+    select?: PhotoGallerySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PhotoGallery
+     */
+    omit?: PhotoGalleryOmit<ExtArgs> | null
+    /**
+     * Filter, which PhotoGallery to fetch.
+     */
+    where: PhotoGalleryWhereUniqueInput
+  }
+
+  /**
+   * PhotoGallery findUniqueOrThrow
+   */
+  export type PhotoGalleryFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PhotoGallery
+     */
+    select?: PhotoGallerySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PhotoGallery
+     */
+    omit?: PhotoGalleryOmit<ExtArgs> | null
+    /**
+     * Filter, which PhotoGallery to fetch.
+     */
+    where: PhotoGalleryWhereUniqueInput
+  }
+
+  /**
+   * PhotoGallery findFirst
+   */
+  export type PhotoGalleryFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PhotoGallery
+     */
+    select?: PhotoGallerySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PhotoGallery
+     */
+    omit?: PhotoGalleryOmit<ExtArgs> | null
+    /**
+     * Filter, which PhotoGallery to fetch.
+     */
+    where?: PhotoGalleryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PhotoGalleries to fetch.
+     */
+    orderBy?: PhotoGalleryOrderByWithRelationInput | PhotoGalleryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PhotoGalleries.
+     */
+    cursor?: PhotoGalleryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PhotoGalleries from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PhotoGalleries.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PhotoGalleries.
+     */
+    distinct?: PhotoGalleryScalarFieldEnum | PhotoGalleryScalarFieldEnum[]
+  }
+
+  /**
+   * PhotoGallery findFirstOrThrow
+   */
+  export type PhotoGalleryFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PhotoGallery
+     */
+    select?: PhotoGallerySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PhotoGallery
+     */
+    omit?: PhotoGalleryOmit<ExtArgs> | null
+    /**
+     * Filter, which PhotoGallery to fetch.
+     */
+    where?: PhotoGalleryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PhotoGalleries to fetch.
+     */
+    orderBy?: PhotoGalleryOrderByWithRelationInput | PhotoGalleryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PhotoGalleries.
+     */
+    cursor?: PhotoGalleryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PhotoGalleries from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PhotoGalleries.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PhotoGalleries.
+     */
+    distinct?: PhotoGalleryScalarFieldEnum | PhotoGalleryScalarFieldEnum[]
+  }
+
+  /**
+   * PhotoGallery findMany
+   */
+  export type PhotoGalleryFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PhotoGallery
+     */
+    select?: PhotoGallerySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PhotoGallery
+     */
+    omit?: PhotoGalleryOmit<ExtArgs> | null
+    /**
+     * Filter, which PhotoGalleries to fetch.
+     */
+    where?: PhotoGalleryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PhotoGalleries to fetch.
+     */
+    orderBy?: PhotoGalleryOrderByWithRelationInput | PhotoGalleryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing PhotoGalleries.
+     */
+    cursor?: PhotoGalleryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PhotoGalleries from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PhotoGalleries.
+     */
+    skip?: number
+    distinct?: PhotoGalleryScalarFieldEnum | PhotoGalleryScalarFieldEnum[]
+  }
+
+  /**
+   * PhotoGallery create
+   */
+  export type PhotoGalleryCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PhotoGallery
+     */
+    select?: PhotoGallerySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PhotoGallery
+     */
+    omit?: PhotoGalleryOmit<ExtArgs> | null
+    /**
+     * The data needed to create a PhotoGallery.
+     */
+    data: XOR<PhotoGalleryCreateInput, PhotoGalleryUncheckedCreateInput>
+  }
+
+  /**
+   * PhotoGallery createMany
+   */
+  export type PhotoGalleryCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many PhotoGalleries.
+     */
+    data: PhotoGalleryCreateManyInput | PhotoGalleryCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * PhotoGallery createManyAndReturn
+   */
+  export type PhotoGalleryCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PhotoGallery
+     */
+    select?: PhotoGallerySelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PhotoGallery
+     */
+    omit?: PhotoGalleryOmit<ExtArgs> | null
+    /**
+     * The data used to create many PhotoGalleries.
+     */
+    data: PhotoGalleryCreateManyInput | PhotoGalleryCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * PhotoGallery update
+   */
+  export type PhotoGalleryUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PhotoGallery
+     */
+    select?: PhotoGallerySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PhotoGallery
+     */
+    omit?: PhotoGalleryOmit<ExtArgs> | null
+    /**
+     * The data needed to update a PhotoGallery.
+     */
+    data: XOR<PhotoGalleryUpdateInput, PhotoGalleryUncheckedUpdateInput>
+    /**
+     * Choose, which PhotoGallery to update.
+     */
+    where: PhotoGalleryWhereUniqueInput
+  }
+
+  /**
+   * PhotoGallery updateMany
+   */
+  export type PhotoGalleryUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update PhotoGalleries.
+     */
+    data: XOR<PhotoGalleryUpdateManyMutationInput, PhotoGalleryUncheckedUpdateManyInput>
+    /**
+     * Filter which PhotoGalleries to update
+     */
+    where?: PhotoGalleryWhereInput
+    /**
+     * Limit how many PhotoGalleries to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * PhotoGallery updateManyAndReturn
+   */
+  export type PhotoGalleryUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PhotoGallery
+     */
+    select?: PhotoGallerySelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PhotoGallery
+     */
+    omit?: PhotoGalleryOmit<ExtArgs> | null
+    /**
+     * The data used to update PhotoGalleries.
+     */
+    data: XOR<PhotoGalleryUpdateManyMutationInput, PhotoGalleryUncheckedUpdateManyInput>
+    /**
+     * Filter which PhotoGalleries to update
+     */
+    where?: PhotoGalleryWhereInput
+    /**
+     * Limit how many PhotoGalleries to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * PhotoGallery upsert
+   */
+  export type PhotoGalleryUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PhotoGallery
+     */
+    select?: PhotoGallerySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PhotoGallery
+     */
+    omit?: PhotoGalleryOmit<ExtArgs> | null
+    /**
+     * The filter to search for the PhotoGallery to update in case it exists.
+     */
+    where: PhotoGalleryWhereUniqueInput
+    /**
+     * In case the PhotoGallery found by the `where` argument doesn't exist, create a new PhotoGallery with this data.
+     */
+    create: XOR<PhotoGalleryCreateInput, PhotoGalleryUncheckedCreateInput>
+    /**
+     * In case the PhotoGallery was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<PhotoGalleryUpdateInput, PhotoGalleryUncheckedUpdateInput>
+  }
+
+  /**
+   * PhotoGallery delete
+   */
+  export type PhotoGalleryDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PhotoGallery
+     */
+    select?: PhotoGallerySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PhotoGallery
+     */
+    omit?: PhotoGalleryOmit<ExtArgs> | null
+    /**
+     * Filter which PhotoGallery to delete.
+     */
+    where: PhotoGalleryWhereUniqueInput
+  }
+
+  /**
+   * PhotoGallery deleteMany
+   */
+  export type PhotoGalleryDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PhotoGalleries to delete
+     */
+    where?: PhotoGalleryWhereInput
+    /**
+     * Limit how many PhotoGalleries to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * PhotoGallery without action
+   */
+  export type PhotoGalleryDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PhotoGallery
+     */
+    select?: PhotoGallerySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PhotoGallery
+     */
+    omit?: PhotoGalleryOmit<ExtArgs> | null
   }
 
 
@@ -12886,8 +14011,8 @@ export namespace Prisma {
     examDate?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    student?: boolean | UserDefaultArgs<ExtArgs>
     course?: boolean | CourseDefaultArgs<ExtArgs>
+    student?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["result"]>
 
   export type ResultSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -12900,8 +14025,8 @@ export namespace Prisma {
     examDate?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    student?: boolean | UserDefaultArgs<ExtArgs>
     course?: boolean | CourseDefaultArgs<ExtArgs>
+    student?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["result"]>
 
   export type ResultSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -12914,8 +14039,8 @@ export namespace Prisma {
     examDate?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    student?: boolean | UserDefaultArgs<ExtArgs>
     course?: boolean | CourseDefaultArgs<ExtArgs>
+    student?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["result"]>
 
   export type ResultSelectScalar = {
@@ -12932,23 +14057,23 @@ export namespace Prisma {
 
   export type ResultOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "studentId" | "courseId" | "marks" | "grade" | "remarks" | "examDate" | "createdAt" | "updatedAt", ExtArgs["result"]["result"]>
   export type ResultInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    student?: boolean | UserDefaultArgs<ExtArgs>
     course?: boolean | CourseDefaultArgs<ExtArgs>
+    student?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type ResultIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    student?: boolean | UserDefaultArgs<ExtArgs>
     course?: boolean | CourseDefaultArgs<ExtArgs>
+    student?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type ResultIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    student?: boolean | UserDefaultArgs<ExtArgs>
     course?: boolean | CourseDefaultArgs<ExtArgs>
+    student?: boolean | UserDefaultArgs<ExtArgs>
   }
 
   export type $ResultPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Result"
     objects: {
-      student: Prisma.$UserPayload<ExtArgs>
       course: Prisma.$CoursePayload<ExtArgs>
+      student: Prisma.$UserPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -13354,8 +14479,8 @@ export namespace Prisma {
    */
   export interface Prisma__ResultClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    student<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     course<T extends CourseDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CourseDefaultArgs<ExtArgs>>): Prisma__CourseClient<$Result.GetResult<Prisma.$CoursePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    student<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -13988,8 +15113,8 @@ export namespace Prisma {
     status?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    student?: boolean | UserDefaultArgs<ExtArgs>
     course?: boolean | CourseDefaultArgs<ExtArgs>
+    student?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["attendance"]>
 
   export type AttendanceSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -14000,8 +15125,8 @@ export namespace Prisma {
     status?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    student?: boolean | UserDefaultArgs<ExtArgs>
     course?: boolean | CourseDefaultArgs<ExtArgs>
+    student?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["attendance"]>
 
   export type AttendanceSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -14012,8 +15137,8 @@ export namespace Prisma {
     status?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    student?: boolean | UserDefaultArgs<ExtArgs>
     course?: boolean | CourseDefaultArgs<ExtArgs>
+    student?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["attendance"]>
 
   export type AttendanceSelectScalar = {
@@ -14028,23 +15153,23 @@ export namespace Prisma {
 
   export type AttendanceOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "studentId" | "courseId" | "date" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["attendance"]>
   export type AttendanceInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    student?: boolean | UserDefaultArgs<ExtArgs>
     course?: boolean | CourseDefaultArgs<ExtArgs>
+    student?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type AttendanceIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    student?: boolean | UserDefaultArgs<ExtArgs>
     course?: boolean | CourseDefaultArgs<ExtArgs>
+    student?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type AttendanceIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    student?: boolean | UserDefaultArgs<ExtArgs>
     course?: boolean | CourseDefaultArgs<ExtArgs>
+    student?: boolean | UserDefaultArgs<ExtArgs>
   }
 
   export type $AttendancePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Attendance"
     objects: {
-      student: Prisma.$UserPayload<ExtArgs>
       course: Prisma.$CoursePayload<ExtArgs>
+      student: Prisma.$UserPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -14448,8 +15573,8 @@ export namespace Prisma {
    */
   export interface Prisma__AttendanceClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    student<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     course<T extends CourseDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CourseDefaultArgs<ExtArgs>>): Prisma__CourseClient<$Result.GetResult<Prisma.$CoursePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    student<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -15021,6 +16146,20 @@ export namespace Prisma {
   export type ReviewScalarFieldEnum = (typeof ReviewScalarFieldEnum)[keyof typeof ReviewScalarFieldEnum]
 
 
+  export const PhotoGalleryScalarFieldEnum: {
+    id: 'id',
+    title: 'title',
+    description: 'description',
+    category: 'category',
+    imageUrl: 'imageUrl',
+    publicId: 'publicId',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type PhotoGalleryScalarFieldEnum = (typeof PhotoGalleryScalarFieldEnum)[keyof typeof PhotoGalleryScalarFieldEnum]
+
+
   export const StudentScalarFieldEnum: {
     id: 'id',
     userId: 'userId',
@@ -15282,14 +16421,14 @@ export namespace Prisma {
     phone?: StringNullableFilter<"User"> | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
+    adminProfile?: XOR<AdminNullableScalarRelationFilter, AdminWhereInput> | null
+    attendances?: AttendanceListRelationFilter
+    enrollments?: EnrollmentListRelationFilter
+    profile?: XOR<ProfileNullableScalarRelationFilter, ProfileWhereInput> | null
+    results?: ResultListRelationFilter
+    reviews?: ReviewListRelationFilter
     studentProfile?: XOR<StudentNullableScalarRelationFilter, StudentWhereInput> | null
     teacherProfile?: XOR<TeacherNullableScalarRelationFilter, TeacherWhereInput> | null
-    adminProfile?: XOR<AdminNullableScalarRelationFilter, AdminWhereInput> | null
-    profile?: XOR<ProfileNullableScalarRelationFilter, ProfileWhereInput> | null
-    enrollments?: EnrollmentListRelationFilter
-    reviews?: ReviewListRelationFilter
-    results?: ResultListRelationFilter
-    attendances?: AttendanceListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -15302,14 +16441,14 @@ export namespace Prisma {
     phone?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    adminProfile?: AdminOrderByWithRelationInput
+    attendances?: AttendanceOrderByRelationAggregateInput
+    enrollments?: EnrollmentOrderByRelationAggregateInput
+    profile?: ProfileOrderByWithRelationInput
+    results?: ResultOrderByRelationAggregateInput
+    reviews?: ReviewOrderByRelationAggregateInput
     studentProfile?: StudentOrderByWithRelationInput
     teacherProfile?: TeacherOrderByWithRelationInput
-    adminProfile?: AdminOrderByWithRelationInput
-    profile?: ProfileOrderByWithRelationInput
-    enrollments?: EnrollmentOrderByRelationAggregateInput
-    reviews?: ReviewOrderByRelationAggregateInput
-    results?: ResultOrderByRelationAggregateInput
-    attendances?: AttendanceOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -15325,14 +16464,14 @@ export namespace Prisma {
     phone?: StringNullableFilter<"User"> | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
+    adminProfile?: XOR<AdminNullableScalarRelationFilter, AdminWhereInput> | null
+    attendances?: AttendanceListRelationFilter
+    enrollments?: EnrollmentListRelationFilter
+    profile?: XOR<ProfileNullableScalarRelationFilter, ProfileWhereInput> | null
+    results?: ResultListRelationFilter
+    reviews?: ReviewListRelationFilter
     studentProfile?: XOR<StudentNullableScalarRelationFilter, StudentWhereInput> | null
     teacherProfile?: XOR<TeacherNullableScalarRelationFilter, TeacherWhereInput> | null
-    adminProfile?: XOR<AdminNullableScalarRelationFilter, AdminWhereInput> | null
-    profile?: XOR<ProfileNullableScalarRelationFilter, ProfileWhereInput> | null
-    enrollments?: EnrollmentListRelationFilter
-    reviews?: ReviewListRelationFilter
-    results?: ResultListRelationFilter
-    attendances?: AttendanceListRelationFilter
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -15380,8 +16519,8 @@ export namespace Prisma {
     joinedAt?: DateTimeFilter<"Teacher"> | Date | string
     createdAt?: DateTimeFilter<"Teacher"> | Date | string
     updatedAt?: DateTimeFilter<"Teacher"> | Date | string
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
     courses?: CourseListRelationFilter
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
 
   export type TeacherOrderByWithRelationInput = {
@@ -15396,8 +16535,8 @@ export namespace Prisma {
     joinedAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    user?: UserOrderByWithRelationInput
     courses?: CourseOrderByRelationAggregateInput
+    user?: UserOrderByWithRelationInput
   }
 
   export type TeacherWhereUniqueInput = Prisma.AtLeast<{
@@ -15415,8 +16554,8 @@ export namespace Prisma {
     joinedAt?: DateTimeFilter<"Teacher"> | Date | string
     createdAt?: DateTimeFilter<"Teacher"> | Date | string
     updatedAt?: DateTimeFilter<"Teacher"> | Date | string
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
     courses?: CourseListRelationFilter
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id" | "userId">
 
   export type TeacherOrderByWithAggregationInput = {
@@ -15474,11 +16613,11 @@ export namespace Prisma {
     teacherId?: StringNullableFilter<"Course"> | string | null
     createdAt?: DateTimeFilter<"Course"> | Date | string
     updatedAt?: DateTimeFilter<"Course"> | Date | string
+    attendances?: AttendanceListRelationFilter
     teacher?: XOR<TeacherNullableScalarRelationFilter, TeacherWhereInput> | null
     enrollments?: EnrollmentListRelationFilter
-    reviews?: ReviewListRelationFilter
     results?: ResultListRelationFilter
-    attendances?: AttendanceListRelationFilter
+    reviews?: ReviewListRelationFilter
   }
 
   export type CourseOrderByWithRelationInput = {
@@ -15497,11 +16636,11 @@ export namespace Prisma {
     teacherId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    attendances?: AttendanceOrderByRelationAggregateInput
     teacher?: TeacherOrderByWithRelationInput
     enrollments?: EnrollmentOrderByRelationAggregateInput
-    reviews?: ReviewOrderByRelationAggregateInput
     results?: ResultOrderByRelationAggregateInput
-    attendances?: AttendanceOrderByRelationAggregateInput
+    reviews?: ReviewOrderByRelationAggregateInput
   }
 
   export type CourseWhereUniqueInput = Prisma.AtLeast<{
@@ -15523,11 +16662,11 @@ export namespace Prisma {
     teacherId?: StringNullableFilter<"Course"> | string | null
     createdAt?: DateTimeFilter<"Course"> | Date | string
     updatedAt?: DateTimeFilter<"Course"> | Date | string
+    attendances?: AttendanceListRelationFilter
     teacher?: XOR<TeacherNullableScalarRelationFilter, TeacherWhereInput> | null
     enrollments?: EnrollmentListRelationFilter
-    reviews?: ReviewListRelationFilter
     results?: ResultListRelationFilter
-    attendances?: AttendanceListRelationFilter
+    reviews?: ReviewListRelationFilter
   }, "id" | "slug">
 
   export type CourseOrderByWithAggregationInput = {
@@ -15594,8 +16733,8 @@ export namespace Prisma {
     enrolledAt?: DateTimeFilter<"Enrollment"> | Date | string
     createdAt?: DateTimeFilter<"Enrollment"> | Date | string
     updatedAt?: DateTimeFilter<"Enrollment"> | Date | string
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
     course?: XOR<CourseScalarRelationFilter, CourseWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
 
   export type EnrollmentOrderByWithRelationInput = {
@@ -15615,8 +16754,8 @@ export namespace Prisma {
     enrolledAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    user?: UserOrderByWithRelationInput
     course?: CourseOrderByWithRelationInput
+    user?: UserOrderByWithRelationInput
   }
 
   export type EnrollmentWhereUniqueInput = Prisma.AtLeast<{
@@ -15639,8 +16778,8 @@ export namespace Prisma {
     enrolledAt?: DateTimeFilter<"Enrollment"> | Date | string
     createdAt?: DateTimeFilter<"Enrollment"> | Date | string
     updatedAt?: DateTimeFilter<"Enrollment"> | Date | string
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
     course?: XOR<CourseScalarRelationFilter, CourseWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id">
 
   export type EnrollmentOrderByWithAggregationInput = {
@@ -15776,8 +16915,8 @@ export namespace Prisma {
     featured?: BoolFilter<"Review"> | boolean
     createdAt?: DateTimeFilter<"Review"> | Date | string
     updatedAt?: DateTimeFilter<"Review"> | Date | string
-    user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     course?: XOR<CourseNullableScalarRelationFilter, CourseWhereInput> | null
+    user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
   }
 
   export type ReviewOrderByWithRelationInput = {
@@ -15792,8 +16931,8 @@ export namespace Prisma {
     featured?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    user?: UserOrderByWithRelationInput
     course?: CourseOrderByWithRelationInput
+    user?: UserOrderByWithRelationInput
   }
 
   export type ReviewWhereUniqueInput = Prisma.AtLeast<{
@@ -15811,8 +16950,8 @@ export namespace Prisma {
     featured?: BoolFilter<"Review"> | boolean
     createdAt?: DateTimeFilter<"Review"> | Date | string
     updatedAt?: DateTimeFilter<"Review"> | Date | string
-    user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     course?: XOR<CourseNullableScalarRelationFilter, CourseWhereInput> | null
+    user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
   }, "id">
 
   export type ReviewOrderByWithAggregationInput = {
@@ -15849,6 +16988,73 @@ export namespace Prisma {
     featured?: BoolWithAggregatesFilter<"Review"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"Review"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Review"> | Date | string
+  }
+
+  export type PhotoGalleryWhereInput = {
+    AND?: PhotoGalleryWhereInput | PhotoGalleryWhereInput[]
+    OR?: PhotoGalleryWhereInput[]
+    NOT?: PhotoGalleryWhereInput | PhotoGalleryWhereInput[]
+    id?: StringFilter<"PhotoGallery"> | string
+    title?: StringNullableFilter<"PhotoGallery"> | string | null
+    description?: StringNullableFilter<"PhotoGallery"> | string | null
+    category?: StringFilter<"PhotoGallery"> | string
+    imageUrl?: StringFilter<"PhotoGallery"> | string
+    publicId?: StringFilter<"PhotoGallery"> | string
+    createdAt?: DateTimeFilter<"PhotoGallery"> | Date | string
+    updatedAt?: DateTimeFilter<"PhotoGallery"> | Date | string
+  }
+
+  export type PhotoGalleryOrderByWithRelationInput = {
+    id?: SortOrder
+    title?: SortOrderInput | SortOrder
+    description?: SortOrderInput | SortOrder
+    category?: SortOrder
+    imageUrl?: SortOrder
+    publicId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PhotoGalleryWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: PhotoGalleryWhereInput | PhotoGalleryWhereInput[]
+    OR?: PhotoGalleryWhereInput[]
+    NOT?: PhotoGalleryWhereInput | PhotoGalleryWhereInput[]
+    title?: StringNullableFilter<"PhotoGallery"> | string | null
+    description?: StringNullableFilter<"PhotoGallery"> | string | null
+    category?: StringFilter<"PhotoGallery"> | string
+    imageUrl?: StringFilter<"PhotoGallery"> | string
+    publicId?: StringFilter<"PhotoGallery"> | string
+    createdAt?: DateTimeFilter<"PhotoGallery"> | Date | string
+    updatedAt?: DateTimeFilter<"PhotoGallery"> | Date | string
+  }, "id">
+
+  export type PhotoGalleryOrderByWithAggregationInput = {
+    id?: SortOrder
+    title?: SortOrderInput | SortOrder
+    description?: SortOrderInput | SortOrder
+    category?: SortOrder
+    imageUrl?: SortOrder
+    publicId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: PhotoGalleryCountOrderByAggregateInput
+    _max?: PhotoGalleryMaxOrderByAggregateInput
+    _min?: PhotoGalleryMinOrderByAggregateInput
+  }
+
+  export type PhotoGalleryScalarWhereWithAggregatesInput = {
+    AND?: PhotoGalleryScalarWhereWithAggregatesInput | PhotoGalleryScalarWhereWithAggregatesInput[]
+    OR?: PhotoGalleryScalarWhereWithAggregatesInput[]
+    NOT?: PhotoGalleryScalarWhereWithAggregatesInput | PhotoGalleryScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"PhotoGallery"> | string
+    title?: StringNullableWithAggregatesFilter<"PhotoGallery"> | string | null
+    description?: StringNullableWithAggregatesFilter<"PhotoGallery"> | string | null
+    category?: StringWithAggregatesFilter<"PhotoGallery"> | string
+    imageUrl?: StringWithAggregatesFilter<"PhotoGallery"> | string
+    publicId?: StringWithAggregatesFilter<"PhotoGallery"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"PhotoGallery"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"PhotoGallery"> | Date | string
   }
 
   export type StudentWhereInput = {
@@ -16069,8 +17275,8 @@ export namespace Prisma {
     examDate?: DateTimeFilter<"Result"> | Date | string
     createdAt?: DateTimeFilter<"Result"> | Date | string
     updatedAt?: DateTimeFilter<"Result"> | Date | string
-    student?: XOR<UserScalarRelationFilter, UserWhereInput>
     course?: XOR<CourseScalarRelationFilter, CourseWhereInput>
+    student?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
 
   export type ResultOrderByWithRelationInput = {
@@ -16083,8 +17289,8 @@ export namespace Prisma {
     examDate?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    student?: UserOrderByWithRelationInput
     course?: CourseOrderByWithRelationInput
+    student?: UserOrderByWithRelationInput
   }
 
   export type ResultWhereUniqueInput = Prisma.AtLeast<{
@@ -16100,8 +17306,8 @@ export namespace Prisma {
     examDate?: DateTimeFilter<"Result"> | Date | string
     createdAt?: DateTimeFilter<"Result"> | Date | string
     updatedAt?: DateTimeFilter<"Result"> | Date | string
-    student?: XOR<UserScalarRelationFilter, UserWhereInput>
     course?: XOR<CourseScalarRelationFilter, CourseWhereInput>
+    student?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id">
 
   export type ResultOrderByWithAggregationInput = {
@@ -16147,8 +17353,8 @@ export namespace Prisma {
     status?: StringFilter<"Attendance"> | string
     createdAt?: DateTimeFilter<"Attendance"> | Date | string
     updatedAt?: DateTimeFilter<"Attendance"> | Date | string
-    student?: XOR<UserScalarRelationFilter, UserWhereInput>
     course?: XOR<CourseScalarRelationFilter, CourseWhereInput>
+    student?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
 
   export type AttendanceOrderByWithRelationInput = {
@@ -16159,8 +17365,8 @@ export namespace Prisma {
     status?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    student?: UserOrderByWithRelationInput
     course?: CourseOrderByWithRelationInput
+    student?: UserOrderByWithRelationInput
   }
 
   export type AttendanceWhereUniqueInput = Prisma.AtLeast<{
@@ -16174,8 +17380,8 @@ export namespace Prisma {
     status?: StringFilter<"Attendance"> | string
     createdAt?: DateTimeFilter<"Attendance"> | Date | string
     updatedAt?: DateTimeFilter<"Attendance"> | Date | string
-    student?: XOR<UserScalarRelationFilter, UserWhereInput>
     course?: XOR<CourseScalarRelationFilter, CourseWhereInput>
+    student?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id">
 
   export type AttendanceOrderByWithAggregationInput = {
@@ -16214,14 +17420,14 @@ export namespace Prisma {
     phone?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    adminProfile?: AdminCreateNestedOneWithoutUserInput
+    attendances?: AttendanceCreateNestedManyWithoutStudentInput
+    enrollments?: EnrollmentCreateNestedManyWithoutUserInput
+    profile?: ProfileCreateNestedOneWithoutUserInput
+    results?: ResultCreateNestedManyWithoutStudentInput
+    reviews?: ReviewCreateNestedManyWithoutUserInput
     studentProfile?: StudentCreateNestedOneWithoutUserInput
     teacherProfile?: TeacherCreateNestedOneWithoutUserInput
-    adminProfile?: AdminCreateNestedOneWithoutUserInput
-    profile?: ProfileCreateNestedOneWithoutUserInput
-    enrollments?: EnrollmentCreateNestedManyWithoutUserInput
-    reviews?: ReviewCreateNestedManyWithoutUserInput
-    results?: ResultCreateNestedManyWithoutStudentInput
-    attendances?: AttendanceCreateNestedManyWithoutStudentInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -16234,14 +17440,14 @@ export namespace Prisma {
     phone?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    adminProfile?: AdminUncheckedCreateNestedOneWithoutUserInput
+    attendances?: AttendanceUncheckedCreateNestedManyWithoutStudentInput
+    enrollments?: EnrollmentUncheckedCreateNestedManyWithoutUserInput
+    profile?: ProfileUncheckedCreateNestedOneWithoutUserInput
+    results?: ResultUncheckedCreateNestedManyWithoutStudentInput
+    reviews?: ReviewUncheckedCreateNestedManyWithoutUserInput
     studentProfile?: StudentUncheckedCreateNestedOneWithoutUserInput
     teacherProfile?: TeacherUncheckedCreateNestedOneWithoutUserInput
-    adminProfile?: AdminUncheckedCreateNestedOneWithoutUserInput
-    profile?: ProfileUncheckedCreateNestedOneWithoutUserInput
-    enrollments?: EnrollmentUncheckedCreateNestedManyWithoutUserInput
-    reviews?: ReviewUncheckedCreateNestedManyWithoutUserInput
-    results?: ResultUncheckedCreateNestedManyWithoutStudentInput
-    attendances?: AttendanceUncheckedCreateNestedManyWithoutStudentInput
   }
 
   export type UserUpdateInput = {
@@ -16254,14 +17460,14 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    adminProfile?: AdminUpdateOneWithoutUserNestedInput
+    attendances?: AttendanceUpdateManyWithoutStudentNestedInput
+    enrollments?: EnrollmentUpdateManyWithoutUserNestedInput
+    profile?: ProfileUpdateOneWithoutUserNestedInput
+    results?: ResultUpdateManyWithoutStudentNestedInput
+    reviews?: ReviewUpdateManyWithoutUserNestedInput
     studentProfile?: StudentUpdateOneWithoutUserNestedInput
     teacherProfile?: TeacherUpdateOneWithoutUserNestedInput
-    adminProfile?: AdminUpdateOneWithoutUserNestedInput
-    profile?: ProfileUpdateOneWithoutUserNestedInput
-    enrollments?: EnrollmentUpdateManyWithoutUserNestedInput
-    reviews?: ReviewUpdateManyWithoutUserNestedInput
-    results?: ResultUpdateManyWithoutStudentNestedInput
-    attendances?: AttendanceUpdateManyWithoutStudentNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -16274,14 +17480,14 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    adminProfile?: AdminUncheckedUpdateOneWithoutUserNestedInput
+    attendances?: AttendanceUncheckedUpdateManyWithoutStudentNestedInput
+    enrollments?: EnrollmentUncheckedUpdateManyWithoutUserNestedInput
+    profile?: ProfileUncheckedUpdateOneWithoutUserNestedInput
+    results?: ResultUncheckedUpdateManyWithoutStudentNestedInput
+    reviews?: ReviewUncheckedUpdateManyWithoutUserNestedInput
     studentProfile?: StudentUncheckedUpdateOneWithoutUserNestedInput
     teacherProfile?: TeacherUncheckedUpdateOneWithoutUserNestedInput
-    adminProfile?: AdminUncheckedUpdateOneWithoutUserNestedInput
-    profile?: ProfileUncheckedUpdateOneWithoutUserNestedInput
-    enrollments?: EnrollmentUncheckedUpdateManyWithoutUserNestedInput
-    reviews?: ReviewUncheckedUpdateManyWithoutUserNestedInput
-    results?: ResultUncheckedUpdateManyWithoutStudentNestedInput
-    attendances?: AttendanceUncheckedUpdateManyWithoutStudentNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -16331,8 +17537,8 @@ export namespace Prisma {
     joinedAt?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
-    user: UserCreateNestedOneWithoutTeacherProfileInput
     courses?: CourseCreateNestedManyWithoutTeacherInput
+    user: UserCreateNestedOneWithoutTeacherProfileInput
   }
 
   export type TeacherUncheckedCreateInput = {
@@ -16361,8 +17567,8 @@ export namespace Prisma {
     joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutTeacherProfileNestedInput
     courses?: CourseUpdateManyWithoutTeacherNestedInput
+    user?: UserUpdateOneRequiredWithoutTeacherProfileNestedInput
   }
 
   export type TeacherUncheckedUpdateInput = {
@@ -16436,11 +17642,11 @@ export namespace Prisma {
     popular?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    attendances?: AttendanceCreateNestedManyWithoutCourseInput
     teacher?: TeacherCreateNestedOneWithoutCoursesInput
     enrollments?: EnrollmentCreateNestedManyWithoutCourseInput
-    reviews?: ReviewCreateNestedManyWithoutCourseInput
     results?: ResultCreateNestedManyWithoutCourseInput
-    attendances?: AttendanceCreateNestedManyWithoutCourseInput
+    reviews?: ReviewCreateNestedManyWithoutCourseInput
   }
 
   export type CourseUncheckedCreateInput = {
@@ -16459,10 +17665,10 @@ export namespace Prisma {
     teacherId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    enrollments?: EnrollmentUncheckedCreateNestedManyWithoutCourseInput
-    reviews?: ReviewUncheckedCreateNestedManyWithoutCourseInput
-    results?: ResultUncheckedCreateNestedManyWithoutCourseInput
     attendances?: AttendanceUncheckedCreateNestedManyWithoutCourseInput
+    enrollments?: EnrollmentUncheckedCreateNestedManyWithoutCourseInput
+    results?: ResultUncheckedCreateNestedManyWithoutCourseInput
+    reviews?: ReviewUncheckedCreateNestedManyWithoutCourseInput
   }
 
   export type CourseUpdateInput = {
@@ -16480,11 +17686,11 @@ export namespace Prisma {
     popular?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    attendances?: AttendanceUpdateManyWithoutCourseNestedInput
     teacher?: TeacherUpdateOneWithoutCoursesNestedInput
     enrollments?: EnrollmentUpdateManyWithoutCourseNestedInput
-    reviews?: ReviewUpdateManyWithoutCourseNestedInput
     results?: ResultUpdateManyWithoutCourseNestedInput
-    attendances?: AttendanceUpdateManyWithoutCourseNestedInput
+    reviews?: ReviewUpdateManyWithoutCourseNestedInput
   }
 
   export type CourseUncheckedUpdateInput = {
@@ -16503,10 +17709,10 @@ export namespace Prisma {
     teacherId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    enrollments?: EnrollmentUncheckedUpdateManyWithoutCourseNestedInput
-    reviews?: ReviewUncheckedUpdateManyWithoutCourseNestedInput
-    results?: ResultUncheckedUpdateManyWithoutCourseNestedInput
     attendances?: AttendanceUncheckedUpdateManyWithoutCourseNestedInput
+    enrollments?: EnrollmentUncheckedUpdateManyWithoutCourseNestedInput
+    results?: ResultUncheckedUpdateManyWithoutCourseNestedInput
+    reviews?: ReviewUncheckedUpdateManyWithoutCourseNestedInput
   }
 
   export type CourseCreateManyInput = {
@@ -16577,8 +17783,8 @@ export namespace Prisma {
     enrolledAt?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
-    user: UserCreateNestedOneWithoutEnrollmentsInput
     course: CourseCreateNestedOneWithoutEnrollmentsInput
+    user: UserCreateNestedOneWithoutEnrollmentsInput
   }
 
   export type EnrollmentUncheckedCreateInput = {
@@ -16615,8 +17821,8 @@ export namespace Prisma {
     enrolledAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutEnrollmentsNestedInput
     course?: CourseUpdateOneRequiredWithoutEnrollmentsNestedInput
+    user?: UserUpdateOneRequiredWithoutEnrollmentsNestedInput
   }
 
   export type EnrollmentUncheckedUpdateInput = {
@@ -16787,8 +17993,8 @@ export namespace Prisma {
     featured?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    user?: UserCreateNestedOneWithoutReviewsInput
     course?: CourseCreateNestedOneWithoutReviewsInput
+    user?: UserCreateNestedOneWithoutReviewsInput
   }
 
   export type ReviewUncheckedCreateInput = {
@@ -16815,8 +18021,8 @@ export namespace Prisma {
     featured?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneWithoutReviewsNestedInput
     course?: CourseUpdateOneWithoutReviewsNestedInput
+    user?: UserUpdateOneWithoutReviewsNestedInput
   }
 
   export type ReviewUncheckedUpdateInput = {
@@ -16869,6 +18075,83 @@ export namespace Prisma {
     rating?: IntFieldUpdateOperationsInput | number
     comment?: StringFieldUpdateOperationsInput | string
     featured?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PhotoGalleryCreateInput = {
+    id?: string
+    title?: string | null
+    description?: string | null
+    category?: string
+    imageUrl: string
+    publicId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PhotoGalleryUncheckedCreateInput = {
+    id?: string
+    title?: string | null
+    description?: string | null
+    category?: string
+    imageUrl: string
+    publicId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PhotoGalleryUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: StringFieldUpdateOperationsInput | string
+    imageUrl?: StringFieldUpdateOperationsInput | string
+    publicId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PhotoGalleryUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: StringFieldUpdateOperationsInput | string
+    imageUrl?: StringFieldUpdateOperationsInput | string
+    publicId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PhotoGalleryCreateManyInput = {
+    id?: string
+    title?: string | null
+    description?: string | null
+    category?: string
+    imageUrl: string
+    publicId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PhotoGalleryUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: StringFieldUpdateOperationsInput | string
+    imageUrl?: StringFieldUpdateOperationsInput | string
+    publicId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PhotoGalleryUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: StringFieldUpdateOperationsInput | string
+    imageUrl?: StringFieldUpdateOperationsInput | string
+    publicId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -17102,8 +18385,8 @@ export namespace Prisma {
     examDate?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
-    student: UserCreateNestedOneWithoutResultsInput
     course: CourseCreateNestedOneWithoutResultsInput
+    student: UserCreateNestedOneWithoutResultsInput
   }
 
   export type ResultUncheckedCreateInput = {
@@ -17126,8 +18409,8 @@ export namespace Prisma {
     examDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    student?: UserUpdateOneRequiredWithoutResultsNestedInput
     course?: CourseUpdateOneRequiredWithoutResultsNestedInput
+    student?: UserUpdateOneRequiredWithoutResultsNestedInput
   }
 
   export type ResultUncheckedUpdateInput = {
@@ -17182,8 +18465,8 @@ export namespace Prisma {
     status: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    student: UserCreateNestedOneWithoutAttendancesInput
     course: CourseCreateNestedOneWithoutAttendancesInput
+    student: UserCreateNestedOneWithoutAttendancesInput
   }
 
   export type AttendanceUncheckedCreateInput = {
@@ -17202,8 +18485,8 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    student?: UserUpdateOneRequiredWithoutAttendancesNestedInput
     course?: CourseUpdateOneRequiredWithoutAttendancesNestedInput
+    student?: UserUpdateOneRequiredWithoutAttendancesNestedInput
   }
 
   export type AttendanceUncheckedUpdateInput = {
@@ -17292,6 +18575,40 @@ export namespace Prisma {
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
+  export type AdminNullableScalarRelationFilter = {
+    is?: AdminWhereInput | null
+    isNot?: AdminWhereInput | null
+  }
+
+  export type AttendanceListRelationFilter = {
+    every?: AttendanceWhereInput
+    some?: AttendanceWhereInput
+    none?: AttendanceWhereInput
+  }
+
+  export type EnrollmentListRelationFilter = {
+    every?: EnrollmentWhereInput
+    some?: EnrollmentWhereInput
+    none?: EnrollmentWhereInput
+  }
+
+  export type ProfileNullableScalarRelationFilter = {
+    is?: ProfileWhereInput | null
+    isNot?: ProfileWhereInput | null
+  }
+
+  export type ResultListRelationFilter = {
+    every?: ResultWhereInput
+    some?: ResultWhereInput
+    none?: ResultWhereInput
+  }
+
+  export type ReviewListRelationFilter = {
+    every?: ReviewWhereInput
+    some?: ReviewWhereInput
+    none?: ReviewWhereInput
+  }
+
   export type StudentNullableScalarRelationFilter = {
     is?: StudentWhereInput | null
     isNot?: StudentWhereInput | null
@@ -17302,50 +18619,16 @@ export namespace Prisma {
     isNot?: TeacherWhereInput | null
   }
 
-  export type AdminNullableScalarRelationFilter = {
-    is?: AdminWhereInput | null
-    isNot?: AdminWhereInput | null
-  }
-
-  export type ProfileNullableScalarRelationFilter = {
-    is?: ProfileWhereInput | null
-    isNot?: ProfileWhereInput | null
-  }
-
-  export type EnrollmentListRelationFilter = {
-    every?: EnrollmentWhereInput
-    some?: EnrollmentWhereInput
-    none?: EnrollmentWhereInput
-  }
-
-  export type ReviewListRelationFilter = {
-    every?: ReviewWhereInput
-    some?: ReviewWhereInput
-    none?: ReviewWhereInput
-  }
-
-  export type ResultListRelationFilter = {
-    every?: ResultWhereInput
-    some?: ResultWhereInput
-    none?: ResultWhereInput
-  }
-
-  export type AttendanceListRelationFilter = {
-    every?: AttendanceWhereInput
-    some?: AttendanceWhereInput
-    none?: AttendanceWhereInput
-  }
-
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
   }
 
-  export type EnrollmentOrderByRelationAggregateInput = {
+  export type AttendanceOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
-  export type ReviewOrderByRelationAggregateInput = {
+  export type EnrollmentOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -17353,7 +18636,7 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
-  export type AttendanceOrderByRelationAggregateInput = {
+  export type ReviewOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -17464,15 +18747,15 @@ export namespace Prisma {
     not?: NestedIntFilter<$PrismaModel> | number
   }
 
-  export type UserScalarRelationFilter = {
-    is?: UserWhereInput
-    isNot?: UserWhereInput
-  }
-
   export type CourseListRelationFilter = {
     every?: CourseWhereInput
     some?: CourseWhereInput
     none?: CourseWhereInput
+  }
+
+  export type UserScalarRelationFilter = {
+    is?: UserWhereInput
+    isNot?: UserWhereInput
   }
 
   export type CourseOrderByRelationAggregateInput = {
@@ -17842,14 +19125,14 @@ export namespace Prisma {
     _max?: NestedEnumNoticeAudienceFilter<$PrismaModel>
   }
 
-  export type UserNullableScalarRelationFilter = {
-    is?: UserWhereInput | null
-    isNot?: UserWhereInput | null
-  }
-
   export type CourseNullableScalarRelationFilter = {
     is?: CourseWhereInput | null
     isNot?: CourseWhereInput | null
+  }
+
+  export type UserNullableScalarRelationFilter = {
+    is?: UserWhereInput | null
+    isNot?: UserWhereInput | null
   }
 
   export type ReviewCountOrderByAggregateInput = {
@@ -17900,6 +19183,39 @@ export namespace Prisma {
 
   export type ReviewSumOrderByAggregateInput = {
     rating?: SortOrder
+  }
+
+  export type PhotoGalleryCountOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    category?: SortOrder
+    imageUrl?: SortOrder
+    publicId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PhotoGalleryMaxOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    category?: SortOrder
+    imageUrl?: SortOrder
+    publicId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PhotoGalleryMinOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    category?: SortOrder
+    imageUrl?: SortOrder
+    publicId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
   }
 
   export type StudentCountOrderByAggregateInput = {
@@ -18072,6 +19388,46 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
+  export type AdminCreateNestedOneWithoutUserInput = {
+    create?: XOR<AdminCreateWithoutUserInput, AdminUncheckedCreateWithoutUserInput>
+    connectOrCreate?: AdminCreateOrConnectWithoutUserInput
+    connect?: AdminWhereUniqueInput
+  }
+
+  export type AttendanceCreateNestedManyWithoutStudentInput = {
+    create?: XOR<AttendanceCreateWithoutStudentInput, AttendanceUncheckedCreateWithoutStudentInput> | AttendanceCreateWithoutStudentInput[] | AttendanceUncheckedCreateWithoutStudentInput[]
+    connectOrCreate?: AttendanceCreateOrConnectWithoutStudentInput | AttendanceCreateOrConnectWithoutStudentInput[]
+    createMany?: AttendanceCreateManyStudentInputEnvelope
+    connect?: AttendanceWhereUniqueInput | AttendanceWhereUniqueInput[]
+  }
+
+  export type EnrollmentCreateNestedManyWithoutUserInput = {
+    create?: XOR<EnrollmentCreateWithoutUserInput, EnrollmentUncheckedCreateWithoutUserInput> | EnrollmentCreateWithoutUserInput[] | EnrollmentUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: EnrollmentCreateOrConnectWithoutUserInput | EnrollmentCreateOrConnectWithoutUserInput[]
+    createMany?: EnrollmentCreateManyUserInputEnvelope
+    connect?: EnrollmentWhereUniqueInput | EnrollmentWhereUniqueInput[]
+  }
+
+  export type ProfileCreateNestedOneWithoutUserInput = {
+    create?: XOR<ProfileCreateWithoutUserInput, ProfileUncheckedCreateWithoutUserInput>
+    connectOrCreate?: ProfileCreateOrConnectWithoutUserInput
+    connect?: ProfileWhereUniqueInput
+  }
+
+  export type ResultCreateNestedManyWithoutStudentInput = {
+    create?: XOR<ResultCreateWithoutStudentInput, ResultUncheckedCreateWithoutStudentInput> | ResultCreateWithoutStudentInput[] | ResultUncheckedCreateWithoutStudentInput[]
+    connectOrCreate?: ResultCreateOrConnectWithoutStudentInput | ResultCreateOrConnectWithoutStudentInput[]
+    createMany?: ResultCreateManyStudentInputEnvelope
+    connect?: ResultWhereUniqueInput | ResultWhereUniqueInput[]
+  }
+
+  export type ReviewCreateNestedManyWithoutUserInput = {
+    create?: XOR<ReviewCreateWithoutUserInput, ReviewUncheckedCreateWithoutUserInput> | ReviewCreateWithoutUserInput[] | ReviewUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ReviewCreateOrConnectWithoutUserInput | ReviewCreateOrConnectWithoutUserInput[]
+    createMany?: ReviewCreateManyUserInputEnvelope
+    connect?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
+  }
+
   export type StudentCreateNestedOneWithoutUserInput = {
     create?: XOR<StudentCreateWithoutUserInput, StudentUncheckedCreateWithoutUserInput>
     connectOrCreate?: StudentCreateOrConnectWithoutUserInput
@@ -18084,44 +19440,44 @@ export namespace Prisma {
     connect?: TeacherWhereUniqueInput
   }
 
-  export type AdminCreateNestedOneWithoutUserInput = {
+  export type AdminUncheckedCreateNestedOneWithoutUserInput = {
     create?: XOR<AdminCreateWithoutUserInput, AdminUncheckedCreateWithoutUserInput>
     connectOrCreate?: AdminCreateOrConnectWithoutUserInput
     connect?: AdminWhereUniqueInput
   }
 
-  export type ProfileCreateNestedOneWithoutUserInput = {
-    create?: XOR<ProfileCreateWithoutUserInput, ProfileUncheckedCreateWithoutUserInput>
-    connectOrCreate?: ProfileCreateOrConnectWithoutUserInput
-    connect?: ProfileWhereUniqueInput
+  export type AttendanceUncheckedCreateNestedManyWithoutStudentInput = {
+    create?: XOR<AttendanceCreateWithoutStudentInput, AttendanceUncheckedCreateWithoutStudentInput> | AttendanceCreateWithoutStudentInput[] | AttendanceUncheckedCreateWithoutStudentInput[]
+    connectOrCreate?: AttendanceCreateOrConnectWithoutStudentInput | AttendanceCreateOrConnectWithoutStudentInput[]
+    createMany?: AttendanceCreateManyStudentInputEnvelope
+    connect?: AttendanceWhereUniqueInput | AttendanceWhereUniqueInput[]
   }
 
-  export type EnrollmentCreateNestedManyWithoutUserInput = {
+  export type EnrollmentUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<EnrollmentCreateWithoutUserInput, EnrollmentUncheckedCreateWithoutUserInput> | EnrollmentCreateWithoutUserInput[] | EnrollmentUncheckedCreateWithoutUserInput[]
     connectOrCreate?: EnrollmentCreateOrConnectWithoutUserInput | EnrollmentCreateOrConnectWithoutUserInput[]
     createMany?: EnrollmentCreateManyUserInputEnvelope
     connect?: EnrollmentWhereUniqueInput | EnrollmentWhereUniqueInput[]
   }
 
-  export type ReviewCreateNestedManyWithoutUserInput = {
-    create?: XOR<ReviewCreateWithoutUserInput, ReviewUncheckedCreateWithoutUserInput> | ReviewCreateWithoutUserInput[] | ReviewUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: ReviewCreateOrConnectWithoutUserInput | ReviewCreateOrConnectWithoutUserInput[]
-    createMany?: ReviewCreateManyUserInputEnvelope
-    connect?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
+  export type ProfileUncheckedCreateNestedOneWithoutUserInput = {
+    create?: XOR<ProfileCreateWithoutUserInput, ProfileUncheckedCreateWithoutUserInput>
+    connectOrCreate?: ProfileCreateOrConnectWithoutUserInput
+    connect?: ProfileWhereUniqueInput
   }
 
-  export type ResultCreateNestedManyWithoutStudentInput = {
+  export type ResultUncheckedCreateNestedManyWithoutStudentInput = {
     create?: XOR<ResultCreateWithoutStudentInput, ResultUncheckedCreateWithoutStudentInput> | ResultCreateWithoutStudentInput[] | ResultUncheckedCreateWithoutStudentInput[]
     connectOrCreate?: ResultCreateOrConnectWithoutStudentInput | ResultCreateOrConnectWithoutStudentInput[]
     createMany?: ResultCreateManyStudentInputEnvelope
     connect?: ResultWhereUniqueInput | ResultWhereUniqueInput[]
   }
 
-  export type AttendanceCreateNestedManyWithoutStudentInput = {
-    create?: XOR<AttendanceCreateWithoutStudentInput, AttendanceUncheckedCreateWithoutStudentInput> | AttendanceCreateWithoutStudentInput[] | AttendanceUncheckedCreateWithoutStudentInput[]
-    connectOrCreate?: AttendanceCreateOrConnectWithoutStudentInput | AttendanceCreateOrConnectWithoutStudentInput[]
-    createMany?: AttendanceCreateManyStudentInputEnvelope
-    connect?: AttendanceWhereUniqueInput | AttendanceWhereUniqueInput[]
+  export type ReviewUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<ReviewCreateWithoutUserInput, ReviewUncheckedCreateWithoutUserInput> | ReviewCreateWithoutUserInput[] | ReviewUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ReviewCreateOrConnectWithoutUserInput | ReviewCreateOrConnectWithoutUserInput[]
+    createMany?: ReviewCreateManyUserInputEnvelope
+    connect?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
   }
 
   export type StudentUncheckedCreateNestedOneWithoutUserInput = {
@@ -18134,46 +19490,6 @@ export namespace Prisma {
     create?: XOR<TeacherCreateWithoutUserInput, TeacherUncheckedCreateWithoutUserInput>
     connectOrCreate?: TeacherCreateOrConnectWithoutUserInput
     connect?: TeacherWhereUniqueInput
-  }
-
-  export type AdminUncheckedCreateNestedOneWithoutUserInput = {
-    create?: XOR<AdminCreateWithoutUserInput, AdminUncheckedCreateWithoutUserInput>
-    connectOrCreate?: AdminCreateOrConnectWithoutUserInput
-    connect?: AdminWhereUniqueInput
-  }
-
-  export type ProfileUncheckedCreateNestedOneWithoutUserInput = {
-    create?: XOR<ProfileCreateWithoutUserInput, ProfileUncheckedCreateWithoutUserInput>
-    connectOrCreate?: ProfileCreateOrConnectWithoutUserInput
-    connect?: ProfileWhereUniqueInput
-  }
-
-  export type EnrollmentUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<EnrollmentCreateWithoutUserInput, EnrollmentUncheckedCreateWithoutUserInput> | EnrollmentCreateWithoutUserInput[] | EnrollmentUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: EnrollmentCreateOrConnectWithoutUserInput | EnrollmentCreateOrConnectWithoutUserInput[]
-    createMany?: EnrollmentCreateManyUserInputEnvelope
-    connect?: EnrollmentWhereUniqueInput | EnrollmentWhereUniqueInput[]
-  }
-
-  export type ReviewUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<ReviewCreateWithoutUserInput, ReviewUncheckedCreateWithoutUserInput> | ReviewCreateWithoutUserInput[] | ReviewUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: ReviewCreateOrConnectWithoutUserInput | ReviewCreateOrConnectWithoutUserInput[]
-    createMany?: ReviewCreateManyUserInputEnvelope
-    connect?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
-  }
-
-  export type ResultUncheckedCreateNestedManyWithoutStudentInput = {
-    create?: XOR<ResultCreateWithoutStudentInput, ResultUncheckedCreateWithoutStudentInput> | ResultCreateWithoutStudentInput[] | ResultUncheckedCreateWithoutStudentInput[]
-    connectOrCreate?: ResultCreateOrConnectWithoutStudentInput | ResultCreateOrConnectWithoutStudentInput[]
-    createMany?: ResultCreateManyStudentInputEnvelope
-    connect?: ResultWhereUniqueInput | ResultWhereUniqueInput[]
-  }
-
-  export type AttendanceUncheckedCreateNestedManyWithoutStudentInput = {
-    create?: XOR<AttendanceCreateWithoutStudentInput, AttendanceUncheckedCreateWithoutStudentInput> | AttendanceCreateWithoutStudentInput[] | AttendanceUncheckedCreateWithoutStudentInput[]
-    connectOrCreate?: AttendanceCreateOrConnectWithoutStudentInput | AttendanceCreateOrConnectWithoutStudentInput[]
-    createMany?: AttendanceCreateManyStudentInputEnvelope
-    connect?: AttendanceWhereUniqueInput | AttendanceWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -18190,6 +19506,82 @@ export namespace Prisma {
 
   export type DateTimeFieldUpdateOperationsInput = {
     set?: Date | string
+  }
+
+  export type AdminUpdateOneWithoutUserNestedInput = {
+    create?: XOR<AdminCreateWithoutUserInput, AdminUncheckedCreateWithoutUserInput>
+    connectOrCreate?: AdminCreateOrConnectWithoutUserInput
+    upsert?: AdminUpsertWithoutUserInput
+    disconnect?: AdminWhereInput | boolean
+    delete?: AdminWhereInput | boolean
+    connect?: AdminWhereUniqueInput
+    update?: XOR<XOR<AdminUpdateToOneWithWhereWithoutUserInput, AdminUpdateWithoutUserInput>, AdminUncheckedUpdateWithoutUserInput>
+  }
+
+  export type AttendanceUpdateManyWithoutStudentNestedInput = {
+    create?: XOR<AttendanceCreateWithoutStudentInput, AttendanceUncheckedCreateWithoutStudentInput> | AttendanceCreateWithoutStudentInput[] | AttendanceUncheckedCreateWithoutStudentInput[]
+    connectOrCreate?: AttendanceCreateOrConnectWithoutStudentInput | AttendanceCreateOrConnectWithoutStudentInput[]
+    upsert?: AttendanceUpsertWithWhereUniqueWithoutStudentInput | AttendanceUpsertWithWhereUniqueWithoutStudentInput[]
+    createMany?: AttendanceCreateManyStudentInputEnvelope
+    set?: AttendanceWhereUniqueInput | AttendanceWhereUniqueInput[]
+    disconnect?: AttendanceWhereUniqueInput | AttendanceWhereUniqueInput[]
+    delete?: AttendanceWhereUniqueInput | AttendanceWhereUniqueInput[]
+    connect?: AttendanceWhereUniqueInput | AttendanceWhereUniqueInput[]
+    update?: AttendanceUpdateWithWhereUniqueWithoutStudentInput | AttendanceUpdateWithWhereUniqueWithoutStudentInput[]
+    updateMany?: AttendanceUpdateManyWithWhereWithoutStudentInput | AttendanceUpdateManyWithWhereWithoutStudentInput[]
+    deleteMany?: AttendanceScalarWhereInput | AttendanceScalarWhereInput[]
+  }
+
+  export type EnrollmentUpdateManyWithoutUserNestedInput = {
+    create?: XOR<EnrollmentCreateWithoutUserInput, EnrollmentUncheckedCreateWithoutUserInput> | EnrollmentCreateWithoutUserInput[] | EnrollmentUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: EnrollmentCreateOrConnectWithoutUserInput | EnrollmentCreateOrConnectWithoutUserInput[]
+    upsert?: EnrollmentUpsertWithWhereUniqueWithoutUserInput | EnrollmentUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: EnrollmentCreateManyUserInputEnvelope
+    set?: EnrollmentWhereUniqueInput | EnrollmentWhereUniqueInput[]
+    disconnect?: EnrollmentWhereUniqueInput | EnrollmentWhereUniqueInput[]
+    delete?: EnrollmentWhereUniqueInput | EnrollmentWhereUniqueInput[]
+    connect?: EnrollmentWhereUniqueInput | EnrollmentWhereUniqueInput[]
+    update?: EnrollmentUpdateWithWhereUniqueWithoutUserInput | EnrollmentUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: EnrollmentUpdateManyWithWhereWithoutUserInput | EnrollmentUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: EnrollmentScalarWhereInput | EnrollmentScalarWhereInput[]
+  }
+
+  export type ProfileUpdateOneWithoutUserNestedInput = {
+    create?: XOR<ProfileCreateWithoutUserInput, ProfileUncheckedCreateWithoutUserInput>
+    connectOrCreate?: ProfileCreateOrConnectWithoutUserInput
+    upsert?: ProfileUpsertWithoutUserInput
+    disconnect?: ProfileWhereInput | boolean
+    delete?: ProfileWhereInput | boolean
+    connect?: ProfileWhereUniqueInput
+    update?: XOR<XOR<ProfileUpdateToOneWithWhereWithoutUserInput, ProfileUpdateWithoutUserInput>, ProfileUncheckedUpdateWithoutUserInput>
+  }
+
+  export type ResultUpdateManyWithoutStudentNestedInput = {
+    create?: XOR<ResultCreateWithoutStudentInput, ResultUncheckedCreateWithoutStudentInput> | ResultCreateWithoutStudentInput[] | ResultUncheckedCreateWithoutStudentInput[]
+    connectOrCreate?: ResultCreateOrConnectWithoutStudentInput | ResultCreateOrConnectWithoutStudentInput[]
+    upsert?: ResultUpsertWithWhereUniqueWithoutStudentInput | ResultUpsertWithWhereUniqueWithoutStudentInput[]
+    createMany?: ResultCreateManyStudentInputEnvelope
+    set?: ResultWhereUniqueInput | ResultWhereUniqueInput[]
+    disconnect?: ResultWhereUniqueInput | ResultWhereUniqueInput[]
+    delete?: ResultWhereUniqueInput | ResultWhereUniqueInput[]
+    connect?: ResultWhereUniqueInput | ResultWhereUniqueInput[]
+    update?: ResultUpdateWithWhereUniqueWithoutStudentInput | ResultUpdateWithWhereUniqueWithoutStudentInput[]
+    updateMany?: ResultUpdateManyWithWhereWithoutStudentInput | ResultUpdateManyWithWhereWithoutStudentInput[]
+    deleteMany?: ResultScalarWhereInput | ResultScalarWhereInput[]
+  }
+
+  export type ReviewUpdateManyWithoutUserNestedInput = {
+    create?: XOR<ReviewCreateWithoutUserInput, ReviewUncheckedCreateWithoutUserInput> | ReviewCreateWithoutUserInput[] | ReviewUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ReviewCreateOrConnectWithoutUserInput | ReviewCreateOrConnectWithoutUserInput[]
+    upsert?: ReviewUpsertWithWhereUniqueWithoutUserInput | ReviewUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: ReviewCreateManyUserInputEnvelope
+    set?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
+    disconnect?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
+    delete?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
+    connect?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
+    update?: ReviewUpdateWithWhereUniqueWithoutUserInput | ReviewUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: ReviewUpdateManyWithWhereWithoutUserInput | ReviewUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: ReviewScalarWhereInput | ReviewScalarWhereInput[]
   }
 
   export type StudentUpdateOneWithoutUserNestedInput = {
@@ -18212,7 +19604,7 @@ export namespace Prisma {
     update?: XOR<XOR<TeacherUpdateToOneWithWhereWithoutUserInput, TeacherUpdateWithoutUserInput>, TeacherUncheckedUpdateWithoutUserInput>
   }
 
-  export type AdminUpdateOneWithoutUserNestedInput = {
+  export type AdminUncheckedUpdateOneWithoutUserNestedInput = {
     create?: XOR<AdminCreateWithoutUserInput, AdminUncheckedCreateWithoutUserInput>
     connectOrCreate?: AdminCreateOrConnectWithoutUserInput
     upsert?: AdminUpsertWithoutUserInput
@@ -18222,17 +19614,21 @@ export namespace Prisma {
     update?: XOR<XOR<AdminUpdateToOneWithWhereWithoutUserInput, AdminUpdateWithoutUserInput>, AdminUncheckedUpdateWithoutUserInput>
   }
 
-  export type ProfileUpdateOneWithoutUserNestedInput = {
-    create?: XOR<ProfileCreateWithoutUserInput, ProfileUncheckedCreateWithoutUserInput>
-    connectOrCreate?: ProfileCreateOrConnectWithoutUserInput
-    upsert?: ProfileUpsertWithoutUserInput
-    disconnect?: ProfileWhereInput | boolean
-    delete?: ProfileWhereInput | boolean
-    connect?: ProfileWhereUniqueInput
-    update?: XOR<XOR<ProfileUpdateToOneWithWhereWithoutUserInput, ProfileUpdateWithoutUserInput>, ProfileUncheckedUpdateWithoutUserInput>
+  export type AttendanceUncheckedUpdateManyWithoutStudentNestedInput = {
+    create?: XOR<AttendanceCreateWithoutStudentInput, AttendanceUncheckedCreateWithoutStudentInput> | AttendanceCreateWithoutStudentInput[] | AttendanceUncheckedCreateWithoutStudentInput[]
+    connectOrCreate?: AttendanceCreateOrConnectWithoutStudentInput | AttendanceCreateOrConnectWithoutStudentInput[]
+    upsert?: AttendanceUpsertWithWhereUniqueWithoutStudentInput | AttendanceUpsertWithWhereUniqueWithoutStudentInput[]
+    createMany?: AttendanceCreateManyStudentInputEnvelope
+    set?: AttendanceWhereUniqueInput | AttendanceWhereUniqueInput[]
+    disconnect?: AttendanceWhereUniqueInput | AttendanceWhereUniqueInput[]
+    delete?: AttendanceWhereUniqueInput | AttendanceWhereUniqueInput[]
+    connect?: AttendanceWhereUniqueInput | AttendanceWhereUniqueInput[]
+    update?: AttendanceUpdateWithWhereUniqueWithoutStudentInput | AttendanceUpdateWithWhereUniqueWithoutStudentInput[]
+    updateMany?: AttendanceUpdateManyWithWhereWithoutStudentInput | AttendanceUpdateManyWithWhereWithoutStudentInput[]
+    deleteMany?: AttendanceScalarWhereInput | AttendanceScalarWhereInput[]
   }
 
-  export type EnrollmentUpdateManyWithoutUserNestedInput = {
+  export type EnrollmentUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<EnrollmentCreateWithoutUserInput, EnrollmentUncheckedCreateWithoutUserInput> | EnrollmentCreateWithoutUserInput[] | EnrollmentUncheckedCreateWithoutUserInput[]
     connectOrCreate?: EnrollmentCreateOrConnectWithoutUserInput | EnrollmentCreateOrConnectWithoutUserInput[]
     upsert?: EnrollmentUpsertWithWhereUniqueWithoutUserInput | EnrollmentUpsertWithWhereUniqueWithoutUserInput[]
@@ -18246,21 +19642,17 @@ export namespace Prisma {
     deleteMany?: EnrollmentScalarWhereInput | EnrollmentScalarWhereInput[]
   }
 
-  export type ReviewUpdateManyWithoutUserNestedInput = {
-    create?: XOR<ReviewCreateWithoutUserInput, ReviewUncheckedCreateWithoutUserInput> | ReviewCreateWithoutUserInput[] | ReviewUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: ReviewCreateOrConnectWithoutUserInput | ReviewCreateOrConnectWithoutUserInput[]
-    upsert?: ReviewUpsertWithWhereUniqueWithoutUserInput | ReviewUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: ReviewCreateManyUserInputEnvelope
-    set?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
-    disconnect?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
-    delete?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
-    connect?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
-    update?: ReviewUpdateWithWhereUniqueWithoutUserInput | ReviewUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: ReviewUpdateManyWithWhereWithoutUserInput | ReviewUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: ReviewScalarWhereInput | ReviewScalarWhereInput[]
+  export type ProfileUncheckedUpdateOneWithoutUserNestedInput = {
+    create?: XOR<ProfileCreateWithoutUserInput, ProfileUncheckedCreateWithoutUserInput>
+    connectOrCreate?: ProfileCreateOrConnectWithoutUserInput
+    upsert?: ProfileUpsertWithoutUserInput
+    disconnect?: ProfileWhereInput | boolean
+    delete?: ProfileWhereInput | boolean
+    connect?: ProfileWhereUniqueInput
+    update?: XOR<XOR<ProfileUpdateToOneWithWhereWithoutUserInput, ProfileUpdateWithoutUserInput>, ProfileUncheckedUpdateWithoutUserInput>
   }
 
-  export type ResultUpdateManyWithoutStudentNestedInput = {
+  export type ResultUncheckedUpdateManyWithoutStudentNestedInput = {
     create?: XOR<ResultCreateWithoutStudentInput, ResultUncheckedCreateWithoutStudentInput> | ResultCreateWithoutStudentInput[] | ResultUncheckedCreateWithoutStudentInput[]
     connectOrCreate?: ResultCreateOrConnectWithoutStudentInput | ResultCreateOrConnectWithoutStudentInput[]
     upsert?: ResultUpsertWithWhereUniqueWithoutStudentInput | ResultUpsertWithWhereUniqueWithoutStudentInput[]
@@ -18274,18 +19666,18 @@ export namespace Prisma {
     deleteMany?: ResultScalarWhereInput | ResultScalarWhereInput[]
   }
 
-  export type AttendanceUpdateManyWithoutStudentNestedInput = {
-    create?: XOR<AttendanceCreateWithoutStudentInput, AttendanceUncheckedCreateWithoutStudentInput> | AttendanceCreateWithoutStudentInput[] | AttendanceUncheckedCreateWithoutStudentInput[]
-    connectOrCreate?: AttendanceCreateOrConnectWithoutStudentInput | AttendanceCreateOrConnectWithoutStudentInput[]
-    upsert?: AttendanceUpsertWithWhereUniqueWithoutStudentInput | AttendanceUpsertWithWhereUniqueWithoutStudentInput[]
-    createMany?: AttendanceCreateManyStudentInputEnvelope
-    set?: AttendanceWhereUniqueInput | AttendanceWhereUniqueInput[]
-    disconnect?: AttendanceWhereUniqueInput | AttendanceWhereUniqueInput[]
-    delete?: AttendanceWhereUniqueInput | AttendanceWhereUniqueInput[]
-    connect?: AttendanceWhereUniqueInput | AttendanceWhereUniqueInput[]
-    update?: AttendanceUpdateWithWhereUniqueWithoutStudentInput | AttendanceUpdateWithWhereUniqueWithoutStudentInput[]
-    updateMany?: AttendanceUpdateManyWithWhereWithoutStudentInput | AttendanceUpdateManyWithWhereWithoutStudentInput[]
-    deleteMany?: AttendanceScalarWhereInput | AttendanceScalarWhereInput[]
+  export type ReviewUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<ReviewCreateWithoutUserInput, ReviewUncheckedCreateWithoutUserInput> | ReviewCreateWithoutUserInput[] | ReviewUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ReviewCreateOrConnectWithoutUserInput | ReviewCreateOrConnectWithoutUserInput[]
+    upsert?: ReviewUpsertWithWhereUniqueWithoutUserInput | ReviewUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: ReviewCreateManyUserInputEnvelope
+    set?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
+    disconnect?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
+    delete?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
+    connect?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
+    update?: ReviewUpdateWithWhereUniqueWithoutUserInput | ReviewUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: ReviewUpdateManyWithWhereWithoutUserInput | ReviewUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: ReviewScalarWhereInput | ReviewScalarWhereInput[]
   }
 
   export type StudentUncheckedUpdateOneWithoutUserNestedInput = {
@@ -18308,93 +19700,17 @@ export namespace Prisma {
     update?: XOR<XOR<TeacherUpdateToOneWithWhereWithoutUserInput, TeacherUpdateWithoutUserInput>, TeacherUncheckedUpdateWithoutUserInput>
   }
 
-  export type AdminUncheckedUpdateOneWithoutUserNestedInput = {
-    create?: XOR<AdminCreateWithoutUserInput, AdminUncheckedCreateWithoutUserInput>
-    connectOrCreate?: AdminCreateOrConnectWithoutUserInput
-    upsert?: AdminUpsertWithoutUserInput
-    disconnect?: AdminWhereInput | boolean
-    delete?: AdminWhereInput | boolean
-    connect?: AdminWhereUniqueInput
-    update?: XOR<XOR<AdminUpdateToOneWithWhereWithoutUserInput, AdminUpdateWithoutUserInput>, AdminUncheckedUpdateWithoutUserInput>
-  }
-
-  export type ProfileUncheckedUpdateOneWithoutUserNestedInput = {
-    create?: XOR<ProfileCreateWithoutUserInput, ProfileUncheckedCreateWithoutUserInput>
-    connectOrCreate?: ProfileCreateOrConnectWithoutUserInput
-    upsert?: ProfileUpsertWithoutUserInput
-    disconnect?: ProfileWhereInput | boolean
-    delete?: ProfileWhereInput | boolean
-    connect?: ProfileWhereUniqueInput
-    update?: XOR<XOR<ProfileUpdateToOneWithWhereWithoutUserInput, ProfileUpdateWithoutUserInput>, ProfileUncheckedUpdateWithoutUserInput>
-  }
-
-  export type EnrollmentUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<EnrollmentCreateWithoutUserInput, EnrollmentUncheckedCreateWithoutUserInput> | EnrollmentCreateWithoutUserInput[] | EnrollmentUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: EnrollmentCreateOrConnectWithoutUserInput | EnrollmentCreateOrConnectWithoutUserInput[]
-    upsert?: EnrollmentUpsertWithWhereUniqueWithoutUserInput | EnrollmentUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: EnrollmentCreateManyUserInputEnvelope
-    set?: EnrollmentWhereUniqueInput | EnrollmentWhereUniqueInput[]
-    disconnect?: EnrollmentWhereUniqueInput | EnrollmentWhereUniqueInput[]
-    delete?: EnrollmentWhereUniqueInput | EnrollmentWhereUniqueInput[]
-    connect?: EnrollmentWhereUniqueInput | EnrollmentWhereUniqueInput[]
-    update?: EnrollmentUpdateWithWhereUniqueWithoutUserInput | EnrollmentUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: EnrollmentUpdateManyWithWhereWithoutUserInput | EnrollmentUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: EnrollmentScalarWhereInput | EnrollmentScalarWhereInput[]
-  }
-
-  export type ReviewUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<ReviewCreateWithoutUserInput, ReviewUncheckedCreateWithoutUserInput> | ReviewCreateWithoutUserInput[] | ReviewUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: ReviewCreateOrConnectWithoutUserInput | ReviewCreateOrConnectWithoutUserInput[]
-    upsert?: ReviewUpsertWithWhereUniqueWithoutUserInput | ReviewUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: ReviewCreateManyUserInputEnvelope
-    set?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
-    disconnect?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
-    delete?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
-    connect?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
-    update?: ReviewUpdateWithWhereUniqueWithoutUserInput | ReviewUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: ReviewUpdateManyWithWhereWithoutUserInput | ReviewUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: ReviewScalarWhereInput | ReviewScalarWhereInput[]
-  }
-
-  export type ResultUncheckedUpdateManyWithoutStudentNestedInput = {
-    create?: XOR<ResultCreateWithoutStudentInput, ResultUncheckedCreateWithoutStudentInput> | ResultCreateWithoutStudentInput[] | ResultUncheckedCreateWithoutStudentInput[]
-    connectOrCreate?: ResultCreateOrConnectWithoutStudentInput | ResultCreateOrConnectWithoutStudentInput[]
-    upsert?: ResultUpsertWithWhereUniqueWithoutStudentInput | ResultUpsertWithWhereUniqueWithoutStudentInput[]
-    createMany?: ResultCreateManyStudentInputEnvelope
-    set?: ResultWhereUniqueInput | ResultWhereUniqueInput[]
-    disconnect?: ResultWhereUniqueInput | ResultWhereUniqueInput[]
-    delete?: ResultWhereUniqueInput | ResultWhereUniqueInput[]
-    connect?: ResultWhereUniqueInput | ResultWhereUniqueInput[]
-    update?: ResultUpdateWithWhereUniqueWithoutStudentInput | ResultUpdateWithWhereUniqueWithoutStudentInput[]
-    updateMany?: ResultUpdateManyWithWhereWithoutStudentInput | ResultUpdateManyWithWhereWithoutStudentInput[]
-    deleteMany?: ResultScalarWhereInput | ResultScalarWhereInput[]
-  }
-
-  export type AttendanceUncheckedUpdateManyWithoutStudentNestedInput = {
-    create?: XOR<AttendanceCreateWithoutStudentInput, AttendanceUncheckedCreateWithoutStudentInput> | AttendanceCreateWithoutStudentInput[] | AttendanceUncheckedCreateWithoutStudentInput[]
-    connectOrCreate?: AttendanceCreateOrConnectWithoutStudentInput | AttendanceCreateOrConnectWithoutStudentInput[]
-    upsert?: AttendanceUpsertWithWhereUniqueWithoutStudentInput | AttendanceUpsertWithWhereUniqueWithoutStudentInput[]
-    createMany?: AttendanceCreateManyStudentInputEnvelope
-    set?: AttendanceWhereUniqueInput | AttendanceWhereUniqueInput[]
-    disconnect?: AttendanceWhereUniqueInput | AttendanceWhereUniqueInput[]
-    delete?: AttendanceWhereUniqueInput | AttendanceWhereUniqueInput[]
-    connect?: AttendanceWhereUniqueInput | AttendanceWhereUniqueInput[]
-    update?: AttendanceUpdateWithWhereUniqueWithoutStudentInput | AttendanceUpdateWithWhereUniqueWithoutStudentInput[]
-    updateMany?: AttendanceUpdateManyWithWhereWithoutStudentInput | AttendanceUpdateManyWithWhereWithoutStudentInput[]
-    deleteMany?: AttendanceScalarWhereInput | AttendanceScalarWhereInput[]
+  export type CourseCreateNestedManyWithoutTeacherInput = {
+    create?: XOR<CourseCreateWithoutTeacherInput, CourseUncheckedCreateWithoutTeacherInput> | CourseCreateWithoutTeacherInput[] | CourseUncheckedCreateWithoutTeacherInput[]
+    connectOrCreate?: CourseCreateOrConnectWithoutTeacherInput | CourseCreateOrConnectWithoutTeacherInput[]
+    createMany?: CourseCreateManyTeacherInputEnvelope
+    connect?: CourseWhereUniqueInput | CourseWhereUniqueInput[]
   }
 
   export type UserCreateNestedOneWithoutTeacherProfileInput = {
     create?: XOR<UserCreateWithoutTeacherProfileInput, UserUncheckedCreateWithoutTeacherProfileInput>
     connectOrCreate?: UserCreateOrConnectWithoutTeacherProfileInput
     connect?: UserWhereUniqueInput
-  }
-
-  export type CourseCreateNestedManyWithoutTeacherInput = {
-    create?: XOR<CourseCreateWithoutTeacherInput, CourseUncheckedCreateWithoutTeacherInput> | CourseCreateWithoutTeacherInput[] | CourseUncheckedCreateWithoutTeacherInput[]
-    connectOrCreate?: CourseCreateOrConnectWithoutTeacherInput | CourseCreateOrConnectWithoutTeacherInput[]
-    createMany?: CourseCreateManyTeacherInputEnvelope
-    connect?: CourseWhereUniqueInput | CourseWhereUniqueInput[]
   }
 
   export type CourseUncheckedCreateNestedManyWithoutTeacherInput = {
@@ -18412,14 +19728,6 @@ export namespace Prisma {
     divide?: number
   }
 
-  export type UserUpdateOneRequiredWithoutTeacherProfileNestedInput = {
-    create?: XOR<UserCreateWithoutTeacherProfileInput, UserUncheckedCreateWithoutTeacherProfileInput>
-    connectOrCreate?: UserCreateOrConnectWithoutTeacherProfileInput
-    upsert?: UserUpsertWithoutTeacherProfileInput
-    connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutTeacherProfileInput, UserUpdateWithoutTeacherProfileInput>, UserUncheckedUpdateWithoutTeacherProfileInput>
-  }
-
   export type CourseUpdateManyWithoutTeacherNestedInput = {
     create?: XOR<CourseCreateWithoutTeacherInput, CourseUncheckedCreateWithoutTeacherInput> | CourseCreateWithoutTeacherInput[] | CourseUncheckedCreateWithoutTeacherInput[]
     connectOrCreate?: CourseCreateOrConnectWithoutTeacherInput | CourseCreateOrConnectWithoutTeacherInput[]
@@ -18432,6 +19740,14 @@ export namespace Prisma {
     update?: CourseUpdateWithWhereUniqueWithoutTeacherInput | CourseUpdateWithWhereUniqueWithoutTeacherInput[]
     updateMany?: CourseUpdateManyWithWhereWithoutTeacherInput | CourseUpdateManyWithWhereWithoutTeacherInput[]
     deleteMany?: CourseScalarWhereInput | CourseScalarWhereInput[]
+  }
+
+  export type UserUpdateOneRequiredWithoutTeacherProfileNestedInput = {
+    create?: XOR<UserCreateWithoutTeacherProfileInput, UserUncheckedCreateWithoutTeacherProfileInput>
+    connectOrCreate?: UserCreateOrConnectWithoutTeacherProfileInput
+    upsert?: UserUpsertWithoutTeacherProfileInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutTeacherProfileInput, UserUpdateWithoutTeacherProfileInput>, UserUncheckedUpdateWithoutTeacherProfileInput>
   }
 
   export type CourseUncheckedUpdateManyWithoutTeacherNestedInput = {
@@ -18448,6 +19764,13 @@ export namespace Prisma {
     deleteMany?: CourseScalarWhereInput | CourseScalarWhereInput[]
   }
 
+  export type AttendanceCreateNestedManyWithoutCourseInput = {
+    create?: XOR<AttendanceCreateWithoutCourseInput, AttendanceUncheckedCreateWithoutCourseInput> | AttendanceCreateWithoutCourseInput[] | AttendanceUncheckedCreateWithoutCourseInput[]
+    connectOrCreate?: AttendanceCreateOrConnectWithoutCourseInput | AttendanceCreateOrConnectWithoutCourseInput[]
+    createMany?: AttendanceCreateManyCourseInputEnvelope
+    connect?: AttendanceWhereUniqueInput | AttendanceWhereUniqueInput[]
+  }
+
   export type TeacherCreateNestedOneWithoutCoursesInput = {
     create?: XOR<TeacherCreateWithoutCoursesInput, TeacherUncheckedCreateWithoutCoursesInput>
     connectOrCreate?: TeacherCreateOrConnectWithoutCoursesInput
@@ -18461,13 +19784,6 @@ export namespace Prisma {
     connect?: EnrollmentWhereUniqueInput | EnrollmentWhereUniqueInput[]
   }
 
-  export type ReviewCreateNestedManyWithoutCourseInput = {
-    create?: XOR<ReviewCreateWithoutCourseInput, ReviewUncheckedCreateWithoutCourseInput> | ReviewCreateWithoutCourseInput[] | ReviewUncheckedCreateWithoutCourseInput[]
-    connectOrCreate?: ReviewCreateOrConnectWithoutCourseInput | ReviewCreateOrConnectWithoutCourseInput[]
-    createMany?: ReviewCreateManyCourseInputEnvelope
-    connect?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
-  }
-
   export type ResultCreateNestedManyWithoutCourseInput = {
     create?: XOR<ResultCreateWithoutCourseInput, ResultUncheckedCreateWithoutCourseInput> | ResultCreateWithoutCourseInput[] | ResultUncheckedCreateWithoutCourseInput[]
     connectOrCreate?: ResultCreateOrConnectWithoutCourseInput | ResultCreateOrConnectWithoutCourseInput[]
@@ -18475,7 +19791,14 @@ export namespace Prisma {
     connect?: ResultWhereUniqueInput | ResultWhereUniqueInput[]
   }
 
-  export type AttendanceCreateNestedManyWithoutCourseInput = {
+  export type ReviewCreateNestedManyWithoutCourseInput = {
+    create?: XOR<ReviewCreateWithoutCourseInput, ReviewUncheckedCreateWithoutCourseInput> | ReviewCreateWithoutCourseInput[] | ReviewUncheckedCreateWithoutCourseInput[]
+    connectOrCreate?: ReviewCreateOrConnectWithoutCourseInput | ReviewCreateOrConnectWithoutCourseInput[]
+    createMany?: ReviewCreateManyCourseInputEnvelope
+    connect?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
+  }
+
+  export type AttendanceUncheckedCreateNestedManyWithoutCourseInput = {
     create?: XOR<AttendanceCreateWithoutCourseInput, AttendanceUncheckedCreateWithoutCourseInput> | AttendanceCreateWithoutCourseInput[] | AttendanceUncheckedCreateWithoutCourseInput[]
     connectOrCreate?: AttendanceCreateOrConnectWithoutCourseInput | AttendanceCreateOrConnectWithoutCourseInput[]
     createMany?: AttendanceCreateManyCourseInputEnvelope
@@ -18489,13 +19812,6 @@ export namespace Prisma {
     connect?: EnrollmentWhereUniqueInput | EnrollmentWhereUniqueInput[]
   }
 
-  export type ReviewUncheckedCreateNestedManyWithoutCourseInput = {
-    create?: XOR<ReviewCreateWithoutCourseInput, ReviewUncheckedCreateWithoutCourseInput> | ReviewCreateWithoutCourseInput[] | ReviewUncheckedCreateWithoutCourseInput[]
-    connectOrCreate?: ReviewCreateOrConnectWithoutCourseInput | ReviewCreateOrConnectWithoutCourseInput[]
-    createMany?: ReviewCreateManyCourseInputEnvelope
-    connect?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
-  }
-
   export type ResultUncheckedCreateNestedManyWithoutCourseInput = {
     create?: XOR<ResultCreateWithoutCourseInput, ResultUncheckedCreateWithoutCourseInput> | ResultCreateWithoutCourseInput[] | ResultUncheckedCreateWithoutCourseInput[]
     connectOrCreate?: ResultCreateOrConnectWithoutCourseInput | ResultCreateOrConnectWithoutCourseInput[]
@@ -18503,11 +19819,11 @@ export namespace Prisma {
     connect?: ResultWhereUniqueInput | ResultWhereUniqueInput[]
   }
 
-  export type AttendanceUncheckedCreateNestedManyWithoutCourseInput = {
-    create?: XOR<AttendanceCreateWithoutCourseInput, AttendanceUncheckedCreateWithoutCourseInput> | AttendanceCreateWithoutCourseInput[] | AttendanceUncheckedCreateWithoutCourseInput[]
-    connectOrCreate?: AttendanceCreateOrConnectWithoutCourseInput | AttendanceCreateOrConnectWithoutCourseInput[]
-    createMany?: AttendanceCreateManyCourseInputEnvelope
-    connect?: AttendanceWhereUniqueInput | AttendanceWhereUniqueInput[]
+  export type ReviewUncheckedCreateNestedManyWithoutCourseInput = {
+    create?: XOR<ReviewCreateWithoutCourseInput, ReviewUncheckedCreateWithoutCourseInput> | ReviewCreateWithoutCourseInput[] | ReviewUncheckedCreateWithoutCourseInput[]
+    connectOrCreate?: ReviewCreateOrConnectWithoutCourseInput | ReviewCreateOrConnectWithoutCourseInput[]
+    createMany?: ReviewCreateManyCourseInputEnvelope
+    connect?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
   }
 
   export type FloatFieldUpdateOperationsInput = {
@@ -18524,6 +19840,20 @@ export namespace Prisma {
 
   export type BoolFieldUpdateOperationsInput = {
     set?: boolean
+  }
+
+  export type AttendanceUpdateManyWithoutCourseNestedInput = {
+    create?: XOR<AttendanceCreateWithoutCourseInput, AttendanceUncheckedCreateWithoutCourseInput> | AttendanceCreateWithoutCourseInput[] | AttendanceUncheckedCreateWithoutCourseInput[]
+    connectOrCreate?: AttendanceCreateOrConnectWithoutCourseInput | AttendanceCreateOrConnectWithoutCourseInput[]
+    upsert?: AttendanceUpsertWithWhereUniqueWithoutCourseInput | AttendanceUpsertWithWhereUniqueWithoutCourseInput[]
+    createMany?: AttendanceCreateManyCourseInputEnvelope
+    set?: AttendanceWhereUniqueInput | AttendanceWhereUniqueInput[]
+    disconnect?: AttendanceWhereUniqueInput | AttendanceWhereUniqueInput[]
+    delete?: AttendanceWhereUniqueInput | AttendanceWhereUniqueInput[]
+    connect?: AttendanceWhereUniqueInput | AttendanceWhereUniqueInput[]
+    update?: AttendanceUpdateWithWhereUniqueWithoutCourseInput | AttendanceUpdateWithWhereUniqueWithoutCourseInput[]
+    updateMany?: AttendanceUpdateManyWithWhereWithoutCourseInput | AttendanceUpdateManyWithWhereWithoutCourseInput[]
+    deleteMany?: AttendanceScalarWhereInput | AttendanceScalarWhereInput[]
   }
 
   export type TeacherUpdateOneWithoutCoursesNestedInput = {
@@ -18550,20 +19880,6 @@ export namespace Prisma {
     deleteMany?: EnrollmentScalarWhereInput | EnrollmentScalarWhereInput[]
   }
 
-  export type ReviewUpdateManyWithoutCourseNestedInput = {
-    create?: XOR<ReviewCreateWithoutCourseInput, ReviewUncheckedCreateWithoutCourseInput> | ReviewCreateWithoutCourseInput[] | ReviewUncheckedCreateWithoutCourseInput[]
-    connectOrCreate?: ReviewCreateOrConnectWithoutCourseInput | ReviewCreateOrConnectWithoutCourseInput[]
-    upsert?: ReviewUpsertWithWhereUniqueWithoutCourseInput | ReviewUpsertWithWhereUniqueWithoutCourseInput[]
-    createMany?: ReviewCreateManyCourseInputEnvelope
-    set?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
-    disconnect?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
-    delete?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
-    connect?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
-    update?: ReviewUpdateWithWhereUniqueWithoutCourseInput | ReviewUpdateWithWhereUniqueWithoutCourseInput[]
-    updateMany?: ReviewUpdateManyWithWhereWithoutCourseInput | ReviewUpdateManyWithWhereWithoutCourseInput[]
-    deleteMany?: ReviewScalarWhereInput | ReviewScalarWhereInput[]
-  }
-
   export type ResultUpdateManyWithoutCourseNestedInput = {
     create?: XOR<ResultCreateWithoutCourseInput, ResultUncheckedCreateWithoutCourseInput> | ResultCreateWithoutCourseInput[] | ResultUncheckedCreateWithoutCourseInput[]
     connectOrCreate?: ResultCreateOrConnectWithoutCourseInput | ResultCreateOrConnectWithoutCourseInput[]
@@ -18578,7 +19894,21 @@ export namespace Prisma {
     deleteMany?: ResultScalarWhereInput | ResultScalarWhereInput[]
   }
 
-  export type AttendanceUpdateManyWithoutCourseNestedInput = {
+  export type ReviewUpdateManyWithoutCourseNestedInput = {
+    create?: XOR<ReviewCreateWithoutCourseInput, ReviewUncheckedCreateWithoutCourseInput> | ReviewCreateWithoutCourseInput[] | ReviewUncheckedCreateWithoutCourseInput[]
+    connectOrCreate?: ReviewCreateOrConnectWithoutCourseInput | ReviewCreateOrConnectWithoutCourseInput[]
+    upsert?: ReviewUpsertWithWhereUniqueWithoutCourseInput | ReviewUpsertWithWhereUniqueWithoutCourseInput[]
+    createMany?: ReviewCreateManyCourseInputEnvelope
+    set?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
+    disconnect?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
+    delete?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
+    connect?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
+    update?: ReviewUpdateWithWhereUniqueWithoutCourseInput | ReviewUpdateWithWhereUniqueWithoutCourseInput[]
+    updateMany?: ReviewUpdateManyWithWhereWithoutCourseInput | ReviewUpdateManyWithWhereWithoutCourseInput[]
+    deleteMany?: ReviewScalarWhereInput | ReviewScalarWhereInput[]
+  }
+
+  export type AttendanceUncheckedUpdateManyWithoutCourseNestedInput = {
     create?: XOR<AttendanceCreateWithoutCourseInput, AttendanceUncheckedCreateWithoutCourseInput> | AttendanceCreateWithoutCourseInput[] | AttendanceUncheckedCreateWithoutCourseInput[]
     connectOrCreate?: AttendanceCreateOrConnectWithoutCourseInput | AttendanceCreateOrConnectWithoutCourseInput[]
     upsert?: AttendanceUpsertWithWhereUniqueWithoutCourseInput | AttendanceUpsertWithWhereUniqueWithoutCourseInput[]
@@ -18606,20 +19936,6 @@ export namespace Prisma {
     deleteMany?: EnrollmentScalarWhereInput | EnrollmentScalarWhereInput[]
   }
 
-  export type ReviewUncheckedUpdateManyWithoutCourseNestedInput = {
-    create?: XOR<ReviewCreateWithoutCourseInput, ReviewUncheckedCreateWithoutCourseInput> | ReviewCreateWithoutCourseInput[] | ReviewUncheckedCreateWithoutCourseInput[]
-    connectOrCreate?: ReviewCreateOrConnectWithoutCourseInput | ReviewCreateOrConnectWithoutCourseInput[]
-    upsert?: ReviewUpsertWithWhereUniqueWithoutCourseInput | ReviewUpsertWithWhereUniqueWithoutCourseInput[]
-    createMany?: ReviewCreateManyCourseInputEnvelope
-    set?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
-    disconnect?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
-    delete?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
-    connect?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
-    update?: ReviewUpdateWithWhereUniqueWithoutCourseInput | ReviewUpdateWithWhereUniqueWithoutCourseInput[]
-    updateMany?: ReviewUpdateManyWithWhereWithoutCourseInput | ReviewUpdateManyWithWhereWithoutCourseInput[]
-    deleteMany?: ReviewScalarWhereInput | ReviewScalarWhereInput[]
-  }
-
   export type ResultUncheckedUpdateManyWithoutCourseNestedInput = {
     create?: XOR<ResultCreateWithoutCourseInput, ResultUncheckedCreateWithoutCourseInput> | ResultCreateWithoutCourseInput[] | ResultUncheckedCreateWithoutCourseInput[]
     connectOrCreate?: ResultCreateOrConnectWithoutCourseInput | ResultCreateOrConnectWithoutCourseInput[]
@@ -18634,30 +19950,30 @@ export namespace Prisma {
     deleteMany?: ResultScalarWhereInput | ResultScalarWhereInput[]
   }
 
-  export type AttendanceUncheckedUpdateManyWithoutCourseNestedInput = {
-    create?: XOR<AttendanceCreateWithoutCourseInput, AttendanceUncheckedCreateWithoutCourseInput> | AttendanceCreateWithoutCourseInput[] | AttendanceUncheckedCreateWithoutCourseInput[]
-    connectOrCreate?: AttendanceCreateOrConnectWithoutCourseInput | AttendanceCreateOrConnectWithoutCourseInput[]
-    upsert?: AttendanceUpsertWithWhereUniqueWithoutCourseInput | AttendanceUpsertWithWhereUniqueWithoutCourseInput[]
-    createMany?: AttendanceCreateManyCourseInputEnvelope
-    set?: AttendanceWhereUniqueInput | AttendanceWhereUniqueInput[]
-    disconnect?: AttendanceWhereUniqueInput | AttendanceWhereUniqueInput[]
-    delete?: AttendanceWhereUniqueInput | AttendanceWhereUniqueInput[]
-    connect?: AttendanceWhereUniqueInput | AttendanceWhereUniqueInput[]
-    update?: AttendanceUpdateWithWhereUniqueWithoutCourseInput | AttendanceUpdateWithWhereUniqueWithoutCourseInput[]
-    updateMany?: AttendanceUpdateManyWithWhereWithoutCourseInput | AttendanceUpdateManyWithWhereWithoutCourseInput[]
-    deleteMany?: AttendanceScalarWhereInput | AttendanceScalarWhereInput[]
-  }
-
-  export type UserCreateNestedOneWithoutEnrollmentsInput = {
-    create?: XOR<UserCreateWithoutEnrollmentsInput, UserUncheckedCreateWithoutEnrollmentsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutEnrollmentsInput
-    connect?: UserWhereUniqueInput
+  export type ReviewUncheckedUpdateManyWithoutCourseNestedInput = {
+    create?: XOR<ReviewCreateWithoutCourseInput, ReviewUncheckedCreateWithoutCourseInput> | ReviewCreateWithoutCourseInput[] | ReviewUncheckedCreateWithoutCourseInput[]
+    connectOrCreate?: ReviewCreateOrConnectWithoutCourseInput | ReviewCreateOrConnectWithoutCourseInput[]
+    upsert?: ReviewUpsertWithWhereUniqueWithoutCourseInput | ReviewUpsertWithWhereUniqueWithoutCourseInput[]
+    createMany?: ReviewCreateManyCourseInputEnvelope
+    set?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
+    disconnect?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
+    delete?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
+    connect?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
+    update?: ReviewUpdateWithWhereUniqueWithoutCourseInput | ReviewUpdateWithWhereUniqueWithoutCourseInput[]
+    updateMany?: ReviewUpdateManyWithWhereWithoutCourseInput | ReviewUpdateManyWithWhereWithoutCourseInput[]
+    deleteMany?: ReviewScalarWhereInput | ReviewScalarWhereInput[]
   }
 
   export type CourseCreateNestedOneWithoutEnrollmentsInput = {
     create?: XOR<CourseCreateWithoutEnrollmentsInput, CourseUncheckedCreateWithoutEnrollmentsInput>
     connectOrCreate?: CourseCreateOrConnectWithoutEnrollmentsInput
     connect?: CourseWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutEnrollmentsInput = {
+    create?: XOR<UserCreateWithoutEnrollmentsInput, UserUncheckedCreateWithoutEnrollmentsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutEnrollmentsInput
+    connect?: UserWhereUniqueInput
   }
 
   export type EnumEnrollmentStatusFieldUpdateOperationsInput = {
@@ -18668,20 +19984,20 @@ export namespace Prisma {
     set?: $Enums.PaymentStatus
   }
 
-  export type UserUpdateOneRequiredWithoutEnrollmentsNestedInput = {
-    create?: XOR<UserCreateWithoutEnrollmentsInput, UserUncheckedCreateWithoutEnrollmentsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutEnrollmentsInput
-    upsert?: UserUpsertWithoutEnrollmentsInput
-    connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutEnrollmentsInput, UserUpdateWithoutEnrollmentsInput>, UserUncheckedUpdateWithoutEnrollmentsInput>
-  }
-
   export type CourseUpdateOneRequiredWithoutEnrollmentsNestedInput = {
     create?: XOR<CourseCreateWithoutEnrollmentsInput, CourseUncheckedCreateWithoutEnrollmentsInput>
     connectOrCreate?: CourseCreateOrConnectWithoutEnrollmentsInput
     upsert?: CourseUpsertWithoutEnrollmentsInput
     connect?: CourseWhereUniqueInput
     update?: XOR<XOR<CourseUpdateToOneWithWhereWithoutEnrollmentsInput, CourseUpdateWithoutEnrollmentsInput>, CourseUncheckedUpdateWithoutEnrollmentsInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutEnrollmentsNestedInput = {
+    create?: XOR<UserCreateWithoutEnrollmentsInput, UserUncheckedCreateWithoutEnrollmentsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutEnrollmentsInput
+    upsert?: UserUpsertWithoutEnrollmentsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutEnrollmentsInput, UserUpdateWithoutEnrollmentsInput>, UserUncheckedUpdateWithoutEnrollmentsInput>
   }
 
   export type EnumNoticeCategoryFieldUpdateOperationsInput = {
@@ -18692,26 +20008,16 @@ export namespace Prisma {
     set?: $Enums.NoticeAudience
   }
 
-  export type UserCreateNestedOneWithoutReviewsInput = {
-    create?: XOR<UserCreateWithoutReviewsInput, UserUncheckedCreateWithoutReviewsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutReviewsInput
-    connect?: UserWhereUniqueInput
-  }
-
   export type CourseCreateNestedOneWithoutReviewsInput = {
     create?: XOR<CourseCreateWithoutReviewsInput, CourseUncheckedCreateWithoutReviewsInput>
     connectOrCreate?: CourseCreateOrConnectWithoutReviewsInput
     connect?: CourseWhereUniqueInput
   }
 
-  export type UserUpdateOneWithoutReviewsNestedInput = {
+  export type UserCreateNestedOneWithoutReviewsInput = {
     create?: XOR<UserCreateWithoutReviewsInput, UserUncheckedCreateWithoutReviewsInput>
     connectOrCreate?: UserCreateOrConnectWithoutReviewsInput
-    upsert?: UserUpsertWithoutReviewsInput
-    disconnect?: UserWhereInput | boolean
-    delete?: UserWhereInput | boolean
     connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutReviewsInput, UserUpdateWithoutReviewsInput>, UserUncheckedUpdateWithoutReviewsInput>
   }
 
   export type CourseUpdateOneWithoutReviewsNestedInput = {
@@ -18722,6 +20028,16 @@ export namespace Prisma {
     delete?: CourseWhereInput | boolean
     connect?: CourseWhereUniqueInput
     update?: XOR<XOR<CourseUpdateToOneWithWhereWithoutReviewsInput, CourseUpdateWithoutReviewsInput>, CourseUncheckedUpdateWithoutReviewsInput>
+  }
+
+  export type UserUpdateOneWithoutReviewsNestedInput = {
+    create?: XOR<UserCreateWithoutReviewsInput, UserUncheckedCreateWithoutReviewsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutReviewsInput
+    upsert?: UserUpsertWithoutReviewsInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutReviewsInput, UserUpdateWithoutReviewsInput>, UserUncheckedUpdateWithoutReviewsInput>
   }
 
   export type UserCreateNestedOneWithoutStudentProfileInput = {
@@ -18766,24 +20082,16 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutProfileInput, UserUpdateWithoutProfileInput>, UserUncheckedUpdateWithoutProfileInput>
   }
 
-  export type UserCreateNestedOneWithoutResultsInput = {
-    create?: XOR<UserCreateWithoutResultsInput, UserUncheckedCreateWithoutResultsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutResultsInput
-    connect?: UserWhereUniqueInput
-  }
-
   export type CourseCreateNestedOneWithoutResultsInput = {
     create?: XOR<CourseCreateWithoutResultsInput, CourseUncheckedCreateWithoutResultsInput>
     connectOrCreate?: CourseCreateOrConnectWithoutResultsInput
     connect?: CourseWhereUniqueInput
   }
 
-  export type UserUpdateOneRequiredWithoutResultsNestedInput = {
+  export type UserCreateNestedOneWithoutResultsInput = {
     create?: XOR<UserCreateWithoutResultsInput, UserUncheckedCreateWithoutResultsInput>
     connectOrCreate?: UserCreateOrConnectWithoutResultsInput
-    upsert?: UserUpsertWithoutResultsInput
     connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutResultsInput, UserUpdateWithoutResultsInput>, UserUncheckedUpdateWithoutResultsInput>
   }
 
   export type CourseUpdateOneRequiredWithoutResultsNestedInput = {
@@ -18794,10 +20102,12 @@ export namespace Prisma {
     update?: XOR<XOR<CourseUpdateToOneWithWhereWithoutResultsInput, CourseUpdateWithoutResultsInput>, CourseUncheckedUpdateWithoutResultsInput>
   }
 
-  export type UserCreateNestedOneWithoutAttendancesInput = {
-    create?: XOR<UserCreateWithoutAttendancesInput, UserUncheckedCreateWithoutAttendancesInput>
-    connectOrCreate?: UserCreateOrConnectWithoutAttendancesInput
+  export type UserUpdateOneRequiredWithoutResultsNestedInput = {
+    create?: XOR<UserCreateWithoutResultsInput, UserUncheckedCreateWithoutResultsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutResultsInput
+    upsert?: UserUpsertWithoutResultsInput
     connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutResultsInput, UserUpdateWithoutResultsInput>, UserUncheckedUpdateWithoutResultsInput>
   }
 
   export type CourseCreateNestedOneWithoutAttendancesInput = {
@@ -18806,12 +20116,10 @@ export namespace Prisma {
     connect?: CourseWhereUniqueInput
   }
 
-  export type UserUpdateOneRequiredWithoutAttendancesNestedInput = {
+  export type UserCreateNestedOneWithoutAttendancesInput = {
     create?: XOR<UserCreateWithoutAttendancesInput, UserUncheckedCreateWithoutAttendancesInput>
     connectOrCreate?: UserCreateOrConnectWithoutAttendancesInput
-    upsert?: UserUpsertWithoutAttendancesInput
     connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutAttendancesInput, UserUpdateWithoutAttendancesInput>, UserUncheckedUpdateWithoutAttendancesInput>
   }
 
   export type CourseUpdateOneRequiredWithoutAttendancesNestedInput = {
@@ -18820,6 +20128,14 @@ export namespace Prisma {
     upsert?: CourseUpsertWithoutAttendancesInput
     connect?: CourseWhereUniqueInput
     update?: XOR<XOR<CourseUpdateToOneWithWhereWithoutAttendancesInput, CourseUpdateWithoutAttendancesInput>, CourseUncheckedUpdateWithoutAttendancesInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutAttendancesNestedInput = {
+    create?: XOR<UserCreateWithoutAttendancesInput, UserUncheckedCreateWithoutAttendancesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAttendancesInput
+    upsert?: UserUpsertWithoutAttendancesInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutAttendancesInput, UserUpdateWithoutAttendancesInput>, UserUncheckedUpdateWithoutAttendancesInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -19089,6 +20405,198 @@ export namespace Prisma {
     _max?: NestedEnumNoticeAudienceFilter<$PrismaModel>
   }
 
+  export type AdminCreateWithoutUserInput = {
+    id?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AdminUncheckedCreateWithoutUserInput = {
+    id?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AdminCreateOrConnectWithoutUserInput = {
+    where: AdminWhereUniqueInput
+    create: XOR<AdminCreateWithoutUserInput, AdminUncheckedCreateWithoutUserInput>
+  }
+
+  export type AttendanceCreateWithoutStudentInput = {
+    id?: string
+    date: Date | string
+    status: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    course: CourseCreateNestedOneWithoutAttendancesInput
+  }
+
+  export type AttendanceUncheckedCreateWithoutStudentInput = {
+    id?: string
+    courseId: string
+    date: Date | string
+    status: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AttendanceCreateOrConnectWithoutStudentInput = {
+    where: AttendanceWhereUniqueInput
+    create: XOR<AttendanceCreateWithoutStudentInput, AttendanceUncheckedCreateWithoutStudentInput>
+  }
+
+  export type AttendanceCreateManyStudentInputEnvelope = {
+    data: AttendanceCreateManyStudentInput | AttendanceCreateManyStudentInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type EnrollmentCreateWithoutUserInput = {
+    id?: string
+    name: string
+    email: string
+    phone: string
+    paymentMethod: string
+    transactionId: string
+    notes?: string | null
+    screenshotUrl?: string | null
+    status?: $Enums.EnrollmentStatus
+    paymentStatus?: $Enums.PaymentStatus
+    amountPaid?: number
+    enrolledAt?: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    course: CourseCreateNestedOneWithoutEnrollmentsInput
+  }
+
+  export type EnrollmentUncheckedCreateWithoutUserInput = {
+    id?: string
+    courseId: string
+    name: string
+    email: string
+    phone: string
+    paymentMethod: string
+    transactionId: string
+    notes?: string | null
+    screenshotUrl?: string | null
+    status?: $Enums.EnrollmentStatus
+    paymentStatus?: $Enums.PaymentStatus
+    amountPaid?: number
+    enrolledAt?: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type EnrollmentCreateOrConnectWithoutUserInput = {
+    where: EnrollmentWhereUniqueInput
+    create: XOR<EnrollmentCreateWithoutUserInput, EnrollmentUncheckedCreateWithoutUserInput>
+  }
+
+  export type EnrollmentCreateManyUserInputEnvelope = {
+    data: EnrollmentCreateManyUserInput | EnrollmentCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ProfileCreateWithoutUserInput = {
+    id?: string
+    address?: string | null
+    gender?: string | null
+    dateOfBirth?: string | null
+    department?: string | null
+    subject?: string | null
+    designation?: string | null
+    bloodGroup?: string | null
+    emergencyContact?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ProfileUncheckedCreateWithoutUserInput = {
+    id?: string
+    address?: string | null
+    gender?: string | null
+    dateOfBirth?: string | null
+    department?: string | null
+    subject?: string | null
+    designation?: string | null
+    bloodGroup?: string | null
+    emergencyContact?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ProfileCreateOrConnectWithoutUserInput = {
+    where: ProfileWhereUniqueInput
+    create: XOR<ProfileCreateWithoutUserInput, ProfileUncheckedCreateWithoutUserInput>
+  }
+
+  export type ResultCreateWithoutStudentInput = {
+    id?: string
+    marks: number
+    grade: string
+    remarks?: string | null
+    examDate?: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    course: CourseCreateNestedOneWithoutResultsInput
+  }
+
+  export type ResultUncheckedCreateWithoutStudentInput = {
+    id?: string
+    courseId: string
+    marks: number
+    grade: string
+    remarks?: string | null
+    examDate?: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ResultCreateOrConnectWithoutStudentInput = {
+    where: ResultWhereUniqueInput
+    create: XOR<ResultCreateWithoutStudentInput, ResultUncheckedCreateWithoutStudentInput>
+  }
+
+  export type ResultCreateManyStudentInputEnvelope = {
+    data: ResultCreateManyStudentInput | ResultCreateManyStudentInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ReviewCreateWithoutUserInput = {
+    id?: string
+    name: string
+    avatar?: string | null
+    role?: string | null
+    rating: number
+    comment: string
+    featured?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    course?: CourseCreateNestedOneWithoutReviewsInput
+  }
+
+  export type ReviewUncheckedCreateWithoutUserInput = {
+    id?: string
+    courseId?: string | null
+    name: string
+    avatar?: string | null
+    role?: string | null
+    rating: number
+    comment: string
+    featured?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ReviewCreateOrConnectWithoutUserInput = {
+    where: ReviewWhereUniqueInput
+    create: XOR<ReviewCreateWithoutUserInput, ReviewUncheckedCreateWithoutUserInput>
+  }
+
+  export type ReviewCreateManyUserInputEnvelope = {
+    data: ReviewCreateManyUserInput | ReviewCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
   export type StudentCreateWithoutUserInput = {
     id?: string
     guardian?: string | null
@@ -19145,196 +20653,197 @@ export namespace Prisma {
     create: XOR<TeacherCreateWithoutUserInput, TeacherUncheckedCreateWithoutUserInput>
   }
 
-  export type AdminCreateWithoutUserInput = {
-    id?: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type AdminUncheckedCreateWithoutUserInput = {
-    id?: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type AdminCreateOrConnectWithoutUserInput = {
-    where: AdminWhereUniqueInput
+  export type AdminUpsertWithoutUserInput = {
+    update: XOR<AdminUpdateWithoutUserInput, AdminUncheckedUpdateWithoutUserInput>
     create: XOR<AdminCreateWithoutUserInput, AdminUncheckedCreateWithoutUserInput>
+    where?: AdminWhereInput
   }
 
-  export type ProfileCreateWithoutUserInput = {
-    id?: string
-    address?: string | null
-    gender?: string | null
-    dateOfBirth?: string | null
-    department?: string | null
-    subject?: string | null
-    designation?: string | null
-    bloodGroup?: string | null
-    emergencyContact?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
+  export type AdminUpdateToOneWithWhereWithoutUserInput = {
+    where?: AdminWhereInput
+    data: XOR<AdminUpdateWithoutUserInput, AdminUncheckedUpdateWithoutUserInput>
   }
 
-  export type ProfileUncheckedCreateWithoutUserInput = {
-    id?: string
-    address?: string | null
-    gender?: string | null
-    dateOfBirth?: string | null
-    department?: string | null
-    subject?: string | null
-    designation?: string | null
-    bloodGroup?: string | null
-    emergencyContact?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
+  export type AdminUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type ProfileCreateOrConnectWithoutUserInput = {
-    where: ProfileWhereUniqueInput
-    create: XOR<ProfileCreateWithoutUserInput, ProfileUncheckedCreateWithoutUserInput>
+  export type AdminUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type EnrollmentCreateWithoutUserInput = {
-    id?: string
-    name: string
-    email: string
-    phone: string
-    paymentMethod: string
-    transactionId: string
-    notes?: string | null
-    screenshotUrl?: string | null
-    status?: $Enums.EnrollmentStatus
-    paymentStatus?: $Enums.PaymentStatus
-    amountPaid?: number
-    enrolledAt?: Date | string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    course: CourseCreateNestedOneWithoutEnrollmentsInput
-  }
-
-  export type EnrollmentUncheckedCreateWithoutUserInput = {
-    id?: string
-    courseId: string
-    name: string
-    email: string
-    phone: string
-    paymentMethod: string
-    transactionId: string
-    notes?: string | null
-    screenshotUrl?: string | null
-    status?: $Enums.EnrollmentStatus
-    paymentStatus?: $Enums.PaymentStatus
-    amountPaid?: number
-    enrolledAt?: Date | string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type EnrollmentCreateOrConnectWithoutUserInput = {
-    where: EnrollmentWhereUniqueInput
-    create: XOR<EnrollmentCreateWithoutUserInput, EnrollmentUncheckedCreateWithoutUserInput>
-  }
-
-  export type EnrollmentCreateManyUserInputEnvelope = {
-    data: EnrollmentCreateManyUserInput | EnrollmentCreateManyUserInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type ReviewCreateWithoutUserInput = {
-    id?: string
-    name: string
-    avatar?: string | null
-    role?: string | null
-    rating: number
-    comment: string
-    featured?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    course?: CourseCreateNestedOneWithoutReviewsInput
-  }
-
-  export type ReviewUncheckedCreateWithoutUserInput = {
-    id?: string
-    courseId?: string | null
-    name: string
-    avatar?: string | null
-    role?: string | null
-    rating: number
-    comment: string
-    featured?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type ReviewCreateOrConnectWithoutUserInput = {
-    where: ReviewWhereUniqueInput
-    create: XOR<ReviewCreateWithoutUserInput, ReviewUncheckedCreateWithoutUserInput>
-  }
-
-  export type ReviewCreateManyUserInputEnvelope = {
-    data: ReviewCreateManyUserInput | ReviewCreateManyUserInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type ResultCreateWithoutStudentInput = {
-    id?: string
-    marks: number
-    grade: string
-    remarks?: string | null
-    examDate?: Date | string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    course: CourseCreateNestedOneWithoutResultsInput
-  }
-
-  export type ResultUncheckedCreateWithoutStudentInput = {
-    id?: string
-    courseId: string
-    marks: number
-    grade: string
-    remarks?: string | null
-    examDate?: Date | string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type ResultCreateOrConnectWithoutStudentInput = {
-    where: ResultWhereUniqueInput
-    create: XOR<ResultCreateWithoutStudentInput, ResultUncheckedCreateWithoutStudentInput>
-  }
-
-  export type ResultCreateManyStudentInputEnvelope = {
-    data: ResultCreateManyStudentInput | ResultCreateManyStudentInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type AttendanceCreateWithoutStudentInput = {
-    id?: string
-    date: Date | string
-    status: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    course: CourseCreateNestedOneWithoutAttendancesInput
-  }
-
-  export type AttendanceUncheckedCreateWithoutStudentInput = {
-    id?: string
-    courseId: string
-    date: Date | string
-    status: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type AttendanceCreateOrConnectWithoutStudentInput = {
+  export type AttendanceUpsertWithWhereUniqueWithoutStudentInput = {
     where: AttendanceWhereUniqueInput
+    update: XOR<AttendanceUpdateWithoutStudentInput, AttendanceUncheckedUpdateWithoutStudentInput>
     create: XOR<AttendanceCreateWithoutStudentInput, AttendanceUncheckedCreateWithoutStudentInput>
   }
 
-  export type AttendanceCreateManyStudentInputEnvelope = {
-    data: AttendanceCreateManyStudentInput | AttendanceCreateManyStudentInput[]
-    skipDuplicates?: boolean
+  export type AttendanceUpdateWithWhereUniqueWithoutStudentInput = {
+    where: AttendanceWhereUniqueInput
+    data: XOR<AttendanceUpdateWithoutStudentInput, AttendanceUncheckedUpdateWithoutStudentInput>
+  }
+
+  export type AttendanceUpdateManyWithWhereWithoutStudentInput = {
+    where: AttendanceScalarWhereInput
+    data: XOR<AttendanceUpdateManyMutationInput, AttendanceUncheckedUpdateManyWithoutStudentInput>
+  }
+
+  export type AttendanceScalarWhereInput = {
+    AND?: AttendanceScalarWhereInput | AttendanceScalarWhereInput[]
+    OR?: AttendanceScalarWhereInput[]
+    NOT?: AttendanceScalarWhereInput | AttendanceScalarWhereInput[]
+    id?: StringFilter<"Attendance"> | string
+    studentId?: StringFilter<"Attendance"> | string
+    courseId?: StringFilter<"Attendance"> | string
+    date?: DateTimeFilter<"Attendance"> | Date | string
+    status?: StringFilter<"Attendance"> | string
+    createdAt?: DateTimeFilter<"Attendance"> | Date | string
+    updatedAt?: DateTimeFilter<"Attendance"> | Date | string
+  }
+
+  export type EnrollmentUpsertWithWhereUniqueWithoutUserInput = {
+    where: EnrollmentWhereUniqueInput
+    update: XOR<EnrollmentUpdateWithoutUserInput, EnrollmentUncheckedUpdateWithoutUserInput>
+    create: XOR<EnrollmentCreateWithoutUserInput, EnrollmentUncheckedCreateWithoutUserInput>
+  }
+
+  export type EnrollmentUpdateWithWhereUniqueWithoutUserInput = {
+    where: EnrollmentWhereUniqueInput
+    data: XOR<EnrollmentUpdateWithoutUserInput, EnrollmentUncheckedUpdateWithoutUserInput>
+  }
+
+  export type EnrollmentUpdateManyWithWhereWithoutUserInput = {
+    where: EnrollmentScalarWhereInput
+    data: XOR<EnrollmentUpdateManyMutationInput, EnrollmentUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type EnrollmentScalarWhereInput = {
+    AND?: EnrollmentScalarWhereInput | EnrollmentScalarWhereInput[]
+    OR?: EnrollmentScalarWhereInput[]
+    NOT?: EnrollmentScalarWhereInput | EnrollmentScalarWhereInput[]
+    id?: StringFilter<"Enrollment"> | string
+    userId?: StringFilter<"Enrollment"> | string
+    courseId?: StringFilter<"Enrollment"> | string
+    name?: StringFilter<"Enrollment"> | string
+    email?: StringFilter<"Enrollment"> | string
+    phone?: StringFilter<"Enrollment"> | string
+    paymentMethod?: StringFilter<"Enrollment"> | string
+    transactionId?: StringFilter<"Enrollment"> | string
+    notes?: StringNullableFilter<"Enrollment"> | string | null
+    screenshotUrl?: StringNullableFilter<"Enrollment"> | string | null
+    status?: EnumEnrollmentStatusFilter<"Enrollment"> | $Enums.EnrollmentStatus
+    paymentStatus?: EnumPaymentStatusFilter<"Enrollment"> | $Enums.PaymentStatus
+    amountPaid?: FloatFilter<"Enrollment"> | number
+    enrolledAt?: DateTimeFilter<"Enrollment"> | Date | string
+    createdAt?: DateTimeFilter<"Enrollment"> | Date | string
+    updatedAt?: DateTimeFilter<"Enrollment"> | Date | string
+  }
+
+  export type ProfileUpsertWithoutUserInput = {
+    update: XOR<ProfileUpdateWithoutUserInput, ProfileUncheckedUpdateWithoutUserInput>
+    create: XOR<ProfileCreateWithoutUserInput, ProfileUncheckedCreateWithoutUserInput>
+    where?: ProfileWhereInput
+  }
+
+  export type ProfileUpdateToOneWithWhereWithoutUserInput = {
+    where?: ProfileWhereInput
+    data: XOR<ProfileUpdateWithoutUserInput, ProfileUncheckedUpdateWithoutUserInput>
+  }
+
+  export type ProfileUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    gender?: NullableStringFieldUpdateOperationsInput | string | null
+    dateOfBirth?: NullableStringFieldUpdateOperationsInput | string | null
+    department?: NullableStringFieldUpdateOperationsInput | string | null
+    subject?: NullableStringFieldUpdateOperationsInput | string | null
+    designation?: NullableStringFieldUpdateOperationsInput | string | null
+    bloodGroup?: NullableStringFieldUpdateOperationsInput | string | null
+    emergencyContact?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ProfileUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    gender?: NullableStringFieldUpdateOperationsInput | string | null
+    dateOfBirth?: NullableStringFieldUpdateOperationsInput | string | null
+    department?: NullableStringFieldUpdateOperationsInput | string | null
+    subject?: NullableStringFieldUpdateOperationsInput | string | null
+    designation?: NullableStringFieldUpdateOperationsInput | string | null
+    bloodGroup?: NullableStringFieldUpdateOperationsInput | string | null
+    emergencyContact?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ResultUpsertWithWhereUniqueWithoutStudentInput = {
+    where: ResultWhereUniqueInput
+    update: XOR<ResultUpdateWithoutStudentInput, ResultUncheckedUpdateWithoutStudentInput>
+    create: XOR<ResultCreateWithoutStudentInput, ResultUncheckedCreateWithoutStudentInput>
+  }
+
+  export type ResultUpdateWithWhereUniqueWithoutStudentInput = {
+    where: ResultWhereUniqueInput
+    data: XOR<ResultUpdateWithoutStudentInput, ResultUncheckedUpdateWithoutStudentInput>
+  }
+
+  export type ResultUpdateManyWithWhereWithoutStudentInput = {
+    where: ResultScalarWhereInput
+    data: XOR<ResultUpdateManyMutationInput, ResultUncheckedUpdateManyWithoutStudentInput>
+  }
+
+  export type ResultScalarWhereInput = {
+    AND?: ResultScalarWhereInput | ResultScalarWhereInput[]
+    OR?: ResultScalarWhereInput[]
+    NOT?: ResultScalarWhereInput | ResultScalarWhereInput[]
+    id?: StringFilter<"Result"> | string
+    studentId?: StringFilter<"Result"> | string
+    courseId?: StringFilter<"Result"> | string
+    marks?: FloatFilter<"Result"> | number
+    grade?: StringFilter<"Result"> | string
+    remarks?: StringNullableFilter<"Result"> | string | null
+    examDate?: DateTimeFilter<"Result"> | Date | string
+    createdAt?: DateTimeFilter<"Result"> | Date | string
+    updatedAt?: DateTimeFilter<"Result"> | Date | string
+  }
+
+  export type ReviewUpsertWithWhereUniqueWithoutUserInput = {
+    where: ReviewWhereUniqueInput
+    update: XOR<ReviewUpdateWithoutUserInput, ReviewUncheckedUpdateWithoutUserInput>
+    create: XOR<ReviewCreateWithoutUserInput, ReviewUncheckedCreateWithoutUserInput>
+  }
+
+  export type ReviewUpdateWithWhereUniqueWithoutUserInput = {
+    where: ReviewWhereUniqueInput
+    data: XOR<ReviewUpdateWithoutUserInput, ReviewUncheckedUpdateWithoutUserInput>
+  }
+
+  export type ReviewUpdateManyWithWhereWithoutUserInput = {
+    where: ReviewScalarWhereInput
+    data: XOR<ReviewUpdateManyMutationInput, ReviewUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type ReviewScalarWhereInput = {
+    AND?: ReviewScalarWhereInput | ReviewScalarWhereInput[]
+    OR?: ReviewScalarWhereInput[]
+    NOT?: ReviewScalarWhereInput | ReviewScalarWhereInput[]
+    id?: StringFilter<"Review"> | string
+    userId?: StringNullableFilter<"Review"> | string | null
+    courseId?: StringNullableFilter<"Review"> | string | null
+    name?: StringFilter<"Review"> | string
+    avatar?: StringNullableFilter<"Review"> | string | null
+    role?: StringNullableFilter<"Review"> | string | null
+    rating?: IntFilter<"Review"> | number
+    comment?: StringFilter<"Review"> | string
+    featured?: BoolFilter<"Review"> | boolean
+    createdAt?: DateTimeFilter<"Review"> | Date | string
+    updatedAt?: DateTimeFilter<"Review"> | Date | string
   }
 
   export type StudentUpsertWithoutUserInput = {
@@ -19405,242 +20914,6 @@ export namespace Prisma {
     courses?: CourseUncheckedUpdateManyWithoutTeacherNestedInput
   }
 
-  export type AdminUpsertWithoutUserInput = {
-    update: XOR<AdminUpdateWithoutUserInput, AdminUncheckedUpdateWithoutUserInput>
-    create: XOR<AdminCreateWithoutUserInput, AdminUncheckedCreateWithoutUserInput>
-    where?: AdminWhereInput
-  }
-
-  export type AdminUpdateToOneWithWhereWithoutUserInput = {
-    where?: AdminWhereInput
-    data: XOR<AdminUpdateWithoutUserInput, AdminUncheckedUpdateWithoutUserInput>
-  }
-
-  export type AdminUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type AdminUncheckedUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type ProfileUpsertWithoutUserInput = {
-    update: XOR<ProfileUpdateWithoutUserInput, ProfileUncheckedUpdateWithoutUserInput>
-    create: XOR<ProfileCreateWithoutUserInput, ProfileUncheckedCreateWithoutUserInput>
-    where?: ProfileWhereInput
-  }
-
-  export type ProfileUpdateToOneWithWhereWithoutUserInput = {
-    where?: ProfileWhereInput
-    data: XOR<ProfileUpdateWithoutUserInput, ProfileUncheckedUpdateWithoutUserInput>
-  }
-
-  export type ProfileUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    address?: NullableStringFieldUpdateOperationsInput | string | null
-    gender?: NullableStringFieldUpdateOperationsInput | string | null
-    dateOfBirth?: NullableStringFieldUpdateOperationsInput | string | null
-    department?: NullableStringFieldUpdateOperationsInput | string | null
-    subject?: NullableStringFieldUpdateOperationsInput | string | null
-    designation?: NullableStringFieldUpdateOperationsInput | string | null
-    bloodGroup?: NullableStringFieldUpdateOperationsInput | string | null
-    emergencyContact?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type ProfileUncheckedUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    address?: NullableStringFieldUpdateOperationsInput | string | null
-    gender?: NullableStringFieldUpdateOperationsInput | string | null
-    dateOfBirth?: NullableStringFieldUpdateOperationsInput | string | null
-    department?: NullableStringFieldUpdateOperationsInput | string | null
-    subject?: NullableStringFieldUpdateOperationsInput | string | null
-    designation?: NullableStringFieldUpdateOperationsInput | string | null
-    bloodGroup?: NullableStringFieldUpdateOperationsInput | string | null
-    emergencyContact?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type EnrollmentUpsertWithWhereUniqueWithoutUserInput = {
-    where: EnrollmentWhereUniqueInput
-    update: XOR<EnrollmentUpdateWithoutUserInput, EnrollmentUncheckedUpdateWithoutUserInput>
-    create: XOR<EnrollmentCreateWithoutUserInput, EnrollmentUncheckedCreateWithoutUserInput>
-  }
-
-  export type EnrollmentUpdateWithWhereUniqueWithoutUserInput = {
-    where: EnrollmentWhereUniqueInput
-    data: XOR<EnrollmentUpdateWithoutUserInput, EnrollmentUncheckedUpdateWithoutUserInput>
-  }
-
-  export type EnrollmentUpdateManyWithWhereWithoutUserInput = {
-    where: EnrollmentScalarWhereInput
-    data: XOR<EnrollmentUpdateManyMutationInput, EnrollmentUncheckedUpdateManyWithoutUserInput>
-  }
-
-  export type EnrollmentScalarWhereInput = {
-    AND?: EnrollmentScalarWhereInput | EnrollmentScalarWhereInput[]
-    OR?: EnrollmentScalarWhereInput[]
-    NOT?: EnrollmentScalarWhereInput | EnrollmentScalarWhereInput[]
-    id?: StringFilter<"Enrollment"> | string
-    userId?: StringFilter<"Enrollment"> | string
-    courseId?: StringFilter<"Enrollment"> | string
-    name?: StringFilter<"Enrollment"> | string
-    email?: StringFilter<"Enrollment"> | string
-    phone?: StringFilter<"Enrollment"> | string
-    paymentMethod?: StringFilter<"Enrollment"> | string
-    transactionId?: StringFilter<"Enrollment"> | string
-    notes?: StringNullableFilter<"Enrollment"> | string | null
-    screenshotUrl?: StringNullableFilter<"Enrollment"> | string | null
-    status?: EnumEnrollmentStatusFilter<"Enrollment"> | $Enums.EnrollmentStatus
-    paymentStatus?: EnumPaymentStatusFilter<"Enrollment"> | $Enums.PaymentStatus
-    amountPaid?: FloatFilter<"Enrollment"> | number
-    enrolledAt?: DateTimeFilter<"Enrollment"> | Date | string
-    createdAt?: DateTimeFilter<"Enrollment"> | Date | string
-    updatedAt?: DateTimeFilter<"Enrollment"> | Date | string
-  }
-
-  export type ReviewUpsertWithWhereUniqueWithoutUserInput = {
-    where: ReviewWhereUniqueInput
-    update: XOR<ReviewUpdateWithoutUserInput, ReviewUncheckedUpdateWithoutUserInput>
-    create: XOR<ReviewCreateWithoutUserInput, ReviewUncheckedCreateWithoutUserInput>
-  }
-
-  export type ReviewUpdateWithWhereUniqueWithoutUserInput = {
-    where: ReviewWhereUniqueInput
-    data: XOR<ReviewUpdateWithoutUserInput, ReviewUncheckedUpdateWithoutUserInput>
-  }
-
-  export type ReviewUpdateManyWithWhereWithoutUserInput = {
-    where: ReviewScalarWhereInput
-    data: XOR<ReviewUpdateManyMutationInput, ReviewUncheckedUpdateManyWithoutUserInput>
-  }
-
-  export type ReviewScalarWhereInput = {
-    AND?: ReviewScalarWhereInput | ReviewScalarWhereInput[]
-    OR?: ReviewScalarWhereInput[]
-    NOT?: ReviewScalarWhereInput | ReviewScalarWhereInput[]
-    id?: StringFilter<"Review"> | string
-    userId?: StringNullableFilter<"Review"> | string | null
-    courseId?: StringNullableFilter<"Review"> | string | null
-    name?: StringFilter<"Review"> | string
-    avatar?: StringNullableFilter<"Review"> | string | null
-    role?: StringNullableFilter<"Review"> | string | null
-    rating?: IntFilter<"Review"> | number
-    comment?: StringFilter<"Review"> | string
-    featured?: BoolFilter<"Review"> | boolean
-    createdAt?: DateTimeFilter<"Review"> | Date | string
-    updatedAt?: DateTimeFilter<"Review"> | Date | string
-  }
-
-  export type ResultUpsertWithWhereUniqueWithoutStudentInput = {
-    where: ResultWhereUniqueInput
-    update: XOR<ResultUpdateWithoutStudentInput, ResultUncheckedUpdateWithoutStudentInput>
-    create: XOR<ResultCreateWithoutStudentInput, ResultUncheckedCreateWithoutStudentInput>
-  }
-
-  export type ResultUpdateWithWhereUniqueWithoutStudentInput = {
-    where: ResultWhereUniqueInput
-    data: XOR<ResultUpdateWithoutStudentInput, ResultUncheckedUpdateWithoutStudentInput>
-  }
-
-  export type ResultUpdateManyWithWhereWithoutStudentInput = {
-    where: ResultScalarWhereInput
-    data: XOR<ResultUpdateManyMutationInput, ResultUncheckedUpdateManyWithoutStudentInput>
-  }
-
-  export type ResultScalarWhereInput = {
-    AND?: ResultScalarWhereInput | ResultScalarWhereInput[]
-    OR?: ResultScalarWhereInput[]
-    NOT?: ResultScalarWhereInput | ResultScalarWhereInput[]
-    id?: StringFilter<"Result"> | string
-    studentId?: StringFilter<"Result"> | string
-    courseId?: StringFilter<"Result"> | string
-    marks?: FloatFilter<"Result"> | number
-    grade?: StringFilter<"Result"> | string
-    remarks?: StringNullableFilter<"Result"> | string | null
-    examDate?: DateTimeFilter<"Result"> | Date | string
-    createdAt?: DateTimeFilter<"Result"> | Date | string
-    updatedAt?: DateTimeFilter<"Result"> | Date | string
-  }
-
-  export type AttendanceUpsertWithWhereUniqueWithoutStudentInput = {
-    where: AttendanceWhereUniqueInput
-    update: XOR<AttendanceUpdateWithoutStudentInput, AttendanceUncheckedUpdateWithoutStudentInput>
-    create: XOR<AttendanceCreateWithoutStudentInput, AttendanceUncheckedCreateWithoutStudentInput>
-  }
-
-  export type AttendanceUpdateWithWhereUniqueWithoutStudentInput = {
-    where: AttendanceWhereUniqueInput
-    data: XOR<AttendanceUpdateWithoutStudentInput, AttendanceUncheckedUpdateWithoutStudentInput>
-  }
-
-  export type AttendanceUpdateManyWithWhereWithoutStudentInput = {
-    where: AttendanceScalarWhereInput
-    data: XOR<AttendanceUpdateManyMutationInput, AttendanceUncheckedUpdateManyWithoutStudentInput>
-  }
-
-  export type AttendanceScalarWhereInput = {
-    AND?: AttendanceScalarWhereInput | AttendanceScalarWhereInput[]
-    OR?: AttendanceScalarWhereInput[]
-    NOT?: AttendanceScalarWhereInput | AttendanceScalarWhereInput[]
-    id?: StringFilter<"Attendance"> | string
-    studentId?: StringFilter<"Attendance"> | string
-    courseId?: StringFilter<"Attendance"> | string
-    date?: DateTimeFilter<"Attendance"> | Date | string
-    status?: StringFilter<"Attendance"> | string
-    createdAt?: DateTimeFilter<"Attendance"> | Date | string
-    updatedAt?: DateTimeFilter<"Attendance"> | Date | string
-  }
-
-  export type UserCreateWithoutTeacherProfileInput = {
-    id?: string
-    name: string
-    email: string
-    password: string
-    role?: $Enums.Role
-    avatar?: string | null
-    phone?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    studentProfile?: StudentCreateNestedOneWithoutUserInput
-    adminProfile?: AdminCreateNestedOneWithoutUserInput
-    profile?: ProfileCreateNestedOneWithoutUserInput
-    enrollments?: EnrollmentCreateNestedManyWithoutUserInput
-    reviews?: ReviewCreateNestedManyWithoutUserInput
-    results?: ResultCreateNestedManyWithoutStudentInput
-    attendances?: AttendanceCreateNestedManyWithoutStudentInput
-  }
-
-  export type UserUncheckedCreateWithoutTeacherProfileInput = {
-    id?: string
-    name: string
-    email: string
-    password: string
-    role?: $Enums.Role
-    avatar?: string | null
-    phone?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    studentProfile?: StudentUncheckedCreateNestedOneWithoutUserInput
-    adminProfile?: AdminUncheckedCreateNestedOneWithoutUserInput
-    profile?: ProfileUncheckedCreateNestedOneWithoutUserInput
-    enrollments?: EnrollmentUncheckedCreateNestedManyWithoutUserInput
-    reviews?: ReviewUncheckedCreateNestedManyWithoutUserInput
-    results?: ResultUncheckedCreateNestedManyWithoutStudentInput
-    attendances?: AttendanceUncheckedCreateNestedManyWithoutStudentInput
-  }
-
-  export type UserCreateOrConnectWithoutTeacherProfileInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutTeacherProfileInput, UserUncheckedCreateWithoutTeacherProfileInput>
-  }
-
   export type CourseCreateWithoutTeacherInput = {
     id?: string
     title: string
@@ -19656,10 +20929,10 @@ export namespace Prisma {
     popular?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    enrollments?: EnrollmentCreateNestedManyWithoutCourseInput
-    reviews?: ReviewCreateNestedManyWithoutCourseInput
-    results?: ResultCreateNestedManyWithoutCourseInput
     attendances?: AttendanceCreateNestedManyWithoutCourseInput
+    enrollments?: EnrollmentCreateNestedManyWithoutCourseInput
+    results?: ResultCreateNestedManyWithoutCourseInput
+    reviews?: ReviewCreateNestedManyWithoutCourseInput
   }
 
   export type CourseUncheckedCreateWithoutTeacherInput = {
@@ -19677,10 +20950,10 @@ export namespace Prisma {
     popular?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    enrollments?: EnrollmentUncheckedCreateNestedManyWithoutCourseInput
-    reviews?: ReviewUncheckedCreateNestedManyWithoutCourseInput
-    results?: ResultUncheckedCreateNestedManyWithoutCourseInput
     attendances?: AttendanceUncheckedCreateNestedManyWithoutCourseInput
+    enrollments?: EnrollmentUncheckedCreateNestedManyWithoutCourseInput
+    results?: ResultUncheckedCreateNestedManyWithoutCourseInput
+    reviews?: ReviewUncheckedCreateNestedManyWithoutCourseInput
   }
 
   export type CourseCreateOrConnectWithoutTeacherInput = {
@@ -19693,53 +20966,47 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type UserUpsertWithoutTeacherProfileInput = {
-    update: XOR<UserUpdateWithoutTeacherProfileInput, UserUncheckedUpdateWithoutTeacherProfileInput>
+  export type UserCreateWithoutTeacherProfileInput = {
+    id?: string
+    name: string
+    email: string
+    password: string
+    role?: $Enums.Role
+    avatar?: string | null
+    phone?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    adminProfile?: AdminCreateNestedOneWithoutUserInput
+    attendances?: AttendanceCreateNestedManyWithoutStudentInput
+    enrollments?: EnrollmentCreateNestedManyWithoutUserInput
+    profile?: ProfileCreateNestedOneWithoutUserInput
+    results?: ResultCreateNestedManyWithoutStudentInput
+    reviews?: ReviewCreateNestedManyWithoutUserInput
+    studentProfile?: StudentCreateNestedOneWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutTeacherProfileInput = {
+    id?: string
+    name: string
+    email: string
+    password: string
+    role?: $Enums.Role
+    avatar?: string | null
+    phone?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    adminProfile?: AdminUncheckedCreateNestedOneWithoutUserInput
+    attendances?: AttendanceUncheckedCreateNestedManyWithoutStudentInput
+    enrollments?: EnrollmentUncheckedCreateNestedManyWithoutUserInput
+    profile?: ProfileUncheckedCreateNestedOneWithoutUserInput
+    results?: ResultUncheckedCreateNestedManyWithoutStudentInput
+    reviews?: ReviewUncheckedCreateNestedManyWithoutUserInput
+    studentProfile?: StudentUncheckedCreateNestedOneWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutTeacherProfileInput = {
+    where: UserWhereUniqueInput
     create: XOR<UserCreateWithoutTeacherProfileInput, UserUncheckedCreateWithoutTeacherProfileInput>
-    where?: UserWhereInput
-  }
-
-  export type UserUpdateToOneWithWhereWithoutTeacherProfileInput = {
-    where?: UserWhereInput
-    data: XOR<UserUpdateWithoutTeacherProfileInput, UserUncheckedUpdateWithoutTeacherProfileInput>
-  }
-
-  export type UserUpdateWithoutTeacherProfileInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    avatar?: NullableStringFieldUpdateOperationsInput | string | null
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    studentProfile?: StudentUpdateOneWithoutUserNestedInput
-    adminProfile?: AdminUpdateOneWithoutUserNestedInput
-    profile?: ProfileUpdateOneWithoutUserNestedInput
-    enrollments?: EnrollmentUpdateManyWithoutUserNestedInput
-    reviews?: ReviewUpdateManyWithoutUserNestedInput
-    results?: ResultUpdateManyWithoutStudentNestedInput
-    attendances?: AttendanceUpdateManyWithoutStudentNestedInput
-  }
-
-  export type UserUncheckedUpdateWithoutTeacherProfileInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    avatar?: NullableStringFieldUpdateOperationsInput | string | null
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    studentProfile?: StudentUncheckedUpdateOneWithoutUserNestedInput
-    adminProfile?: AdminUncheckedUpdateOneWithoutUserNestedInput
-    profile?: ProfileUncheckedUpdateOneWithoutUserNestedInput
-    enrollments?: EnrollmentUncheckedUpdateManyWithoutUserNestedInput
-    reviews?: ReviewUncheckedUpdateManyWithoutUserNestedInput
-    results?: ResultUncheckedUpdateManyWithoutStudentNestedInput
-    attendances?: AttendanceUncheckedUpdateManyWithoutStudentNestedInput
   }
 
   export type CourseUpsertWithWhereUniqueWithoutTeacherInput = {
@@ -19777,6 +21044,83 @@ export namespace Prisma {
     teacherId?: StringNullableFilter<"Course"> | string | null
     createdAt?: DateTimeFilter<"Course"> | Date | string
     updatedAt?: DateTimeFilter<"Course"> | Date | string
+  }
+
+  export type UserUpsertWithoutTeacherProfileInput = {
+    update: XOR<UserUpdateWithoutTeacherProfileInput, UserUncheckedUpdateWithoutTeacherProfileInput>
+    create: XOR<UserCreateWithoutTeacherProfileInput, UserUncheckedCreateWithoutTeacherProfileInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutTeacherProfileInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutTeacherProfileInput, UserUncheckedUpdateWithoutTeacherProfileInput>
+  }
+
+  export type UserUpdateWithoutTeacherProfileInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    adminProfile?: AdminUpdateOneWithoutUserNestedInput
+    attendances?: AttendanceUpdateManyWithoutStudentNestedInput
+    enrollments?: EnrollmentUpdateManyWithoutUserNestedInput
+    profile?: ProfileUpdateOneWithoutUserNestedInput
+    results?: ResultUpdateManyWithoutStudentNestedInput
+    reviews?: ReviewUpdateManyWithoutUserNestedInput
+    studentProfile?: StudentUpdateOneWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutTeacherProfileInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    adminProfile?: AdminUncheckedUpdateOneWithoutUserNestedInput
+    attendances?: AttendanceUncheckedUpdateManyWithoutStudentNestedInput
+    enrollments?: EnrollmentUncheckedUpdateManyWithoutUserNestedInput
+    profile?: ProfileUncheckedUpdateOneWithoutUserNestedInput
+    results?: ResultUncheckedUpdateManyWithoutStudentNestedInput
+    reviews?: ReviewUncheckedUpdateManyWithoutUserNestedInput
+    studentProfile?: StudentUncheckedUpdateOneWithoutUserNestedInput
+  }
+
+  export type AttendanceCreateWithoutCourseInput = {
+    id?: string
+    date: Date | string
+    status: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    student: UserCreateNestedOneWithoutAttendancesInput
+  }
+
+  export type AttendanceUncheckedCreateWithoutCourseInput = {
+    id?: string
+    studentId: string
+    date: Date | string
+    status: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AttendanceCreateOrConnectWithoutCourseInput = {
+    where: AttendanceWhereUniqueInput
+    create: XOR<AttendanceCreateWithoutCourseInput, AttendanceUncheckedCreateWithoutCourseInput>
+  }
+
+  export type AttendanceCreateManyCourseInputEnvelope = {
+    data: AttendanceCreateManyCourseInput | AttendanceCreateManyCourseInput[]
+    skipDuplicates?: boolean
   }
 
   export type TeacherCreateWithoutCoursesInput = {
@@ -19858,6 +21202,38 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type ResultCreateWithoutCourseInput = {
+    id?: string
+    marks: number
+    grade: string
+    remarks?: string | null
+    examDate?: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    student: UserCreateNestedOneWithoutResultsInput
+  }
+
+  export type ResultUncheckedCreateWithoutCourseInput = {
+    id?: string
+    studentId: string
+    marks: number
+    grade: string
+    remarks?: string | null
+    examDate?: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ResultCreateOrConnectWithoutCourseInput = {
+    where: ResultWhereUniqueInput
+    create: XOR<ResultCreateWithoutCourseInput, ResultUncheckedCreateWithoutCourseInput>
+  }
+
+  export type ResultCreateManyCourseInputEnvelope = {
+    data: ResultCreateManyCourseInput | ResultCreateManyCourseInput[]
+    skipDuplicates?: boolean
+  }
+
   export type ReviewCreateWithoutCourseInput = {
     id?: string
     name: string
@@ -19894,64 +21270,20 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type ResultCreateWithoutCourseInput = {
-    id?: string
-    marks: number
-    grade: string
-    remarks?: string | null
-    examDate?: Date | string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    student: UserCreateNestedOneWithoutResultsInput
-  }
-
-  export type ResultUncheckedCreateWithoutCourseInput = {
-    id?: string
-    studentId: string
-    marks: number
-    grade: string
-    remarks?: string | null
-    examDate?: Date | string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type ResultCreateOrConnectWithoutCourseInput = {
-    where: ResultWhereUniqueInput
-    create: XOR<ResultCreateWithoutCourseInput, ResultUncheckedCreateWithoutCourseInput>
-  }
-
-  export type ResultCreateManyCourseInputEnvelope = {
-    data: ResultCreateManyCourseInput | ResultCreateManyCourseInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type AttendanceCreateWithoutCourseInput = {
-    id?: string
-    date: Date | string
-    status: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    student: UserCreateNestedOneWithoutAttendancesInput
-  }
-
-  export type AttendanceUncheckedCreateWithoutCourseInput = {
-    id?: string
-    studentId: string
-    date: Date | string
-    status: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type AttendanceCreateOrConnectWithoutCourseInput = {
+  export type AttendanceUpsertWithWhereUniqueWithoutCourseInput = {
     where: AttendanceWhereUniqueInput
+    update: XOR<AttendanceUpdateWithoutCourseInput, AttendanceUncheckedUpdateWithoutCourseInput>
     create: XOR<AttendanceCreateWithoutCourseInput, AttendanceUncheckedCreateWithoutCourseInput>
   }
 
-  export type AttendanceCreateManyCourseInputEnvelope = {
-    data: AttendanceCreateManyCourseInput | AttendanceCreateManyCourseInput[]
-    skipDuplicates?: boolean
+  export type AttendanceUpdateWithWhereUniqueWithoutCourseInput = {
+    where: AttendanceWhereUniqueInput
+    data: XOR<AttendanceUpdateWithoutCourseInput, AttendanceUncheckedUpdateWithoutCourseInput>
+  }
+
+  export type AttendanceUpdateManyWithWhereWithoutCourseInput = {
+    where: AttendanceScalarWhereInput
+    data: XOR<AttendanceUpdateManyMutationInput, AttendanceUncheckedUpdateManyWithoutCourseInput>
   }
 
   export type TeacherUpsertWithoutCoursesInput = {
@@ -20009,22 +21341,6 @@ export namespace Prisma {
     data: XOR<EnrollmentUpdateManyMutationInput, EnrollmentUncheckedUpdateManyWithoutCourseInput>
   }
 
-  export type ReviewUpsertWithWhereUniqueWithoutCourseInput = {
-    where: ReviewWhereUniqueInput
-    update: XOR<ReviewUpdateWithoutCourseInput, ReviewUncheckedUpdateWithoutCourseInput>
-    create: XOR<ReviewCreateWithoutCourseInput, ReviewUncheckedCreateWithoutCourseInput>
-  }
-
-  export type ReviewUpdateWithWhereUniqueWithoutCourseInput = {
-    where: ReviewWhereUniqueInput
-    data: XOR<ReviewUpdateWithoutCourseInput, ReviewUncheckedUpdateWithoutCourseInput>
-  }
-
-  export type ReviewUpdateManyWithWhereWithoutCourseInput = {
-    where: ReviewScalarWhereInput
-    data: XOR<ReviewUpdateManyMutationInput, ReviewUncheckedUpdateManyWithoutCourseInput>
-  }
-
   export type ResultUpsertWithWhereUniqueWithoutCourseInput = {
     where: ResultWhereUniqueInput
     update: XOR<ResultUpdateWithoutCourseInput, ResultUncheckedUpdateWithoutCourseInput>
@@ -20041,63 +21357,20 @@ export namespace Prisma {
     data: XOR<ResultUpdateManyMutationInput, ResultUncheckedUpdateManyWithoutCourseInput>
   }
 
-  export type AttendanceUpsertWithWhereUniqueWithoutCourseInput = {
-    where: AttendanceWhereUniqueInput
-    update: XOR<AttendanceUpdateWithoutCourseInput, AttendanceUncheckedUpdateWithoutCourseInput>
-    create: XOR<AttendanceCreateWithoutCourseInput, AttendanceUncheckedCreateWithoutCourseInput>
+  export type ReviewUpsertWithWhereUniqueWithoutCourseInput = {
+    where: ReviewWhereUniqueInput
+    update: XOR<ReviewUpdateWithoutCourseInput, ReviewUncheckedUpdateWithoutCourseInput>
+    create: XOR<ReviewCreateWithoutCourseInput, ReviewUncheckedCreateWithoutCourseInput>
   }
 
-  export type AttendanceUpdateWithWhereUniqueWithoutCourseInput = {
-    where: AttendanceWhereUniqueInput
-    data: XOR<AttendanceUpdateWithoutCourseInput, AttendanceUncheckedUpdateWithoutCourseInput>
+  export type ReviewUpdateWithWhereUniqueWithoutCourseInput = {
+    where: ReviewWhereUniqueInput
+    data: XOR<ReviewUpdateWithoutCourseInput, ReviewUncheckedUpdateWithoutCourseInput>
   }
 
-  export type AttendanceUpdateManyWithWhereWithoutCourseInput = {
-    where: AttendanceScalarWhereInput
-    data: XOR<AttendanceUpdateManyMutationInput, AttendanceUncheckedUpdateManyWithoutCourseInput>
-  }
-
-  export type UserCreateWithoutEnrollmentsInput = {
-    id?: string
-    name: string
-    email: string
-    password: string
-    role?: $Enums.Role
-    avatar?: string | null
-    phone?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    studentProfile?: StudentCreateNestedOneWithoutUserInput
-    teacherProfile?: TeacherCreateNestedOneWithoutUserInput
-    adminProfile?: AdminCreateNestedOneWithoutUserInput
-    profile?: ProfileCreateNestedOneWithoutUserInput
-    reviews?: ReviewCreateNestedManyWithoutUserInput
-    results?: ResultCreateNestedManyWithoutStudentInput
-    attendances?: AttendanceCreateNestedManyWithoutStudentInput
-  }
-
-  export type UserUncheckedCreateWithoutEnrollmentsInput = {
-    id?: string
-    name: string
-    email: string
-    password: string
-    role?: $Enums.Role
-    avatar?: string | null
-    phone?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    studentProfile?: StudentUncheckedCreateNestedOneWithoutUserInput
-    teacherProfile?: TeacherUncheckedCreateNestedOneWithoutUserInput
-    adminProfile?: AdminUncheckedCreateNestedOneWithoutUserInput
-    profile?: ProfileUncheckedCreateNestedOneWithoutUserInput
-    reviews?: ReviewUncheckedCreateNestedManyWithoutUserInput
-    results?: ResultUncheckedCreateNestedManyWithoutStudentInput
-    attendances?: AttendanceUncheckedCreateNestedManyWithoutStudentInput
-  }
-
-  export type UserCreateOrConnectWithoutEnrollmentsInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutEnrollmentsInput, UserUncheckedCreateWithoutEnrollmentsInput>
+  export type ReviewUpdateManyWithWhereWithoutCourseInput = {
+    where: ReviewScalarWhereInput
+    data: XOR<ReviewUpdateManyMutationInput, ReviewUncheckedUpdateManyWithoutCourseInput>
   }
 
   export type CourseCreateWithoutEnrollmentsInput = {
@@ -20115,10 +21388,10 @@ export namespace Prisma {
     popular?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    teacher?: TeacherCreateNestedOneWithoutCoursesInput
-    reviews?: ReviewCreateNestedManyWithoutCourseInput
-    results?: ResultCreateNestedManyWithoutCourseInput
     attendances?: AttendanceCreateNestedManyWithoutCourseInput
+    teacher?: TeacherCreateNestedOneWithoutCoursesInput
+    results?: ResultCreateNestedManyWithoutCourseInput
+    reviews?: ReviewCreateNestedManyWithoutCourseInput
   }
 
   export type CourseUncheckedCreateWithoutEnrollmentsInput = {
@@ -20137,9 +21410,9 @@ export namespace Prisma {
     teacherId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    reviews?: ReviewUncheckedCreateNestedManyWithoutCourseInput
-    results?: ResultUncheckedCreateNestedManyWithoutCourseInput
     attendances?: AttendanceUncheckedCreateNestedManyWithoutCourseInput
+    results?: ResultUncheckedCreateNestedManyWithoutCourseInput
+    reviews?: ReviewUncheckedCreateNestedManyWithoutCourseInput
   }
 
   export type CourseCreateOrConnectWithoutEnrollmentsInput = {
@@ -20147,53 +21420,47 @@ export namespace Prisma {
     create: XOR<CourseCreateWithoutEnrollmentsInput, CourseUncheckedCreateWithoutEnrollmentsInput>
   }
 
-  export type UserUpsertWithoutEnrollmentsInput = {
-    update: XOR<UserUpdateWithoutEnrollmentsInput, UserUncheckedUpdateWithoutEnrollmentsInput>
+  export type UserCreateWithoutEnrollmentsInput = {
+    id?: string
+    name: string
+    email: string
+    password: string
+    role?: $Enums.Role
+    avatar?: string | null
+    phone?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    adminProfile?: AdminCreateNestedOneWithoutUserInput
+    attendances?: AttendanceCreateNestedManyWithoutStudentInput
+    profile?: ProfileCreateNestedOneWithoutUserInput
+    results?: ResultCreateNestedManyWithoutStudentInput
+    reviews?: ReviewCreateNestedManyWithoutUserInput
+    studentProfile?: StudentCreateNestedOneWithoutUserInput
+    teacherProfile?: TeacherCreateNestedOneWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutEnrollmentsInput = {
+    id?: string
+    name: string
+    email: string
+    password: string
+    role?: $Enums.Role
+    avatar?: string | null
+    phone?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    adminProfile?: AdminUncheckedCreateNestedOneWithoutUserInput
+    attendances?: AttendanceUncheckedCreateNestedManyWithoutStudentInput
+    profile?: ProfileUncheckedCreateNestedOneWithoutUserInput
+    results?: ResultUncheckedCreateNestedManyWithoutStudentInput
+    reviews?: ReviewUncheckedCreateNestedManyWithoutUserInput
+    studentProfile?: StudentUncheckedCreateNestedOneWithoutUserInput
+    teacherProfile?: TeacherUncheckedCreateNestedOneWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutEnrollmentsInput = {
+    where: UserWhereUniqueInput
     create: XOR<UserCreateWithoutEnrollmentsInput, UserUncheckedCreateWithoutEnrollmentsInput>
-    where?: UserWhereInput
-  }
-
-  export type UserUpdateToOneWithWhereWithoutEnrollmentsInput = {
-    where?: UserWhereInput
-    data: XOR<UserUpdateWithoutEnrollmentsInput, UserUncheckedUpdateWithoutEnrollmentsInput>
-  }
-
-  export type UserUpdateWithoutEnrollmentsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    avatar?: NullableStringFieldUpdateOperationsInput | string | null
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    studentProfile?: StudentUpdateOneWithoutUserNestedInput
-    teacherProfile?: TeacherUpdateOneWithoutUserNestedInput
-    adminProfile?: AdminUpdateOneWithoutUserNestedInput
-    profile?: ProfileUpdateOneWithoutUserNestedInput
-    reviews?: ReviewUpdateManyWithoutUserNestedInput
-    results?: ResultUpdateManyWithoutStudentNestedInput
-    attendances?: AttendanceUpdateManyWithoutStudentNestedInput
-  }
-
-  export type UserUncheckedUpdateWithoutEnrollmentsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    avatar?: NullableStringFieldUpdateOperationsInput | string | null
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    studentProfile?: StudentUncheckedUpdateOneWithoutUserNestedInput
-    teacherProfile?: TeacherUncheckedUpdateOneWithoutUserNestedInput
-    adminProfile?: AdminUncheckedUpdateOneWithoutUserNestedInput
-    profile?: ProfileUncheckedUpdateOneWithoutUserNestedInput
-    reviews?: ReviewUncheckedUpdateManyWithoutUserNestedInput
-    results?: ResultUncheckedUpdateManyWithoutStudentNestedInput
-    attendances?: AttendanceUncheckedUpdateManyWithoutStudentNestedInput
   }
 
   export type CourseUpsertWithoutEnrollmentsInput = {
@@ -20222,10 +21489,10 @@ export namespace Prisma {
     popular?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    teacher?: TeacherUpdateOneWithoutCoursesNestedInput
-    reviews?: ReviewUpdateManyWithoutCourseNestedInput
-    results?: ResultUpdateManyWithoutCourseNestedInput
     attendances?: AttendanceUpdateManyWithoutCourseNestedInput
+    teacher?: TeacherUpdateOneWithoutCoursesNestedInput
+    results?: ResultUpdateManyWithoutCourseNestedInput
+    reviews?: ReviewUpdateManyWithoutCourseNestedInput
   }
 
   export type CourseUncheckedUpdateWithoutEnrollmentsInput = {
@@ -20244,52 +21511,58 @@ export namespace Prisma {
     teacherId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    reviews?: ReviewUncheckedUpdateManyWithoutCourseNestedInput
-    results?: ResultUncheckedUpdateManyWithoutCourseNestedInput
     attendances?: AttendanceUncheckedUpdateManyWithoutCourseNestedInput
+    results?: ResultUncheckedUpdateManyWithoutCourseNestedInput
+    reviews?: ReviewUncheckedUpdateManyWithoutCourseNestedInput
   }
 
-  export type UserCreateWithoutReviewsInput = {
-    id?: string
-    name: string
-    email: string
-    password: string
-    role?: $Enums.Role
-    avatar?: string | null
-    phone?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    studentProfile?: StudentCreateNestedOneWithoutUserInput
-    teacherProfile?: TeacherCreateNestedOneWithoutUserInput
-    adminProfile?: AdminCreateNestedOneWithoutUserInput
-    profile?: ProfileCreateNestedOneWithoutUserInput
-    enrollments?: EnrollmentCreateNestedManyWithoutUserInput
-    results?: ResultCreateNestedManyWithoutStudentInput
-    attendances?: AttendanceCreateNestedManyWithoutStudentInput
+  export type UserUpsertWithoutEnrollmentsInput = {
+    update: XOR<UserUpdateWithoutEnrollmentsInput, UserUncheckedUpdateWithoutEnrollmentsInput>
+    create: XOR<UserCreateWithoutEnrollmentsInput, UserUncheckedCreateWithoutEnrollmentsInput>
+    where?: UserWhereInput
   }
 
-  export type UserUncheckedCreateWithoutReviewsInput = {
-    id?: string
-    name: string
-    email: string
-    password: string
-    role?: $Enums.Role
-    avatar?: string | null
-    phone?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    studentProfile?: StudentUncheckedCreateNestedOneWithoutUserInput
-    teacherProfile?: TeacherUncheckedCreateNestedOneWithoutUserInput
-    adminProfile?: AdminUncheckedCreateNestedOneWithoutUserInput
-    profile?: ProfileUncheckedCreateNestedOneWithoutUserInput
-    enrollments?: EnrollmentUncheckedCreateNestedManyWithoutUserInput
-    results?: ResultUncheckedCreateNestedManyWithoutStudentInput
-    attendances?: AttendanceUncheckedCreateNestedManyWithoutStudentInput
+  export type UserUpdateToOneWithWhereWithoutEnrollmentsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutEnrollmentsInput, UserUncheckedUpdateWithoutEnrollmentsInput>
   }
 
-  export type UserCreateOrConnectWithoutReviewsInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutReviewsInput, UserUncheckedCreateWithoutReviewsInput>
+  export type UserUpdateWithoutEnrollmentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    adminProfile?: AdminUpdateOneWithoutUserNestedInput
+    attendances?: AttendanceUpdateManyWithoutStudentNestedInput
+    profile?: ProfileUpdateOneWithoutUserNestedInput
+    results?: ResultUpdateManyWithoutStudentNestedInput
+    reviews?: ReviewUpdateManyWithoutUserNestedInput
+    studentProfile?: StudentUpdateOneWithoutUserNestedInput
+    teacherProfile?: TeacherUpdateOneWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutEnrollmentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    adminProfile?: AdminUncheckedUpdateOneWithoutUserNestedInput
+    attendances?: AttendanceUncheckedUpdateManyWithoutStudentNestedInput
+    profile?: ProfileUncheckedUpdateOneWithoutUserNestedInput
+    results?: ResultUncheckedUpdateManyWithoutStudentNestedInput
+    reviews?: ReviewUncheckedUpdateManyWithoutUserNestedInput
+    studentProfile?: StudentUncheckedUpdateOneWithoutUserNestedInput
+    teacherProfile?: TeacherUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type CourseCreateWithoutReviewsInput = {
@@ -20307,10 +21580,10 @@ export namespace Prisma {
     popular?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    attendances?: AttendanceCreateNestedManyWithoutCourseInput
     teacher?: TeacherCreateNestedOneWithoutCoursesInput
     enrollments?: EnrollmentCreateNestedManyWithoutCourseInput
     results?: ResultCreateNestedManyWithoutCourseInput
-    attendances?: AttendanceCreateNestedManyWithoutCourseInput
   }
 
   export type CourseUncheckedCreateWithoutReviewsInput = {
@@ -20329,9 +21602,9 @@ export namespace Prisma {
     teacherId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    attendances?: AttendanceUncheckedCreateNestedManyWithoutCourseInput
     enrollments?: EnrollmentUncheckedCreateNestedManyWithoutCourseInput
     results?: ResultUncheckedCreateNestedManyWithoutCourseInput
-    attendances?: AttendanceUncheckedCreateNestedManyWithoutCourseInput
   }
 
   export type CourseCreateOrConnectWithoutReviewsInput = {
@@ -20339,53 +21612,47 @@ export namespace Prisma {
     create: XOR<CourseCreateWithoutReviewsInput, CourseUncheckedCreateWithoutReviewsInput>
   }
 
-  export type UserUpsertWithoutReviewsInput = {
-    update: XOR<UserUpdateWithoutReviewsInput, UserUncheckedUpdateWithoutReviewsInput>
+  export type UserCreateWithoutReviewsInput = {
+    id?: string
+    name: string
+    email: string
+    password: string
+    role?: $Enums.Role
+    avatar?: string | null
+    phone?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    adminProfile?: AdminCreateNestedOneWithoutUserInput
+    attendances?: AttendanceCreateNestedManyWithoutStudentInput
+    enrollments?: EnrollmentCreateNestedManyWithoutUserInput
+    profile?: ProfileCreateNestedOneWithoutUserInput
+    results?: ResultCreateNestedManyWithoutStudentInput
+    studentProfile?: StudentCreateNestedOneWithoutUserInput
+    teacherProfile?: TeacherCreateNestedOneWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutReviewsInput = {
+    id?: string
+    name: string
+    email: string
+    password: string
+    role?: $Enums.Role
+    avatar?: string | null
+    phone?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    adminProfile?: AdminUncheckedCreateNestedOneWithoutUserInput
+    attendances?: AttendanceUncheckedCreateNestedManyWithoutStudentInput
+    enrollments?: EnrollmentUncheckedCreateNestedManyWithoutUserInput
+    profile?: ProfileUncheckedCreateNestedOneWithoutUserInput
+    results?: ResultUncheckedCreateNestedManyWithoutStudentInput
+    studentProfile?: StudentUncheckedCreateNestedOneWithoutUserInput
+    teacherProfile?: TeacherUncheckedCreateNestedOneWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutReviewsInput = {
+    where: UserWhereUniqueInput
     create: XOR<UserCreateWithoutReviewsInput, UserUncheckedCreateWithoutReviewsInput>
-    where?: UserWhereInput
-  }
-
-  export type UserUpdateToOneWithWhereWithoutReviewsInput = {
-    where?: UserWhereInput
-    data: XOR<UserUpdateWithoutReviewsInput, UserUncheckedUpdateWithoutReviewsInput>
-  }
-
-  export type UserUpdateWithoutReviewsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    avatar?: NullableStringFieldUpdateOperationsInput | string | null
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    studentProfile?: StudentUpdateOneWithoutUserNestedInput
-    teacherProfile?: TeacherUpdateOneWithoutUserNestedInput
-    adminProfile?: AdminUpdateOneWithoutUserNestedInput
-    profile?: ProfileUpdateOneWithoutUserNestedInput
-    enrollments?: EnrollmentUpdateManyWithoutUserNestedInput
-    results?: ResultUpdateManyWithoutStudentNestedInput
-    attendances?: AttendanceUpdateManyWithoutStudentNestedInput
-  }
-
-  export type UserUncheckedUpdateWithoutReviewsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    avatar?: NullableStringFieldUpdateOperationsInput | string | null
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    studentProfile?: StudentUncheckedUpdateOneWithoutUserNestedInput
-    teacherProfile?: TeacherUncheckedUpdateOneWithoutUserNestedInput
-    adminProfile?: AdminUncheckedUpdateOneWithoutUserNestedInput
-    profile?: ProfileUncheckedUpdateOneWithoutUserNestedInput
-    enrollments?: EnrollmentUncheckedUpdateManyWithoutUserNestedInput
-    results?: ResultUncheckedUpdateManyWithoutStudentNestedInput
-    attendances?: AttendanceUncheckedUpdateManyWithoutStudentNestedInput
   }
 
   export type CourseUpsertWithoutReviewsInput = {
@@ -20414,10 +21681,10 @@ export namespace Prisma {
     popular?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    attendances?: AttendanceUpdateManyWithoutCourseNestedInput
     teacher?: TeacherUpdateOneWithoutCoursesNestedInput
     enrollments?: EnrollmentUpdateManyWithoutCourseNestedInput
     results?: ResultUpdateManyWithoutCourseNestedInput
-    attendances?: AttendanceUpdateManyWithoutCourseNestedInput
   }
 
   export type CourseUncheckedUpdateWithoutReviewsInput = {
@@ -20436,9 +21703,58 @@ export namespace Prisma {
     teacherId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    attendances?: AttendanceUncheckedUpdateManyWithoutCourseNestedInput
     enrollments?: EnrollmentUncheckedUpdateManyWithoutCourseNestedInput
     results?: ResultUncheckedUpdateManyWithoutCourseNestedInput
-    attendances?: AttendanceUncheckedUpdateManyWithoutCourseNestedInput
+  }
+
+  export type UserUpsertWithoutReviewsInput = {
+    update: XOR<UserUpdateWithoutReviewsInput, UserUncheckedUpdateWithoutReviewsInput>
+    create: XOR<UserCreateWithoutReviewsInput, UserUncheckedCreateWithoutReviewsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutReviewsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutReviewsInput, UserUncheckedUpdateWithoutReviewsInput>
+  }
+
+  export type UserUpdateWithoutReviewsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    adminProfile?: AdminUpdateOneWithoutUserNestedInput
+    attendances?: AttendanceUpdateManyWithoutStudentNestedInput
+    enrollments?: EnrollmentUpdateManyWithoutUserNestedInput
+    profile?: ProfileUpdateOneWithoutUserNestedInput
+    results?: ResultUpdateManyWithoutStudentNestedInput
+    studentProfile?: StudentUpdateOneWithoutUserNestedInput
+    teacherProfile?: TeacherUpdateOneWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutReviewsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    adminProfile?: AdminUncheckedUpdateOneWithoutUserNestedInput
+    attendances?: AttendanceUncheckedUpdateManyWithoutStudentNestedInput
+    enrollments?: EnrollmentUncheckedUpdateManyWithoutUserNestedInput
+    profile?: ProfileUncheckedUpdateOneWithoutUserNestedInput
+    results?: ResultUncheckedUpdateManyWithoutStudentNestedInput
+    studentProfile?: StudentUncheckedUpdateOneWithoutUserNestedInput
+    teacherProfile?: TeacherUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type UserCreateWithoutStudentProfileInput = {
@@ -20451,13 +21767,13 @@ export namespace Prisma {
     phone?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    teacherProfile?: TeacherCreateNestedOneWithoutUserInput
     adminProfile?: AdminCreateNestedOneWithoutUserInput
-    profile?: ProfileCreateNestedOneWithoutUserInput
-    enrollments?: EnrollmentCreateNestedManyWithoutUserInput
-    reviews?: ReviewCreateNestedManyWithoutUserInput
-    results?: ResultCreateNestedManyWithoutStudentInput
     attendances?: AttendanceCreateNestedManyWithoutStudentInput
+    enrollments?: EnrollmentCreateNestedManyWithoutUserInput
+    profile?: ProfileCreateNestedOneWithoutUserInput
+    results?: ResultCreateNestedManyWithoutStudentInput
+    reviews?: ReviewCreateNestedManyWithoutUserInput
+    teacherProfile?: TeacherCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutStudentProfileInput = {
@@ -20470,13 +21786,13 @@ export namespace Prisma {
     phone?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    teacherProfile?: TeacherUncheckedCreateNestedOneWithoutUserInput
     adminProfile?: AdminUncheckedCreateNestedOneWithoutUserInput
-    profile?: ProfileUncheckedCreateNestedOneWithoutUserInput
-    enrollments?: EnrollmentUncheckedCreateNestedManyWithoutUserInput
-    reviews?: ReviewUncheckedCreateNestedManyWithoutUserInput
-    results?: ResultUncheckedCreateNestedManyWithoutStudentInput
     attendances?: AttendanceUncheckedCreateNestedManyWithoutStudentInput
+    enrollments?: EnrollmentUncheckedCreateNestedManyWithoutUserInput
+    profile?: ProfileUncheckedCreateNestedOneWithoutUserInput
+    results?: ResultUncheckedCreateNestedManyWithoutStudentInput
+    reviews?: ReviewUncheckedCreateNestedManyWithoutUserInput
+    teacherProfile?: TeacherUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutStudentProfileInput = {
@@ -20505,13 +21821,13 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    teacherProfile?: TeacherUpdateOneWithoutUserNestedInput
     adminProfile?: AdminUpdateOneWithoutUserNestedInput
-    profile?: ProfileUpdateOneWithoutUserNestedInput
-    enrollments?: EnrollmentUpdateManyWithoutUserNestedInput
-    reviews?: ReviewUpdateManyWithoutUserNestedInput
-    results?: ResultUpdateManyWithoutStudentNestedInput
     attendances?: AttendanceUpdateManyWithoutStudentNestedInput
+    enrollments?: EnrollmentUpdateManyWithoutUserNestedInput
+    profile?: ProfileUpdateOneWithoutUserNestedInput
+    results?: ResultUpdateManyWithoutStudentNestedInput
+    reviews?: ReviewUpdateManyWithoutUserNestedInput
+    teacherProfile?: TeacherUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutStudentProfileInput = {
@@ -20524,13 +21840,13 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    teacherProfile?: TeacherUncheckedUpdateOneWithoutUserNestedInput
     adminProfile?: AdminUncheckedUpdateOneWithoutUserNestedInput
-    profile?: ProfileUncheckedUpdateOneWithoutUserNestedInput
-    enrollments?: EnrollmentUncheckedUpdateManyWithoutUserNestedInput
-    reviews?: ReviewUncheckedUpdateManyWithoutUserNestedInput
-    results?: ResultUncheckedUpdateManyWithoutStudentNestedInput
     attendances?: AttendanceUncheckedUpdateManyWithoutStudentNestedInput
+    enrollments?: EnrollmentUncheckedUpdateManyWithoutUserNestedInput
+    profile?: ProfileUncheckedUpdateOneWithoutUserNestedInput
+    results?: ResultUncheckedUpdateManyWithoutStudentNestedInput
+    reviews?: ReviewUncheckedUpdateManyWithoutUserNestedInput
+    teacherProfile?: TeacherUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type UserCreateWithoutAdminProfileInput = {
@@ -20543,13 +21859,13 @@ export namespace Prisma {
     phone?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    attendances?: AttendanceCreateNestedManyWithoutStudentInput
+    enrollments?: EnrollmentCreateNestedManyWithoutUserInput
+    profile?: ProfileCreateNestedOneWithoutUserInput
+    results?: ResultCreateNestedManyWithoutStudentInput
+    reviews?: ReviewCreateNestedManyWithoutUserInput
     studentProfile?: StudentCreateNestedOneWithoutUserInput
     teacherProfile?: TeacherCreateNestedOneWithoutUserInput
-    profile?: ProfileCreateNestedOneWithoutUserInput
-    enrollments?: EnrollmentCreateNestedManyWithoutUserInput
-    reviews?: ReviewCreateNestedManyWithoutUserInput
-    results?: ResultCreateNestedManyWithoutStudentInput
-    attendances?: AttendanceCreateNestedManyWithoutStudentInput
   }
 
   export type UserUncheckedCreateWithoutAdminProfileInput = {
@@ -20562,13 +21878,13 @@ export namespace Prisma {
     phone?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    attendances?: AttendanceUncheckedCreateNestedManyWithoutStudentInput
+    enrollments?: EnrollmentUncheckedCreateNestedManyWithoutUserInput
+    profile?: ProfileUncheckedCreateNestedOneWithoutUserInput
+    results?: ResultUncheckedCreateNestedManyWithoutStudentInput
+    reviews?: ReviewUncheckedCreateNestedManyWithoutUserInput
     studentProfile?: StudentUncheckedCreateNestedOneWithoutUserInput
     teacherProfile?: TeacherUncheckedCreateNestedOneWithoutUserInput
-    profile?: ProfileUncheckedCreateNestedOneWithoutUserInput
-    enrollments?: EnrollmentUncheckedCreateNestedManyWithoutUserInput
-    reviews?: ReviewUncheckedCreateNestedManyWithoutUserInput
-    results?: ResultUncheckedCreateNestedManyWithoutStudentInput
-    attendances?: AttendanceUncheckedCreateNestedManyWithoutStudentInput
   }
 
   export type UserCreateOrConnectWithoutAdminProfileInput = {
@@ -20597,13 +21913,13 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    attendances?: AttendanceUpdateManyWithoutStudentNestedInput
+    enrollments?: EnrollmentUpdateManyWithoutUserNestedInput
+    profile?: ProfileUpdateOneWithoutUserNestedInput
+    results?: ResultUpdateManyWithoutStudentNestedInput
+    reviews?: ReviewUpdateManyWithoutUserNestedInput
     studentProfile?: StudentUpdateOneWithoutUserNestedInput
     teacherProfile?: TeacherUpdateOneWithoutUserNestedInput
-    profile?: ProfileUpdateOneWithoutUserNestedInput
-    enrollments?: EnrollmentUpdateManyWithoutUserNestedInput
-    reviews?: ReviewUpdateManyWithoutUserNestedInput
-    results?: ResultUpdateManyWithoutStudentNestedInput
-    attendances?: AttendanceUpdateManyWithoutStudentNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAdminProfileInput = {
@@ -20616,13 +21932,13 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    attendances?: AttendanceUncheckedUpdateManyWithoutStudentNestedInput
+    enrollments?: EnrollmentUncheckedUpdateManyWithoutUserNestedInput
+    profile?: ProfileUncheckedUpdateOneWithoutUserNestedInput
+    results?: ResultUncheckedUpdateManyWithoutStudentNestedInput
+    reviews?: ReviewUncheckedUpdateManyWithoutUserNestedInput
     studentProfile?: StudentUncheckedUpdateOneWithoutUserNestedInput
     teacherProfile?: TeacherUncheckedUpdateOneWithoutUserNestedInput
-    profile?: ProfileUncheckedUpdateOneWithoutUserNestedInput
-    enrollments?: EnrollmentUncheckedUpdateManyWithoutUserNestedInput
-    reviews?: ReviewUncheckedUpdateManyWithoutUserNestedInput
-    results?: ResultUncheckedUpdateManyWithoutStudentNestedInput
-    attendances?: AttendanceUncheckedUpdateManyWithoutStudentNestedInput
   }
 
   export type UserCreateWithoutProfileInput = {
@@ -20635,13 +21951,13 @@ export namespace Prisma {
     phone?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    adminProfile?: AdminCreateNestedOneWithoutUserInput
+    attendances?: AttendanceCreateNestedManyWithoutStudentInput
+    enrollments?: EnrollmentCreateNestedManyWithoutUserInput
+    results?: ResultCreateNestedManyWithoutStudentInput
+    reviews?: ReviewCreateNestedManyWithoutUserInput
     studentProfile?: StudentCreateNestedOneWithoutUserInput
     teacherProfile?: TeacherCreateNestedOneWithoutUserInput
-    adminProfile?: AdminCreateNestedOneWithoutUserInput
-    enrollments?: EnrollmentCreateNestedManyWithoutUserInput
-    reviews?: ReviewCreateNestedManyWithoutUserInput
-    results?: ResultCreateNestedManyWithoutStudentInput
-    attendances?: AttendanceCreateNestedManyWithoutStudentInput
   }
 
   export type UserUncheckedCreateWithoutProfileInput = {
@@ -20654,13 +21970,13 @@ export namespace Prisma {
     phone?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    adminProfile?: AdminUncheckedCreateNestedOneWithoutUserInput
+    attendances?: AttendanceUncheckedCreateNestedManyWithoutStudentInput
+    enrollments?: EnrollmentUncheckedCreateNestedManyWithoutUserInput
+    results?: ResultUncheckedCreateNestedManyWithoutStudentInput
+    reviews?: ReviewUncheckedCreateNestedManyWithoutUserInput
     studentProfile?: StudentUncheckedCreateNestedOneWithoutUserInput
     teacherProfile?: TeacherUncheckedCreateNestedOneWithoutUserInput
-    adminProfile?: AdminUncheckedCreateNestedOneWithoutUserInput
-    enrollments?: EnrollmentUncheckedCreateNestedManyWithoutUserInput
-    reviews?: ReviewUncheckedCreateNestedManyWithoutUserInput
-    results?: ResultUncheckedCreateNestedManyWithoutStudentInput
-    attendances?: AttendanceUncheckedCreateNestedManyWithoutStudentInput
   }
 
   export type UserCreateOrConnectWithoutProfileInput = {
@@ -20689,13 +22005,13 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    adminProfile?: AdminUpdateOneWithoutUserNestedInput
+    attendances?: AttendanceUpdateManyWithoutStudentNestedInput
+    enrollments?: EnrollmentUpdateManyWithoutUserNestedInput
+    results?: ResultUpdateManyWithoutStudentNestedInput
+    reviews?: ReviewUpdateManyWithoutUserNestedInput
     studentProfile?: StudentUpdateOneWithoutUserNestedInput
     teacherProfile?: TeacherUpdateOneWithoutUserNestedInput
-    adminProfile?: AdminUpdateOneWithoutUserNestedInput
-    enrollments?: EnrollmentUpdateManyWithoutUserNestedInput
-    reviews?: ReviewUpdateManyWithoutUserNestedInput
-    results?: ResultUpdateManyWithoutStudentNestedInput
-    attendances?: AttendanceUpdateManyWithoutStudentNestedInput
   }
 
   export type UserUncheckedUpdateWithoutProfileInput = {
@@ -20708,56 +22024,13 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    adminProfile?: AdminUncheckedUpdateOneWithoutUserNestedInput
+    attendances?: AttendanceUncheckedUpdateManyWithoutStudentNestedInput
+    enrollments?: EnrollmentUncheckedUpdateManyWithoutUserNestedInput
+    results?: ResultUncheckedUpdateManyWithoutStudentNestedInput
+    reviews?: ReviewUncheckedUpdateManyWithoutUserNestedInput
     studentProfile?: StudentUncheckedUpdateOneWithoutUserNestedInput
     teacherProfile?: TeacherUncheckedUpdateOneWithoutUserNestedInput
-    adminProfile?: AdminUncheckedUpdateOneWithoutUserNestedInput
-    enrollments?: EnrollmentUncheckedUpdateManyWithoutUserNestedInput
-    reviews?: ReviewUncheckedUpdateManyWithoutUserNestedInput
-    results?: ResultUncheckedUpdateManyWithoutStudentNestedInput
-    attendances?: AttendanceUncheckedUpdateManyWithoutStudentNestedInput
-  }
-
-  export type UserCreateWithoutResultsInput = {
-    id?: string
-    name: string
-    email: string
-    password: string
-    role?: $Enums.Role
-    avatar?: string | null
-    phone?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    studentProfile?: StudentCreateNestedOneWithoutUserInput
-    teacherProfile?: TeacherCreateNestedOneWithoutUserInput
-    adminProfile?: AdminCreateNestedOneWithoutUserInput
-    profile?: ProfileCreateNestedOneWithoutUserInput
-    enrollments?: EnrollmentCreateNestedManyWithoutUserInput
-    reviews?: ReviewCreateNestedManyWithoutUserInput
-    attendances?: AttendanceCreateNestedManyWithoutStudentInput
-  }
-
-  export type UserUncheckedCreateWithoutResultsInput = {
-    id?: string
-    name: string
-    email: string
-    password: string
-    role?: $Enums.Role
-    avatar?: string | null
-    phone?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    studentProfile?: StudentUncheckedCreateNestedOneWithoutUserInput
-    teacherProfile?: TeacherUncheckedCreateNestedOneWithoutUserInput
-    adminProfile?: AdminUncheckedCreateNestedOneWithoutUserInput
-    profile?: ProfileUncheckedCreateNestedOneWithoutUserInput
-    enrollments?: EnrollmentUncheckedCreateNestedManyWithoutUserInput
-    reviews?: ReviewUncheckedCreateNestedManyWithoutUserInput
-    attendances?: AttendanceUncheckedCreateNestedManyWithoutStudentInput
-  }
-
-  export type UserCreateOrConnectWithoutResultsInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutResultsInput, UserUncheckedCreateWithoutResultsInput>
   }
 
   export type CourseCreateWithoutResultsInput = {
@@ -20775,10 +22048,10 @@ export namespace Prisma {
     popular?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    attendances?: AttendanceCreateNestedManyWithoutCourseInput
     teacher?: TeacherCreateNestedOneWithoutCoursesInput
     enrollments?: EnrollmentCreateNestedManyWithoutCourseInput
     reviews?: ReviewCreateNestedManyWithoutCourseInput
-    attendances?: AttendanceCreateNestedManyWithoutCourseInput
   }
 
   export type CourseUncheckedCreateWithoutResultsInput = {
@@ -20797,9 +22070,9 @@ export namespace Prisma {
     teacherId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    attendances?: AttendanceUncheckedCreateNestedManyWithoutCourseInput
     enrollments?: EnrollmentUncheckedCreateNestedManyWithoutCourseInput
     reviews?: ReviewUncheckedCreateNestedManyWithoutCourseInput
-    attendances?: AttendanceUncheckedCreateNestedManyWithoutCourseInput
   }
 
   export type CourseCreateOrConnectWithoutResultsInput = {
@@ -20807,53 +22080,47 @@ export namespace Prisma {
     create: XOR<CourseCreateWithoutResultsInput, CourseUncheckedCreateWithoutResultsInput>
   }
 
-  export type UserUpsertWithoutResultsInput = {
-    update: XOR<UserUpdateWithoutResultsInput, UserUncheckedUpdateWithoutResultsInput>
+  export type UserCreateWithoutResultsInput = {
+    id?: string
+    name: string
+    email: string
+    password: string
+    role?: $Enums.Role
+    avatar?: string | null
+    phone?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    adminProfile?: AdminCreateNestedOneWithoutUserInput
+    attendances?: AttendanceCreateNestedManyWithoutStudentInput
+    enrollments?: EnrollmentCreateNestedManyWithoutUserInput
+    profile?: ProfileCreateNestedOneWithoutUserInput
+    reviews?: ReviewCreateNestedManyWithoutUserInput
+    studentProfile?: StudentCreateNestedOneWithoutUserInput
+    teacherProfile?: TeacherCreateNestedOneWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutResultsInput = {
+    id?: string
+    name: string
+    email: string
+    password: string
+    role?: $Enums.Role
+    avatar?: string | null
+    phone?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    adminProfile?: AdminUncheckedCreateNestedOneWithoutUserInput
+    attendances?: AttendanceUncheckedCreateNestedManyWithoutStudentInput
+    enrollments?: EnrollmentUncheckedCreateNestedManyWithoutUserInput
+    profile?: ProfileUncheckedCreateNestedOneWithoutUserInput
+    reviews?: ReviewUncheckedCreateNestedManyWithoutUserInput
+    studentProfile?: StudentUncheckedCreateNestedOneWithoutUserInput
+    teacherProfile?: TeacherUncheckedCreateNestedOneWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutResultsInput = {
+    where: UserWhereUniqueInput
     create: XOR<UserCreateWithoutResultsInput, UserUncheckedCreateWithoutResultsInput>
-    where?: UserWhereInput
-  }
-
-  export type UserUpdateToOneWithWhereWithoutResultsInput = {
-    where?: UserWhereInput
-    data: XOR<UserUpdateWithoutResultsInput, UserUncheckedUpdateWithoutResultsInput>
-  }
-
-  export type UserUpdateWithoutResultsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    avatar?: NullableStringFieldUpdateOperationsInput | string | null
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    studentProfile?: StudentUpdateOneWithoutUserNestedInput
-    teacherProfile?: TeacherUpdateOneWithoutUserNestedInput
-    adminProfile?: AdminUpdateOneWithoutUserNestedInput
-    profile?: ProfileUpdateOneWithoutUserNestedInput
-    enrollments?: EnrollmentUpdateManyWithoutUserNestedInput
-    reviews?: ReviewUpdateManyWithoutUserNestedInput
-    attendances?: AttendanceUpdateManyWithoutStudentNestedInput
-  }
-
-  export type UserUncheckedUpdateWithoutResultsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    avatar?: NullableStringFieldUpdateOperationsInput | string | null
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    studentProfile?: StudentUncheckedUpdateOneWithoutUserNestedInput
-    teacherProfile?: TeacherUncheckedUpdateOneWithoutUserNestedInput
-    adminProfile?: AdminUncheckedUpdateOneWithoutUserNestedInput
-    profile?: ProfileUncheckedUpdateOneWithoutUserNestedInput
-    enrollments?: EnrollmentUncheckedUpdateManyWithoutUserNestedInput
-    reviews?: ReviewUncheckedUpdateManyWithoutUserNestedInput
-    attendances?: AttendanceUncheckedUpdateManyWithoutStudentNestedInput
   }
 
   export type CourseUpsertWithoutResultsInput = {
@@ -20882,10 +22149,10 @@ export namespace Prisma {
     popular?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    attendances?: AttendanceUpdateManyWithoutCourseNestedInput
     teacher?: TeacherUpdateOneWithoutCoursesNestedInput
     enrollments?: EnrollmentUpdateManyWithoutCourseNestedInput
     reviews?: ReviewUpdateManyWithoutCourseNestedInput
-    attendances?: AttendanceUpdateManyWithoutCourseNestedInput
   }
 
   export type CourseUncheckedUpdateWithoutResultsInput = {
@@ -20904,52 +22171,58 @@ export namespace Prisma {
     teacherId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    attendances?: AttendanceUncheckedUpdateManyWithoutCourseNestedInput
     enrollments?: EnrollmentUncheckedUpdateManyWithoutCourseNestedInput
     reviews?: ReviewUncheckedUpdateManyWithoutCourseNestedInput
-    attendances?: AttendanceUncheckedUpdateManyWithoutCourseNestedInput
   }
 
-  export type UserCreateWithoutAttendancesInput = {
-    id?: string
-    name: string
-    email: string
-    password: string
-    role?: $Enums.Role
-    avatar?: string | null
-    phone?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    studentProfile?: StudentCreateNestedOneWithoutUserInput
-    teacherProfile?: TeacherCreateNestedOneWithoutUserInput
-    adminProfile?: AdminCreateNestedOneWithoutUserInput
-    profile?: ProfileCreateNestedOneWithoutUserInput
-    enrollments?: EnrollmentCreateNestedManyWithoutUserInput
-    reviews?: ReviewCreateNestedManyWithoutUserInput
-    results?: ResultCreateNestedManyWithoutStudentInput
+  export type UserUpsertWithoutResultsInput = {
+    update: XOR<UserUpdateWithoutResultsInput, UserUncheckedUpdateWithoutResultsInput>
+    create: XOR<UserCreateWithoutResultsInput, UserUncheckedCreateWithoutResultsInput>
+    where?: UserWhereInput
   }
 
-  export type UserUncheckedCreateWithoutAttendancesInput = {
-    id?: string
-    name: string
-    email: string
-    password: string
-    role?: $Enums.Role
-    avatar?: string | null
-    phone?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    studentProfile?: StudentUncheckedCreateNestedOneWithoutUserInput
-    teacherProfile?: TeacherUncheckedCreateNestedOneWithoutUserInput
-    adminProfile?: AdminUncheckedCreateNestedOneWithoutUserInput
-    profile?: ProfileUncheckedCreateNestedOneWithoutUserInput
-    enrollments?: EnrollmentUncheckedCreateNestedManyWithoutUserInput
-    reviews?: ReviewUncheckedCreateNestedManyWithoutUserInput
-    results?: ResultUncheckedCreateNestedManyWithoutStudentInput
+  export type UserUpdateToOneWithWhereWithoutResultsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutResultsInput, UserUncheckedUpdateWithoutResultsInput>
   }
 
-  export type UserCreateOrConnectWithoutAttendancesInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutAttendancesInput, UserUncheckedCreateWithoutAttendancesInput>
+  export type UserUpdateWithoutResultsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    adminProfile?: AdminUpdateOneWithoutUserNestedInput
+    attendances?: AttendanceUpdateManyWithoutStudentNestedInput
+    enrollments?: EnrollmentUpdateManyWithoutUserNestedInput
+    profile?: ProfileUpdateOneWithoutUserNestedInput
+    reviews?: ReviewUpdateManyWithoutUserNestedInput
+    studentProfile?: StudentUpdateOneWithoutUserNestedInput
+    teacherProfile?: TeacherUpdateOneWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutResultsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    adminProfile?: AdminUncheckedUpdateOneWithoutUserNestedInput
+    attendances?: AttendanceUncheckedUpdateManyWithoutStudentNestedInput
+    enrollments?: EnrollmentUncheckedUpdateManyWithoutUserNestedInput
+    profile?: ProfileUncheckedUpdateOneWithoutUserNestedInput
+    reviews?: ReviewUncheckedUpdateManyWithoutUserNestedInput
+    studentProfile?: StudentUncheckedUpdateOneWithoutUserNestedInput
+    teacherProfile?: TeacherUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type CourseCreateWithoutAttendancesInput = {
@@ -20969,8 +22242,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     teacher?: TeacherCreateNestedOneWithoutCoursesInput
     enrollments?: EnrollmentCreateNestedManyWithoutCourseInput
-    reviews?: ReviewCreateNestedManyWithoutCourseInput
     results?: ResultCreateNestedManyWithoutCourseInput
+    reviews?: ReviewCreateNestedManyWithoutCourseInput
   }
 
   export type CourseUncheckedCreateWithoutAttendancesInput = {
@@ -20990,8 +22263,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     enrollments?: EnrollmentUncheckedCreateNestedManyWithoutCourseInput
-    reviews?: ReviewUncheckedCreateNestedManyWithoutCourseInput
     results?: ResultUncheckedCreateNestedManyWithoutCourseInput
+    reviews?: ReviewUncheckedCreateNestedManyWithoutCourseInput
   }
 
   export type CourseCreateOrConnectWithoutAttendancesInput = {
@@ -20999,53 +22272,47 @@ export namespace Prisma {
     create: XOR<CourseCreateWithoutAttendancesInput, CourseUncheckedCreateWithoutAttendancesInput>
   }
 
-  export type UserUpsertWithoutAttendancesInput = {
-    update: XOR<UserUpdateWithoutAttendancesInput, UserUncheckedUpdateWithoutAttendancesInput>
+  export type UserCreateWithoutAttendancesInput = {
+    id?: string
+    name: string
+    email: string
+    password: string
+    role?: $Enums.Role
+    avatar?: string | null
+    phone?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    adminProfile?: AdminCreateNestedOneWithoutUserInput
+    enrollments?: EnrollmentCreateNestedManyWithoutUserInput
+    profile?: ProfileCreateNestedOneWithoutUserInput
+    results?: ResultCreateNestedManyWithoutStudentInput
+    reviews?: ReviewCreateNestedManyWithoutUserInput
+    studentProfile?: StudentCreateNestedOneWithoutUserInput
+    teacherProfile?: TeacherCreateNestedOneWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutAttendancesInput = {
+    id?: string
+    name: string
+    email: string
+    password: string
+    role?: $Enums.Role
+    avatar?: string | null
+    phone?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    adminProfile?: AdminUncheckedCreateNestedOneWithoutUserInput
+    enrollments?: EnrollmentUncheckedCreateNestedManyWithoutUserInput
+    profile?: ProfileUncheckedCreateNestedOneWithoutUserInput
+    results?: ResultUncheckedCreateNestedManyWithoutStudentInput
+    reviews?: ReviewUncheckedCreateNestedManyWithoutUserInput
+    studentProfile?: StudentUncheckedCreateNestedOneWithoutUserInput
+    teacherProfile?: TeacherUncheckedCreateNestedOneWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutAttendancesInput = {
+    where: UserWhereUniqueInput
     create: XOR<UserCreateWithoutAttendancesInput, UserUncheckedCreateWithoutAttendancesInput>
-    where?: UserWhereInput
-  }
-
-  export type UserUpdateToOneWithWhereWithoutAttendancesInput = {
-    where?: UserWhereInput
-    data: XOR<UserUpdateWithoutAttendancesInput, UserUncheckedUpdateWithoutAttendancesInput>
-  }
-
-  export type UserUpdateWithoutAttendancesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    avatar?: NullableStringFieldUpdateOperationsInput | string | null
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    studentProfile?: StudentUpdateOneWithoutUserNestedInput
-    teacherProfile?: TeacherUpdateOneWithoutUserNestedInput
-    adminProfile?: AdminUpdateOneWithoutUserNestedInput
-    profile?: ProfileUpdateOneWithoutUserNestedInput
-    enrollments?: EnrollmentUpdateManyWithoutUserNestedInput
-    reviews?: ReviewUpdateManyWithoutUserNestedInput
-    results?: ResultUpdateManyWithoutStudentNestedInput
-  }
-
-  export type UserUncheckedUpdateWithoutAttendancesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    avatar?: NullableStringFieldUpdateOperationsInput | string | null
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    studentProfile?: StudentUncheckedUpdateOneWithoutUserNestedInput
-    teacherProfile?: TeacherUncheckedUpdateOneWithoutUserNestedInput
-    adminProfile?: AdminUncheckedUpdateOneWithoutUserNestedInput
-    profile?: ProfileUncheckedUpdateOneWithoutUserNestedInput
-    enrollments?: EnrollmentUncheckedUpdateManyWithoutUserNestedInput
-    reviews?: ReviewUncheckedUpdateManyWithoutUserNestedInput
-    results?: ResultUncheckedUpdateManyWithoutStudentNestedInput
   }
 
   export type CourseUpsertWithoutAttendancesInput = {
@@ -21076,8 +22343,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     teacher?: TeacherUpdateOneWithoutCoursesNestedInput
     enrollments?: EnrollmentUpdateManyWithoutCourseNestedInput
-    reviews?: ReviewUpdateManyWithoutCourseNestedInput
     results?: ResultUpdateManyWithoutCourseNestedInput
+    reviews?: ReviewUpdateManyWithoutCourseNestedInput
   }
 
   export type CourseUncheckedUpdateWithoutAttendancesInput = {
@@ -21097,8 +22364,66 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     enrollments?: EnrollmentUncheckedUpdateManyWithoutCourseNestedInput
-    reviews?: ReviewUncheckedUpdateManyWithoutCourseNestedInput
     results?: ResultUncheckedUpdateManyWithoutCourseNestedInput
+    reviews?: ReviewUncheckedUpdateManyWithoutCourseNestedInput
+  }
+
+  export type UserUpsertWithoutAttendancesInput = {
+    update: XOR<UserUpdateWithoutAttendancesInput, UserUncheckedUpdateWithoutAttendancesInput>
+    create: XOR<UserCreateWithoutAttendancesInput, UserUncheckedCreateWithoutAttendancesInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutAttendancesInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutAttendancesInput, UserUncheckedUpdateWithoutAttendancesInput>
+  }
+
+  export type UserUpdateWithoutAttendancesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    adminProfile?: AdminUpdateOneWithoutUserNestedInput
+    enrollments?: EnrollmentUpdateManyWithoutUserNestedInput
+    profile?: ProfileUpdateOneWithoutUserNestedInput
+    results?: ResultUpdateManyWithoutStudentNestedInput
+    reviews?: ReviewUpdateManyWithoutUserNestedInput
+    studentProfile?: StudentUpdateOneWithoutUserNestedInput
+    teacherProfile?: TeacherUpdateOneWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutAttendancesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    adminProfile?: AdminUncheckedUpdateOneWithoutUserNestedInput
+    enrollments?: EnrollmentUncheckedUpdateManyWithoutUserNestedInput
+    profile?: ProfileUncheckedUpdateOneWithoutUserNestedInput
+    results?: ResultUncheckedUpdateManyWithoutStudentNestedInput
+    reviews?: ReviewUncheckedUpdateManyWithoutUserNestedInput
+    studentProfile?: StudentUncheckedUpdateOneWithoutUserNestedInput
+    teacherProfile?: TeacherUncheckedUpdateOneWithoutUserNestedInput
+  }
+
+  export type AttendanceCreateManyStudentInput = {
+    id?: string
+    courseId: string
+    date: Date | string
+    status: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type EnrollmentCreateManyUserInput = {
@@ -21119,6 +22444,17 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
+  export type ResultCreateManyStudentInput = {
+    id?: string
+    courseId: string
+    marks: number
+    grade: string
+    remarks?: string | null
+    examDate?: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type ReviewCreateManyUserInput = {
     id?: string
     courseId?: string | null
@@ -21132,24 +22468,31 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
-  export type ResultCreateManyStudentInput = {
-    id?: string
-    courseId: string
-    marks: number
-    grade: string
-    remarks?: string | null
-    examDate?: Date | string
-    createdAt?: Date | string
-    updatedAt?: Date | string
+  export type AttendanceUpdateWithoutStudentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    course?: CourseUpdateOneRequiredWithoutAttendancesNestedInput
   }
 
-  export type AttendanceCreateManyStudentInput = {
-    id?: string
-    courseId: string
-    date: Date | string
-    status: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
+  export type AttendanceUncheckedUpdateWithoutStudentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    courseId?: StringFieldUpdateOperationsInput | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AttendanceUncheckedUpdateManyWithoutStudentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    courseId?: StringFieldUpdateOperationsInput | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type EnrollmentUpdateWithoutUserInput = {
@@ -21206,6 +22549,39 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type ResultUpdateWithoutStudentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    marks?: FloatFieldUpdateOperationsInput | number
+    grade?: StringFieldUpdateOperationsInput | string
+    remarks?: NullableStringFieldUpdateOperationsInput | string | null
+    examDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    course?: CourseUpdateOneRequiredWithoutResultsNestedInput
+  }
+
+  export type ResultUncheckedUpdateWithoutStudentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    courseId?: StringFieldUpdateOperationsInput | string
+    marks?: FloatFieldUpdateOperationsInput | number
+    grade?: StringFieldUpdateOperationsInput | string
+    remarks?: NullableStringFieldUpdateOperationsInput | string | null
+    examDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ResultUncheckedUpdateManyWithoutStudentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    courseId?: StringFieldUpdateOperationsInput | string
+    marks?: FloatFieldUpdateOperationsInput | number
+    grade?: StringFieldUpdateOperationsInput | string
+    remarks?: NullableStringFieldUpdateOperationsInput | string | null
+    examDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type ReviewUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
@@ -21245,66 +22621,6 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type ResultUpdateWithoutStudentInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    marks?: FloatFieldUpdateOperationsInput | number
-    grade?: StringFieldUpdateOperationsInput | string
-    remarks?: NullableStringFieldUpdateOperationsInput | string | null
-    examDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    course?: CourseUpdateOneRequiredWithoutResultsNestedInput
-  }
-
-  export type ResultUncheckedUpdateWithoutStudentInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    courseId?: StringFieldUpdateOperationsInput | string
-    marks?: FloatFieldUpdateOperationsInput | number
-    grade?: StringFieldUpdateOperationsInput | string
-    remarks?: NullableStringFieldUpdateOperationsInput | string | null
-    examDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type ResultUncheckedUpdateManyWithoutStudentInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    courseId?: StringFieldUpdateOperationsInput | string
-    marks?: FloatFieldUpdateOperationsInput | number
-    grade?: StringFieldUpdateOperationsInput | string
-    remarks?: NullableStringFieldUpdateOperationsInput | string | null
-    examDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type AttendanceUpdateWithoutStudentInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    date?: DateTimeFieldUpdateOperationsInput | Date | string
-    status?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    course?: CourseUpdateOneRequiredWithoutAttendancesNestedInput
-  }
-
-  export type AttendanceUncheckedUpdateWithoutStudentInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    courseId?: StringFieldUpdateOperationsInput | string
-    date?: DateTimeFieldUpdateOperationsInput | Date | string
-    status?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type AttendanceUncheckedUpdateManyWithoutStudentInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    courseId?: StringFieldUpdateOperationsInput | string
-    date?: DateTimeFieldUpdateOperationsInput | Date | string
-    status?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
   export type CourseCreateManyTeacherInput = {
     id?: string
     title: string
@@ -21337,10 +22653,10 @@ export namespace Prisma {
     popular?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    enrollments?: EnrollmentUpdateManyWithoutCourseNestedInput
-    reviews?: ReviewUpdateManyWithoutCourseNestedInput
-    results?: ResultUpdateManyWithoutCourseNestedInput
     attendances?: AttendanceUpdateManyWithoutCourseNestedInput
+    enrollments?: EnrollmentUpdateManyWithoutCourseNestedInput
+    results?: ResultUpdateManyWithoutCourseNestedInput
+    reviews?: ReviewUpdateManyWithoutCourseNestedInput
   }
 
   export type CourseUncheckedUpdateWithoutTeacherInput = {
@@ -21358,10 +22674,10 @@ export namespace Prisma {
     popular?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    enrollments?: EnrollmentUncheckedUpdateManyWithoutCourseNestedInput
-    reviews?: ReviewUncheckedUpdateManyWithoutCourseNestedInput
-    results?: ResultUncheckedUpdateManyWithoutCourseNestedInput
     attendances?: AttendanceUncheckedUpdateManyWithoutCourseNestedInput
+    enrollments?: EnrollmentUncheckedUpdateManyWithoutCourseNestedInput
+    results?: ResultUncheckedUpdateManyWithoutCourseNestedInput
+    reviews?: ReviewUncheckedUpdateManyWithoutCourseNestedInput
   }
 
   export type CourseUncheckedUpdateManyWithoutTeacherInput = {
@@ -21379,6 +22695,15 @@ export namespace Prisma {
     popular?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AttendanceCreateManyCourseInput = {
+    id?: string
+    studentId: string
+    date: Date | string
+    status: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type EnrollmentCreateManyCourseInput = {
@@ -21399,6 +22724,17 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
+  export type ResultCreateManyCourseInput = {
+    id?: string
+    studentId: string
+    marks: number
+    grade: string
+    remarks?: string | null
+    examDate?: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type ReviewCreateManyCourseInput = {
     id?: string
     userId?: string | null
@@ -21412,24 +22748,31 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
-  export type ResultCreateManyCourseInput = {
-    id?: string
-    studentId: string
-    marks: number
-    grade: string
-    remarks?: string | null
-    examDate?: Date | string
-    createdAt?: Date | string
-    updatedAt?: Date | string
+  export type AttendanceUpdateWithoutCourseInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    student?: UserUpdateOneRequiredWithoutAttendancesNestedInput
   }
 
-  export type AttendanceCreateManyCourseInput = {
-    id?: string
-    studentId: string
-    date: Date | string
-    status: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
+  export type AttendanceUncheckedUpdateWithoutCourseInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    studentId?: StringFieldUpdateOperationsInput | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AttendanceUncheckedUpdateManyWithoutCourseInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    studentId?: StringFieldUpdateOperationsInput | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type EnrollmentUpdateWithoutCourseInput = {
@@ -21486,6 +22829,39 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type ResultUpdateWithoutCourseInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    marks?: FloatFieldUpdateOperationsInput | number
+    grade?: StringFieldUpdateOperationsInput | string
+    remarks?: NullableStringFieldUpdateOperationsInput | string | null
+    examDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    student?: UserUpdateOneRequiredWithoutResultsNestedInput
+  }
+
+  export type ResultUncheckedUpdateWithoutCourseInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    studentId?: StringFieldUpdateOperationsInput | string
+    marks?: FloatFieldUpdateOperationsInput | number
+    grade?: StringFieldUpdateOperationsInput | string
+    remarks?: NullableStringFieldUpdateOperationsInput | string | null
+    examDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ResultUncheckedUpdateManyWithoutCourseInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    studentId?: StringFieldUpdateOperationsInput | string
+    marks?: FloatFieldUpdateOperationsInput | number
+    grade?: StringFieldUpdateOperationsInput | string
+    remarks?: NullableStringFieldUpdateOperationsInput | string | null
+    examDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type ReviewUpdateWithoutCourseInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
@@ -21521,66 +22897,6 @@ export namespace Prisma {
     rating?: IntFieldUpdateOperationsInput | number
     comment?: StringFieldUpdateOperationsInput | string
     featured?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type ResultUpdateWithoutCourseInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    marks?: FloatFieldUpdateOperationsInput | number
-    grade?: StringFieldUpdateOperationsInput | string
-    remarks?: NullableStringFieldUpdateOperationsInput | string | null
-    examDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    student?: UserUpdateOneRequiredWithoutResultsNestedInput
-  }
-
-  export type ResultUncheckedUpdateWithoutCourseInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    studentId?: StringFieldUpdateOperationsInput | string
-    marks?: FloatFieldUpdateOperationsInput | number
-    grade?: StringFieldUpdateOperationsInput | string
-    remarks?: NullableStringFieldUpdateOperationsInput | string | null
-    examDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type ResultUncheckedUpdateManyWithoutCourseInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    studentId?: StringFieldUpdateOperationsInput | string
-    marks?: FloatFieldUpdateOperationsInput | number
-    grade?: StringFieldUpdateOperationsInput | string
-    remarks?: NullableStringFieldUpdateOperationsInput | string | null
-    examDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type AttendanceUpdateWithoutCourseInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    date?: DateTimeFieldUpdateOperationsInput | Date | string
-    status?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    student?: UserUpdateOneRequiredWithoutAttendancesNestedInput
-  }
-
-  export type AttendanceUncheckedUpdateWithoutCourseInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    studentId?: StringFieldUpdateOperationsInput | string
-    date?: DateTimeFieldUpdateOperationsInput | Date | string
-    status?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type AttendanceUncheckedUpdateManyWithoutCourseInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    studentId?: StringFieldUpdateOperationsInput | string
-    date?: DateTimeFieldUpdateOperationsInput | Date | string
-    status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

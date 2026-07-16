@@ -53,7 +53,7 @@ export default function StudentCoursesPage() {
         <div className="grid gap-4 sm:grid-cols-2">
           {enrollments.map((enrollment) => {
             const course = enrollment.course
-            const Icon = getCourseIcon(course?.icon ?? null)
+            const Icon = getCourseIcon(course?.icon ?? '')
             return (
               <div
                 key={enrollment.id}

@@ -50,6 +50,26 @@ const updateEnrollment = catchAsync(async (req, res) => {
   });
 });
 
+const approveEnrollment = catchAsync(async (req, res) => {
+  const result = await EnrollmentService.approveEnrollmentInDb(req.params.id, req.body?.reason);
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: 'Enrollment approved successfully',
+    data: result,
+  });
+});
+
+const rejectEnrollment = catchAsync(async (req, res) => {
+  const result = await EnrollmentService.rejectEnrollmentInDb(req.params.id, req.body?.reason);
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: req.body?.reason || 'Enrollment rejected successfully',
+    data: result,
+  });
+});
+
 const deleteEnrollment = catchAsync(async (req, res) => {
   const result = await EnrollmentService.deleteEnrollmentFromDb(req.params.id);
   sendResponse(res, {
@@ -101,5 +121,7 @@ export const EnrollmentController = {
   checkEnrollment,
   getSingleEnrollment,
   updateEnrollment,
+  approveEnrollment,
+  rejectEnrollment,
   deleteEnrollment,
 };

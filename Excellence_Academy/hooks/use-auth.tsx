@@ -40,7 +40,7 @@ function toClientUser(serverUser: ServerUser): User {
     name: serverUser.name,
     email: serverUser.email,
     role: mapRole(serverUser.role),
-    avatar: serverUser.avatar ?? 'https://i.pravatar.cc/300?img=12',
+    avatar: serverUser.avatar ?? undefined,
     phone: serverUser.phone ?? undefined,
   }
 }

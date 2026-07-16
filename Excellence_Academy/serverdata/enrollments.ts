@@ -1,4 +1,4 @@
-import { apiGet, apiPost, apiPut, apiDelete } from './api'
+import { apiGet, apiPost, apiPut, apiPatch, apiDelete } from './api'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -90,6 +90,22 @@ export interface UpdateEnrollmentPayload {
 
 // ─── API calls ────────────────────────────────────────────────────────────────
 
+/** GET /api/admin/enrollments — ADMIN only */
+export async function getAdminEnrollments(filters: EnrollmentFilters = {}): Promise<EnrollmentsResult> {
+  const params = new URLSearchParams()
+  if (filters.status)        params.set('status', filters.status)
+  if (filters.paymentStatus) params.set('paymentStatus', filters.paymentStatus)
+  if (filters.userId)        params.set('userId', filters.userId)
+  if (filters.courseId)      params.set('courseId', filters.courseId)
+  if (filters.paymentMethod) params.set('paymentMethod', filters.paymentMethod)
+  if (filters.page)          params.set('page', String(filters.page))
+  if (filters.limit)         params.set('limit', String(filters.limit))
+
+  const query = params.toString()
+  const res = await apiGet<ServerEnrollment[]>(`/admin/enrollments${query ? `?${query}` : ''}`)
+  return { data: res.data ?? [], meta: res.meta ?? { page: 1, limit: 10, total: 0 } }
+}
+
 /** GET /api/enrollments — ADMIN only */
 export async function getEnrollments(filters: EnrollmentFilters = {}): Promise<EnrollmentsResult> {
   const params = new URLSearchParams()
@@ -125,6 +141,12 @@ export async function checkEnrollment(courseId: string): Promise<EnrollmentCheck
   return res.data
 }
 
+/** GET /api/admin/enrollments/:id — ADMIN only */
+export async function getAdminEnrollment(id: string): Promise<ServerEnrollment> {
+  const res = await apiGet<ServerEnrollment>(`/admin/enrollments/${id}`)
+  return res.data
+}
+
 /** GET /api/enrollments/:id — ADMIN, STUDENT, or TEACHER */
 export async function getEnrollment(id: string): Promise<ServerEnrollment> {
   const res = await apiGet<ServerEnrollment>(`/enrollments/${id}`)
@@ -140,6 +162,18 @@ export async function createEnrollment(payload: CreateEnrollmentPayload): Promis
 /** PUT /api/enrollments/:id — ADMIN only */
 export async function updateEnrollment(id: string, payload: UpdateEnrollmentPayload): Promise<ServerEnrollment> {
   const res = await apiPut<ServerEnrollment>(`/enrollments/${id}`, payload)
+  return res.data
+}
+
+/** PATCH /api/admin/enrollments/:id/approve — ADMIN only */
+export async function approveEnrollment(id: string, reason?: string): Promise<ServerEnrollment> {
+  const res = await apiPatch<ServerEnrollment>(`/admin/enrollments/${id}/approve`, reason ? { reason } : {})
+  return res.data
+}
+
+/** PATCH /api/admin/enrollments/:id/reject — ADMIN only */
+export async function rejectEnrollment(id: string, reason?: string): Promise<ServerEnrollment> {
+  const res = await apiPatch<ServerEnrollment>(`/admin/enrollments/${id}/reject`, reason ? { reason } : {})
   return res.data
 }
 

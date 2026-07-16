@@ -1,7 +1,10 @@
+import { JwtPayload } from 'jsonwebtoken';
 import { catchAsync } from '../../app/helper/catchAsync';
+import ApiError from '../../app/error/ApiError';
 import { sendResponse } from '../../app/shared/sendResponse';
 import { TeacherService } from './teachers.service';
 import { teacherFilterableFields } from './teachers.constant';
+import { Role } from '../../generated/prisma';
 import httpStatus from 'http-status';
 
 const createTeacher = catchAsync(async (req, res) => {
@@ -45,6 +48,15 @@ const getSingleTeacher = catchAsync(async (req, res) => {
 
 const updateTeacher = catchAsync(async (req, res) => {
   const { id } = req.params;
+  const currentUser = req.user as JwtPayload;
+
+  if (currentUser.role === Role.TEACHER) {
+    const teacher = await TeacherService.getSingleTeacherFromDb(id);
+    if (teacher.userId !== currentUser.id) {
+      throw new ApiError(httpStatus.FORBIDDEN, 'You can only update your own teacher profile');
+    }
+  }
+
   const result = await TeacherService.updateTeacherInDb(id, req.body);
   sendResponse(res, {
     success: true,

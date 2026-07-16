@@ -25,6 +25,8 @@ router.get(
 // ── Admin routes ──────────────────────────────────────────────────────────────
 router.get('/', auth(Role.ADMIN), EnrollmentController.getAllEnrollments);
 router.get('/:id', auth(Role.ADMIN, Role.STUDENT, Role.TEACHER), EnrollmentController.getSingleEnrollment);
+router.patch('/:id/approve', auth(Role.ADMIN), EnrollmentController.approveEnrollment);
+router.patch('/:id/reject', auth(Role.ADMIN), EnrollmentController.rejectEnrollment);
 
 // ── Shared routes ─────────────────────────────────────────────────────────────
 router.post(

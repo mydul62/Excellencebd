@@ -209,6 +209,17 @@ exports.Prisma.ReviewScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.PhotoGalleryScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  description: 'description',
+  category: 'category',
+  imageUrl: 'imageUrl',
+  publicId: 'publicId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.StudentScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
@@ -323,6 +334,7 @@ exports.Prisma.ModelName = {
   Enrollment: 'Enrollment',
   Notice: 'Notice',
   Review: 'Review',
+  PhotoGallery: 'PhotoGallery',
   Student: 'Student',
   Admin: 'Admin',
   Profile: 'Profile',
