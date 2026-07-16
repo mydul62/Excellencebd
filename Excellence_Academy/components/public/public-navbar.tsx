@@ -16,6 +16,7 @@ const navLinks = [
   { href: '/courses', label: 'কোর্সসমূহ' },
   { href: '/teachers', label: 'শিক্ষকগণ' },
   { href: '/notice', label: 'নোটিশ' },
+  { href: '/photo-gallery', label: 'ফটো গ্যালারি' },
   { href: '/contact', label: 'যোগাযোগ' },
 ]
 

@@ -17,7 +17,7 @@ export default function CoursesPage() {
       />
 
       <section className="py-16 md:py-24">
-        <div className="mx-auto max-w-7xl px-4 md:px-6">
+        <div className="mx-auto container w-[95%] px-4 md:px-6">
           <CoursesBrowser />
         </div>
       </section>

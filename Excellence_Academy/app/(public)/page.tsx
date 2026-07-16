@@ -5,6 +5,7 @@ import { StatsBand } from "@/components/public/home/stats-band"
 import { FeaturedTeachers } from "@/components/public/home/featured-teachers"
 import { Testimonials } from "@/components/public/home/testimonials"
 import { CtaSection } from "@/components/public/home/cta-section"
+import { PhotoGallerySection } from "@/components/public/home/photo-gallery-section"
 
 export default function HomePage() {
   return (
@@ -14,6 +15,7 @@ export default function HomePage() {
       <WhyChooseUs />
       <StatsBand />
       <FeaturedTeachers />
+      <PhotoGallerySection />
       <Testimonials />
       <CtaSection />
     </>

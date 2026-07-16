@@ -1,0 +1,228 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             String       @id @default(uuid())
+  name           String
+  email          String       @unique
+  password       String
+  role           Role         @default(STUDENT)
+  avatar         String?
+  phone          String?
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  adminProfile   Admin?
+  attendances    Attendance[]
+  enrollments    Enrollment[]
+  profile        Profile?
+  results        Result[]
+  reviews        Review[]
+  studentProfile Student?
+  teacherProfile Teacher?
+}
+
+model Teacher {
+  id              String   @id @default(uuid())
+  userId          String   @unique
+  subject         String
+  bio             String?
+  experienceYears Int      @default(0)
+  qualification   String?
+  department      String?
+  designation     String?
+  joinedAt        DateTime @default(now())
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  courses         Course[]
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Course {
+  id          String       @id @default(uuid())
+  title       String
+  slug        String       @unique
+  category    String
+  description String
+  duration    String
+  price       Float
+  level       CourseLevel  @default(Beginner)
+  icon        String?
+  seats       Int          @default(30)
+  rating      Float        @default(0)
+  popular     Boolean      @default(false)
+  teacherId   String?
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  attendances Attendance[]
+  teacher     Teacher?     @relation(fields: [teacherId], references: [id])
+  enrollments Enrollment[]
+  results     Result[]
+  reviews     Review[]
+}
+
+model Enrollment {
+  id            String           @id @default(uuid())
+  userId        String
+  courseId      String
+  name          String
+  email         String
+  phone         String
+  paymentMethod String
+  transactionId String
+  notes         String?
+  screenshotUrl String?
+  status        EnrollmentStatus @default(pending)
+  paymentStatus PaymentStatus    @default(unpaid)
+  amountPaid    Float            @default(0)
+  enrolledAt    DateTime         @default(now())
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+  course        Course           @relation(fields: [courseId], references: [id])
+  user          User             @relation(fields: [userId], references: [id])
+}
+
+model Notice {
+  id        String         @id @default(uuid())
+  title     String
+  content   String
+  category  NoticeCategory @default(general)
+  audience  NoticeAudience @default(all)
+  date      DateTime       @default(now())
+  author    String
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+}
+
+model Review {
+  id        String   @id @default(uuid())
+  userId    String?
+  courseId  String?
+  name      String
+  avatar    String?
+  role      String?
+  rating    Int
+  comment   String
+  featured  Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  course    Course?  @relation(fields: [courseId], references: [id])
+  user      User?    @relation(fields: [userId], references: [id])
+}
+
+model PhotoGallery {
+  id          String   @id @default(uuid())
+  title       String?
+  description String?
+  category    String   @default("memories")
+  imageUrl    String
+  publicId    String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Student {
+  id        String   @id @default(uuid())
+  userId    String   @unique
+  guardian  String?
+  address   String?
+  status    String?  @default("active")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Admin {
+  id        String   @id @default(uuid())
+  userId    String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Profile {
+  id               String   @id @default(uuid())
+  userId           String   @unique
+  address          String?
+  gender           String?
+  dateOfBirth      String?
+  department       String?
+  subject          String?
+  designation      String?
+  bloodGroup       String?
+  emergencyContact String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Result {
+  id        String   @id @default(uuid())
+  studentId String
+  courseId  String
+  marks     Float
+  grade     String
+  remarks   String?
+  examDate  DateTime @default(now())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  student   User     @relation(fields: [studentId], references: [id], onDelete: Cascade)
+}
+
+model Attendance {
+  id        String   @id @default(uuid())
+  studentId String
+  courseId  String
+  date      DateTime
+  status    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  student   User     @relation(fields: [studentId], references: [id], onDelete: Cascade)
+}
+
+enum Role {
+  ADMIN
+  STUDENT
+  TEACHER
+}
+
+enum CourseLevel {
+  Beginner
+  Intermediate
+  Advanced
+}
+
+enum EnrollmentStatus {
+  pending
+  approved
+  rejected
+}
+
+enum PaymentStatus {
+  unpaid
+  paid
+  partial
+}
+
+enum NoticeCategory {
+  general
+  academic
+  exam
+  holiday
+  event
+}
+
+enum NoticeAudience {
+  all
+  students
+  teachers
+  parents
+}

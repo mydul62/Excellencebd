@@ -1,25 +1,48 @@
 'use client'
 
 import * as React from 'react'
-import { demoUsers } from '@/data/users'
 import type { Role, User } from '@/types'
+import {
+  loginApi,
+  registerApi,
+  saveAccessToken,
+  clearAccessToken,
+  type ServerRole,
+  type ServerUser,
+} from '@/serverdata/auth'
 
 const STORAGE_KEY = 'bf_auth_user'
+
+interface RegisterData {
+  name: string
+  email: string
+  password: string
+  phone?: string
+}
 
 interface AuthContextValue {
   user: User | null
   loading: boolean
   login: (email: string, password: string) => Promise<User>
-  loginAs: (role: Role) => Promise<User>
-  register: (data: { name: string; email: string; phone: string }) => Promise<User>
+  register: (data: RegisterData) => Promise<User>
   logout: () => void
 }
 
 const AuthContext = React.createContext<AuthContextValue | null>(null)
 
-function stripPassword(u: (typeof demoUsers)[number]): User {
-  const { password: _password, ...rest } = u
-  return rest
+function mapRole(role: ServerRole): Role {
+  return role.toLowerCase() as Role
+}
+
+function toClientUser(serverUser: ServerUser): User {
+  return {
+    id: serverUser.id,
+    name: serverUser.name,
+    email: serverUser.email,
+    role: mapRole(serverUser.role),
+    avatar: serverUser.avatar ?? undefined,
+    phone: serverUser.phone ?? undefined,
+  }
 }
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
@@ -29,69 +52,80 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   React.useEffect(() => {
     try {
       const stored = localStorage.getItem(STORAGE_KEY)
-      if (stored) setUser(JSON.parse(stored))
+      if (stored) {
+        setUser(JSON.parse(stored))
+      }
     } catch {
-      // ignore corrupted storage
+      localStorage.removeItem(STORAGE_KEY)
+    } finally {
+      setLoading(false)
     }
-    setLoading(false)
   }, [])
 
   const persist = React.useCallback((u: User | null) => {
     setUser(u)
+
     if (typeof window !== 'undefined') {
-      if (u) localStorage.setItem(STORAGE_KEY, JSON.stringify(u))
-      else localStorage.removeItem(STORAGE_KEY)
+      if (u) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(u))
+      } else {
+        localStorage.removeItem(STORAGE_KEY)
+      }
     }
   }, [])
 
   const login = React.useCallback(
-    async (email: string, password: string) => {
-      await new Promise((r) => setTimeout(r, 600))
-      const match = demoUsers.find(
-        (u) => u.email.toLowerCase() === email.trim().toLowerCase() && u.password === password,
-      )
-      if (!match) throw new Error('Invalid email or password')
-      const clean = stripPassword(match)
-      persist(clean)
-      return clean
-    },
-    [persist],
-  )
+    async (email: string, password: string): Promise<User> => {
+      const { user: serverUser, accessToken } = await loginApi({
+        email,
+        password,
+      })
 
-  const loginAs = React.useCallback(
-    async (role: Role) => {
-      await new Promise((r) => setTimeout(r, 400))
-      const match = demoUsers.find((u) => u.role === role)
-      if (!match) throw new Error('Demo account not found')
-      const clean = stripPassword(match)
-      persist(clean)
-      return clean
+      saveAccessToken(accessToken)
+
+      const clientUser = toClientUser(serverUser)
+
+      persist(clientUser)
+
+      return clientUser
     },
     [persist],
   )
 
   const register = React.useCallback(
-    async (data: { name: string; email: string; phone: string }) => {
-      await new Promise((r) => setTimeout(r, 700))
-      const newUser: User = {
-        id: `s-${Date.now()}`,
+    async (data: RegisterData): Promise<User> => {
+      const { user: serverUser, accessToken } = await registerApi({
         name: data.name,
         email: data.email,
+        password: data.password, // ✅ FIXED
         phone: data.phone,
-        role: 'student',
-        avatar: 'https://i.pravatar.cc/300?img=12',
-      }
-      persist(newUser)
-      return newUser
+      })
+
+      saveAccessToken(accessToken)
+
+      const clientUser = toClientUser(serverUser)
+
+      persist(clientUser)
+
+      return clientUser
     },
     [persist],
   )
 
-  const logout = React.useCallback(() => persist(null), [persist])
+  const logout = React.useCallback(() => {
+    clearAccessToken()
+    persist(null)
+  }, [persist])
 
   const value = React.useMemo(
-    () => ({ user, loading, login, loginAs, register, logout }),
-    [user, loading, login, loginAs, register, logout],
+    () => ({
+      user,
+      loading,
+      login,
+      register,
+      logout,
+    }),
+    [user, loading, login, register, logout],
   )
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
@@ -99,6 +133,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
 export function useAuth() {
   const ctx = React.useContext(AuthContext)
-  if (!ctx) throw new Error('useAuth must be used within an AuthProvider')
+
+  if (!ctx) {
+    throw new Error('useAuth must be used within an AuthProvider')
+  }
+
   return ctx
 }

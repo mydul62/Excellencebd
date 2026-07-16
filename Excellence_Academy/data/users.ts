@@ -1,4 +1,4 @@
-import type { User } from '@/types'
+﻿import type { User } from '@/types'
 
 /**
  * Demo credentials. In a real backend these would be validated server-side.
@@ -11,7 +11,7 @@ export const demoUsers: (User & { password: string })[] = [
     email: 'admin@demo.com',
     password: '123456',
     role: 'admin',
-    avatar: 'https://i.pravatar.cc/300?img=8',
+    avatar: null,
     phone: '+880 1711 000000',
   },
   {
@@ -20,7 +20,7 @@ export const demoUsers: (User & { password: string })[] = [
     email: 'teacher@demo.com',
     password: '123456',
     role: 'teacher',
-    avatar: 'https://i.pravatar.cc/300?img=11',
+    avatar: null,
     phone: '+880 1711 100001',
   },
   {
@@ -29,7 +29,7 @@ export const demoUsers: (User & { password: string })[] = [
     email: 'student@demo.com',
     password: '123456',
     role: 'student',
-    avatar: 'https://i.pravatar.cc/300?img=68',
+    avatar: null,
     phone: '+880 1811 200001',
   },
 ]

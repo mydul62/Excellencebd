@@ -1,10 +1,21 @@
 'use client'
 
+import { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { ArrowRight, Sparkles, UserRoundPlus, Mail, Phone, BadgeCheck } from 'lucide-react'
+import {
+  ArrowRight,
+  Sparkles,
+  UserRoundPlus,
+  Mail,
+  Phone,
+  Lock,
+  Eye,
+  EyeOff,
+  BadgeCheck,
+} from 'lucide-react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { toast } from 'sonner'
@@ -14,28 +25,47 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { useAuth } from '@/hooks/use-auth'
 
-const registerSchema = z.object({
-  name: z.string().min(2, 'Name is required'),
-  email: z.string().min(1, 'Email is required').email('Enter a valid email'),
-  phone: z.string().min(7, 'Phone number is required'),
-})
+// Matches the backend User model: name, email, password (required),
+// phone (optional String? in Prisma). `role` is not sent — the API
+// defaults new signups from this page to STUDENT.
+const registerSchema = z
+  .object({
+    name: z.string().min(2, 'Name is required'),
+    email: z.string().min(1, 'Email is required').email('Enter a valid email'),
+    phone: z.string().optional(),
+    password: z
+      .string()
+      .min(8, 'Password must be at least 8 characters')
+      .regex(/[A-Z]/, 'Include at least one uppercase letter')
+      .regex(/[0-9]/, 'Include at least one number'),
+    confirmPassword: z.string().min(1, 'Please confirm your password'),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords don't match",
+    path: ['confirmPassword'],
+  })
 
 type RegisterFormValues = z.infer<typeof registerSchema>
 
 export function RegisterPage() {
   const router = useRouter()
   const { register: registerUser } = useAuth()
+  const [showPassword, setShowPassword] = useState(false)
+  const [showConfirm, setShowConfirm] = useState(false)
+
   const {
     register,
     handleSubmit,
-    formState: { isSubmitting },
+    formState: { isSubmitting, errors },
   } = useForm<RegisterFormValues>({
     resolver: zodResolver(registerSchema),
   })
 
   async function onSubmit(values: RegisterFormValues) {
     try {
-      const user = await registerUser(values)
+      // confirmPassword is client-side only — don't send it to the API
+      const { confirmPassword, ...payload } = values
+      const user = await registerUser(payload)
       toast.success(`Welcome aboard, ${user.name}`)
       router.replace('/dashboard/student')
     } catch (error) {
@@ -81,21 +111,74 @@ export function RegisterPage() {
                     <UserRoundPlus className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
                     <Input id="name" className="h-10 pl-9" placeholder="Jane Doe" {...register('name')} />
                   </div>
+                  {errors.name && <p className="text-xs text-red-500">{errors.name.message}</p>}
                 </div>
+
                 <div className="space-y-2">
                   <Label htmlFor="email">Email</Label>
                   <div className="relative">
                     <Mail className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
                     <Input id="email" type="email" className="h-10 pl-9" placeholder="jane@example.com" {...register('email')} />
                   </div>
+                  {errors.email && <p className="text-xs text-red-500">{errors.email.message}</p>}
                 </div>
+
                 <div className="space-y-2">
-                  <Label htmlFor="phone">Phone</Label>
+                  <Label htmlFor="phone">Phone <span className="text-muted-foreground">(optional)</span></Label>
                   <div className="relative">
                     <Phone className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
                     <Input id="phone" className="h-10 pl-9" placeholder="+880 17..." {...register('phone')} />
                   </div>
                 </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="password">Password</Label>
+                  <div className="relative">
+                    <Lock className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+                    <Input
+                      id="password"
+                      type={showPassword ? 'text' : 'password'}
+                      className="h-10 pl-9 pr-9"
+                      placeholder="••••••••"
+                      {...register('password')}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword((v) => !v)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                      tabIndex={-1}
+                    >
+                      {showPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
+                    </button>
+                  </div>
+                  {errors.password && <p className="text-xs text-red-500">{errors.password.message}</p>}
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="confirmPassword">Confirm password</Label>
+                  <div className="relative">
+                    <Lock className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+                    <Input
+                      id="confirmPassword"
+                      type={showConfirm ? 'text' : 'password'}
+                      className="h-10 pl-9 pr-9"
+                      placeholder="••••••••"
+                      {...register('confirmPassword')}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowConfirm((v) => !v)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                      tabIndex={-1}
+                    >
+                      {showConfirm ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
+                    </button>
+                  </div>
+                  {errors.confirmPassword && (
+                    <p className="text-xs text-red-500">{errors.confirmPassword.message}</p>
+                  )}
+                </div>
+
                 <Button className="w-full" type="submit" disabled={isSubmitting}>
                   {isSubmitting ? 'Creating account...' : 'Create account'}
                   <ArrowRight className="size-4" />
