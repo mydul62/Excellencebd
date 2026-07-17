@@ -31,6 +31,7 @@ const navConfig: Record<Role, { label: string; href: string; icon: typeof Layout
     { label: 'শিক্ষার্থীরা', href: '/dashboard/admin/students', icon: Users },
     { label: 'শিক্ষকগণ', href: '/dashboard/admin/teachers', icon: GraduationCap },
     { label: 'কোর্সসমূহ', href: '/dashboard/admin/courses', icon: BookOpen },
+    { label: 'কোর্স অ্যাসাইন', href: '/dashboard/admin/course-assign', icon: BookOpen },
     { label: 'উপস্থিতি', href: '/dashboard/admin/attendance', icon: CalendarCheck },
     { label: 'এনরোলমেন্ট', href: '/dashboard/admin/enrollments', icon: BookOpen },
     { label: 'নোটিশ', href: '/dashboard/admin/notices', icon: BellRing },
@@ -138,9 +139,10 @@ export function DashboardShell({ children }: DashboardShellProps) {
             <Button
               variant="ghost"
               className="w-full justify-start gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-white/75 hover:bg-white/10 hover:text-white"
-              onClick={() => {
-                logout()
+              onClick={async () => {
+                await logout()
                 setMobileMenuOpen(false)
+                router.push('/login')
               }}
             >
               <LogOut className="size-4" />
@@ -189,7 +191,10 @@ export function DashboardShell({ children }: DashboardShellProps) {
         <Button
           variant="ghost"
           className="w-full justify-start gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-white/75 hover:bg-white/10 hover:text-white"
-          onClick={logout}
+          onClick={async () => {
+            await logout()
+            router.push('/login')
+          }}
         >
           <LogOut className="size-4" />
           লগআউট

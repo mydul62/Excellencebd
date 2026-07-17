@@ -39,10 +39,13 @@ export interface ChangePasswordPayload {
 
 export interface AuthLoginResponse {
   user: ServerUser
+  accessToken: string
+  refreshToken: string
 }
 
 export interface AuthRegisterResponse {
   user: ServerUser
+  accessToken: string
 }
 
 // ─── API calls ────────────────────────────────────────────────────────────────

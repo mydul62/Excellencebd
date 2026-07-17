@@ -1,4 +1,4 @@
-import { apiGet, apiPost, apiPut, apiDelete } from './api'
+import { apiGet, apiPost, apiPut, apiPatch, apiDelete } from './api'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -115,4 +115,15 @@ export async function updateCourse(
  */
 export async function deleteCourse(id: string): Promise<void> {
   await apiDelete<null>(`/courses/${id}`)
+}
+
+/**
+ * PATCH /api/courses/:id/assign-teacher — ADMIN only.
+ */
+export async function assignTeacherToCourse(
+  courseId: string,
+  teacherId: string | null,
+): Promise<ServerCourse> {
+  const res = await apiPatch<ServerCourse>(`/courses/${courseId}/assign-teacher`, { teacherId })
+  return res.data
 }

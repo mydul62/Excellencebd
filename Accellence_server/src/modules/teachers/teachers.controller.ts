@@ -46,6 +46,64 @@ const getSingleTeacher = catchAsync(async (req, res) => {
   });
 });
 
+const getMyProfile = catchAsync(async (req, res) => {
+  const currentUser = req.user as JwtPayload;
+  
+  // Find teacher by userId
+  const result = await TeacherService.getTeacherByUserIdFromDb(currentUser.id);
+  
+  if (!result) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Teacher profile not found');
+  }
+  
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: 'Teacher profile retrieved successfully',
+    data: result,
+  });
+});
+
+const getMyCourses = catchAsync(async (req, res) => {
+  const currentUser = req.user as JwtPayload;
+  
+  // Find teacher by userId
+  const teacher = await TeacherService.getTeacherByUserIdFromDb(currentUser.id);
+  
+  if (!teacher) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Teacher profile not found');
+  }
+  
+  const result = await TeacherService.getTeacherCoursesFromDb(teacher.id);
+  
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: 'Teacher courses retrieved successfully',
+    data: result,
+  });
+});
+
+const getMyStudents = catchAsync(async (req, res) => {
+  const currentUser = req.user as JwtPayload;
+  
+  // Find teacher by userId
+  const teacher = await TeacherService.getTeacherByUserIdFromDb(currentUser.id);
+  
+  if (!teacher) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Teacher profile not found');
+  }
+  
+  const result = await TeacherService.getTeacherStudentsFromDb(teacher.id);
+  
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: 'Teacher students retrieved successfully',
+    data: result,
+  });
+});
+
 const updateTeacher = catchAsync(async (req, res) => {
   const { id } = req.params;
   const currentUser = req.user as JwtPayload;
@@ -81,6 +139,9 @@ export const TeacherController = {
   createTeacher,
   getAllTeachers,
   getSingleTeacher,
+  getMyProfile,
+  getMyCourses,
+  getMyStudents,
   updateTeacher,
   deleteTeacher,
 };

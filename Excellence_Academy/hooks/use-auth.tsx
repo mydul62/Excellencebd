@@ -8,6 +8,7 @@ import {
   type ServerRole,
   type ServerUser,
 } from '@/serverdata/auth'
+import { setAccessToken, removeAccessToken } from '@/serverdata/api'
 
 const STORAGE_KEY = 'bf_auth_user'
 
@@ -23,7 +24,7 @@ interface AuthContextValue {
   loading: boolean
   login: (email: string, password: string) => Promise<User>
   register: (data: RegisterData) => Promise<User>
-  logout: () => void
+  logout: () => Promise<void>
 }
 
 const AuthContext = React.createContext<AuthContextValue | null>(null)
@@ -77,12 +78,15 @@ export function AuthProvider({
 
   const login = React.useCallback(
     async (email: string, password: string): Promise<User> => {
-      const { user: serverUser } = await loginApi({
+      const response = await loginApi({
         email,
         password,
       })
 
-      const clientUser = toClientUser(serverUser)
+      const clientUser = toClientUser(response.user)
+
+      // Store access token in localStorage
+      setAccessToken(response.accessToken)
 
       persist(clientUser)
 
@@ -93,14 +97,17 @@ export function AuthProvider({
 
   const register = React.useCallback(
     async (data: RegisterData): Promise<User> => {
-      const { user: serverUser } = await registerApi({
+      const response = await registerApi({
         name: data.name,
         email: data.email,
         password: data.password,
         phone: data.phone,
       })
 
-      const clientUser = toClientUser(serverUser)
+      const clientUser = toClientUser(response.user)
+
+      // Store access token in localStorage
+      setAccessToken(response.accessToken)
 
       persist(clientUser)
 
@@ -109,14 +116,22 @@ export function AuthProvider({
     [persist],
   )
 
-  const logout = React.useCallback(() => {
-    persist(null)
-
-    // Optional: যদি backend logout endpoint থাকে
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/logout`, {
-      method: 'POST',
-      credentials: 'include',
-    }).catch(() => {})
+  const logout = React.useCallback(async () => {
+    try {
+      // Call backend logout endpoint to clear httpOnly cookies
+      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/logout`, {
+        method: 'POST',
+        credentials: 'include',
+      })
+    } catch (error) {
+      // Continue with logout even if backend call fails
+      console.error('Logout error:', error)
+    } finally {
+      // Clear access token from localStorage
+      removeAccessToken()
+      // Clear user data from localStorage
+      persist(null)
+    }
   }, [persist])
 
   const value = React.useMemo(

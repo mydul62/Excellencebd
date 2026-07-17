@@ -5,6 +5,13 @@ import { Role } from "@prisma/client";
 
 const router = express.Router();
 
+// ADMIN and TEACHER can get all attendance (teachers see only their courses)
+router.get(
+  '/',
+  auth(Role.ADMIN, Role.TEACHER),
+  AttendanceController.getAllAttendance
+);
+
 // Teacher and Admin can create attendance records
 router.post(
   '/',

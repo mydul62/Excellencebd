@@ -23,56 +23,65 @@ export interface ILoginPayload {
 // ─── Public register — always creates a STUDENT ───────────────────────────────
 const authRegisterInToDB = async (payload: IRegisterPayload) => {
   const { name, email, password, avatar, phone } = payload;
-  const bcrypt = require("bcryptjs");
 
-bcrypt.hash("Admin12345", 10).then(console.log);
+  // Check if user already exists
   const isExistUser = await prisma.user.findFirst({ where: { email } });
   if (isExistUser) {
     throw new ApiError(httpStatus.CONFLICT, 'User already exists with this email');
   }
 
-  // const hashedPassword = await bcrypt.hash(password, 10);
-const hashedPassword = await bcrypt.hash(password, 10);
+  // Hash password
+  const hashedPassword = await bcrypt.hash(password, 10);
 
-console.log("Register Password:", password);
-console.log("Register Hash:", hashedPassword);
+  // Use Prisma transaction to create User and Student atomically
+  const result = await prisma.$transaction(async (tx) => {
+    // Create User with STUDENT role
+    const registeredUser = await tx.user.create({
+      data: {
+        name,
+        email,
+        password: hashedPassword,
+        role: Role.STUDENT, // always STUDENT on public register
+        avatar: avatar ?? null,
+        phone: phone ?? null,
+      },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        role: true,
+        avatar: true,
+        phone: true,
+        createdAt: true,
+      },
+    });
 
-console.log(
-  "Verify Before Save:",
-  await bcrypt.compare(password, hashedPassword)
-);
-  const registeredUser = await prisma.user.create({
-    data: {
-      name,
-      email,
-      password: hashedPassword,
-      role: Role.STUDENT, // always STUDENT on public register
-      avatar: avatar ?? null,
-      phone: phone ?? null,
-    },
-    select: {
-      id: true,
-      name: true,
-      email: true,
-      role: true,
-      avatar: true,
-      phone: true,
-      createdAt: true,
-    },
+    // Create Student profile automatically
+    await tx.student.create({
+      data: {
+        userId: registeredUser.id,
+        guardian: null,
+        address: null,
+        status: 'active',
+      },
+    });
+
+    return registeredUser;
   });
 
+  // Generate JWT token
   const accessToken = createToken(
     {
-      id: registeredUser.id,
-      name: registeredUser.name,
-      email: registeredUser.email,
-      role: registeredUser.role,
+      id: result.id,
+      name: result.name,
+      email: result.email,
+      role: result.role,
     },
     config.jwt.jwt_scret as string,
     config.jwt.expires_in as string
   );
 
-  return { user: registeredUser, accessToken };
+  return { user: result, accessToken };
 };
 
 // ─── Login (all roles) ────────────────────────────────────────────────────────

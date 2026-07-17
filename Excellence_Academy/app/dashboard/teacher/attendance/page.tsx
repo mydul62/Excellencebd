@@ -9,7 +9,7 @@ import { z } from 'zod'
 import { toast } from 'sonner'
 
 import { createAttendance, getStudentAttendance, type ServerAttendance } from '@/serverdata/attendance'
-import { getStudentsFromApi, type ServerStudent } from '@/serverdata/students'
+import { getMyStudents } from '@/serverdata/teachers'
 import { getTeacherDashboard } from '@/services'
 import type { CourseWithTeacher } from '@/services'
 import { SectionCard } from '@/components/dashboard/section-card'
@@ -31,6 +31,21 @@ const logSchema = z.object({
 
 type LogFormValues = z.infer<typeof logSchema>
 
+interface TeacherStudent {
+  id: string
+  name: string
+  email: string
+  avatar: string | null
+  phone: string | null
+  role: string
+  enrollments: Array<{
+    id: string
+    course: { id: string; title: string; slug: string }
+    enrolledAt: string
+    status: string
+  }>
+}
+
 const STATUS_ICON = {
   present: <CheckCircle2 className="size-4 text-green-500" />,
   absent: <XCircle className="size-4 text-destructive" />,
@@ -47,7 +62,7 @@ const STATUS_VARIANT: Record<string, 'default' | 'destructive' | 'secondary'> = 
 
 export default function TeacherAttendancePage() {
   const { user } = useAuth()
-  const [students, setStudents] = useState<ServerStudent[]>([])
+  const [students, setStudents] = useState<TeacherStudent[]>([])
   const [myCourses, setMyCourses] = useState<CourseWithTeacher[]>([])
   const [attendanceLogs, setAttendanceLogs] = useState<ServerAttendance[]>([])
   const [selectedStudentId, setSelectedStudentId] = useState<string>('')
@@ -72,16 +87,16 @@ export default function TeacherAttendancePage() {
 
   const watchedStudentId = watch('studentId')
 
-  // ── Load teacher's courses + all students ─────────────────────────────────
+  // ── Load teacher's courses + students ─────────────────────────────────────
   useEffect(() => {
     if (!user?.id) return
     Promise.all([
       getTeacherDashboard(user.id),
-      getStudentsFromApi({ limit: 200 }),
+      getMyStudents(),
     ])
-      .then(([dashData, studentsRes]) => {
+      .then(([dashData, studentsData]) => {
         setMyCourses(dashData.courses)
-        setStudents(studentsRes.data)
+        setStudents(studentsData)
       })
       .catch((err) => toast.error(err instanceof Error ? err.message : 'Failed to load data'))
       .finally(() => setLoadingData(false))

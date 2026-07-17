@@ -7,6 +7,15 @@ import { Role } from "@prisma/client";
 
 const router = express.Router();
 
+// TEACHER — get own profile by JWT userId (MUST be before /:id route)
+router.get('/me/profile', auth(Role.TEACHER), TeacherController.getMyProfile);
+
+// TEACHER — get courses assigned to logged-in teacher
+router.get('/me/courses', auth(Role.TEACHER), TeacherController.getMyCourses);
+
+// TEACHER — get students enrolled in teacher's courses
+router.get('/me/students', auth(Role.TEACHER), TeacherController.getMyStudents);
+
 // Public — anyone can browse teachers
 router.get('/', TeacherController.getAllTeachers);
 router.get('/:id', TeacherController.getSingleTeacher);

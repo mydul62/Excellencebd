@@ -13,6 +13,9 @@ import {
 } from '@/serverdata/courses'
 import {
   getTeachers as apiGetTeachers,
+  getMyTeacherProfile as apiGetMyTeacherProfile,
+  getMyCourses as apiGetMyCourses,
+  getMyStudents as apiGetMyStudents,
   type ServerTeacher,
 } from '@/serverdata/teachers'
 import {
@@ -209,29 +212,35 @@ export async function getRecentEnrollments(limit = 5): Promise<EnrollmentDetail[
 // ─── Teacher dashboard ────────────────────────────────────────────────────────
 
 export async function getTeacherDashboard(teacherId: string): Promise<TeacherDashboardData> {
-  const [teachersResult, coursesResult, enrollmentsResult, noticesResult] = await Promise.all([
-    apiGetTeachers({ limit: 100 }),
-    apiGetCourses({ limit: 100 }),
-    apiGetEnrollments({ limit: 200 }),
+  // Use the authenticated endpoint to get teacher profile
+  const teacher = await apiGetMyTeacherProfile()
+  
+  // Use teacher-specific endpoints that don't require ADMIN role
+  const [myCourses, myStudents, noticesResult] = await Promise.all([
+    apiGetMyCourses(),
+    apiGetMyStudents(),
     apiGetNotices({ limit: 50 }),
   ])
 
-  // teacherId here is actually the User ID from auth — match on userId field
-  const teacher = teachersResult.data.find((t) => t.userId === teacherId || t.id === teacherId)
-
-  // Courses taught by this teacher — server stores teacher profile id on course
-  const teacherCourses: CourseWithTeacher[] = coursesResult.data
-    .filter((c) => c.teacherId === teacher?.id)
-    .map((c) => ({ ...c, teacher }))
-
-  const courseIds = teacherCourses.map((c) => c.id)
-  const relevantEnrollments = enrollmentsResult.data.filter((e) => courseIds.includes(e.courseId))
-  const uniqueStudents = new Set(relevantEnrollments.map((e) => e.userId))
-
-  const courseStudentCounts = teacherCourses.map((c) => ({
-    course: c.title,
-    students: enrollmentsResult.data.filter((e) => e.courseId === c.id).length,
+  // Transform courses to match CourseWithTeacher interface
+  const teacherCourses: CourseWithTeacher[] = myCourses.map((c: any) => ({ 
+    ...c, 
+    teacher 
   }))
+
+  // Count unique students from the students list
+  const uniqueStudents = new Set(myStudents.map((s: any) => s.id))
+
+  // Calculate course student counts from enrollment data
+  const courseStudentCounts = teacherCourses.map((c) => {
+    const studentsInCourse = myStudents.filter((s: any) => 
+      s.enrollments?.some((e: any) => e.course.id === c.id)
+    )
+    return {
+      course: c.title,
+      students: studentsInCourse.length,
+    }
+  })
 
   const teacherNotices = [...noticesResult.data]
     .filter((n) => n.audience === 'all' || n.audience === 'teachers')
