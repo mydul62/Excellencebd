@@ -58,7 +58,7 @@ export function PublicNavbar() {
               <Button render={<Link href={`/dashboard/${user.role}`} />} variant="ghost" size="sm" className="h-9 rounded-full border border-[#146373]/20 bg-[#FFFFFF] px-4 text-[#146373] hover:bg-[#EAF2F4] hover:text-[#0F5D73]">
                 ড্যাশবোর্ড
               </Button>
-              <Button variant="outline" size="sm" className="h-9 rounded-full border-[#146373] bg-[#146373] px-4 text-white hover:bg-[#0F5D73]" onClick={() => { logout(); router.push('/') }}>
+              <Button variant="outline" size="sm" className="h-9 rounded-full border-[#146373] bg-[#146373] px-4 text-white hover:bg-[#0F5D73]" onClick={async () => { await logout(); router.push('/login') }}>
                 লগআউট
               </Button>
             </>
@@ -115,10 +115,10 @@ export function PublicNavbar() {
                     </Button>
                     <Button
                       variant="outline"
-                      onClick={() => {
-                        logout()
+                      onClick={async () => {
+                        await logout()
                         setOpen(false)
-                        router.push('/')
+                        router.push('/login')
                       }}
                     >
                       লগআউট

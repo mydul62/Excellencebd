@@ -113,6 +113,110 @@ const getSingleTeacherFromDb = async (id: string) => {
   return result;
 };
 
+const getTeacherByUserIdFromDb = async (userId: string) => {
+  const result = await prisma.teacher.findFirst({
+    where: { userId },
+    include: {
+      user: {
+        select: { id: true, name: true, email: true, avatar: true, phone: true },
+      },
+      courses: true,
+    },
+  });
+  return result;
+};
+
+// ─── Get courses assigned to a specific teacher ───────────────────────────────
+const getTeacherCoursesFromDb = async (teacherId: string) => {
+  const courses = await prisma.course.findMany({
+    where: { teacherId },
+    include: {
+      teacher: {
+        include: {
+          user: {
+            select: { id: true, name: true, email: true, avatar: true, phone: true },
+          },
+        },
+      },
+    },
+    orderBy: { createdAt: 'desc' },
+  });
+  return courses;
+};
+
+// ─── Get students enrolled in teacher's courses ───────────────────────────────
+const getTeacherStudentsFromDb = async (teacherId: string) => {
+  // First get all courses taught by this teacher
+  const courses = await prisma.course.findMany({
+    where: { teacherId },
+    select: { id: true },
+  });
+
+  const courseIds = courses.map((c) => c.id);
+
+  if (courseIds.length === 0) {
+    return [];
+  }
+
+  // Get all enrollments for these courses
+  const enrollments = await prisma.enrollment.findMany({
+    where: {
+      courseId: { in: courseIds },
+      status: 'approved', // Only approved enrollments
+    },
+    include: {
+      user: {
+        select: { 
+          id: true, 
+          name: true, 
+          email: true, 
+          avatar: true, 
+          phone: true,
+          role: true,
+          studentProfile: {
+            select: {
+              id: true,
+              guardian: true,
+              address: true,
+              status: true,
+            }
+          }
+        },
+      },
+      course: {
+        select: { id: true, title: true, slug: true },
+      },
+    },
+    orderBy: { enrolledAt: 'desc' },
+  });
+
+  // Get unique students with their enrollment details
+  const studentMap = new Map();
+  enrollments.forEach((enrollment) => {
+    const userId = enrollment.user.id;
+    if (!studentMap.has(userId)) {
+      studentMap.set(userId, {
+        id: enrollment.user.id,
+        name: enrollment.user.name,
+        email: enrollment.user.email,
+        avatar: enrollment.user.avatar,
+        phone: enrollment.user.phone,
+        role: enrollment.user.role,
+        studentProfile: enrollment.user.studentProfile,
+        enrollments: [],
+      });
+    }
+    studentMap.get(userId).enrollments.push({
+      id: enrollment.id,
+      course: enrollment.course,
+      enrolledAt: enrollment.enrolledAt,
+      status: enrollment.status,
+    });
+  });
+
+  return Array.from(studentMap.values());
+};
+
 // ─── Update: touches both User and Teacher profile ────────────────────────────
 const updateTeacherInDb = async (id: string, payload: IUpdateTeacher) => {
   const teacher = await prisma.teacher.findUnique({ where: { id } });
@@ -166,6 +270,9 @@ export const TeacherService = {
   createTeacherInDb,
   getAllTeachersFromDb,
   getSingleTeacherFromDb,
+  getTeacherByUserIdFromDb,
+  getTeacherCoursesFromDb,
+  getTeacherStudentsFromDb,
   updateTeacherInDb,
   deleteTeacherFromDb,
 };

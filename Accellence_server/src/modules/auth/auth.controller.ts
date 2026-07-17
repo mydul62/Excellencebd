@@ -13,7 +13,18 @@ const cookieOptions = {
 };
 
 const registerUser = catchAsync(async (req, res) => {
-  const result = await AuthService.authRegisterInToDB(req.body);
+  // Extract avatar from uploaded file if exists
+  let avatar = null;
+  if (req.file) {
+    avatar = (req.file as any).path; // Cloudinary URL
+  }
+
+  const payload = {
+    ...req.body,
+    avatar,
+  };
+
+  const result = await AuthService.authRegisterInToDB(payload);
 
   res.cookie('bf_access_token', result.accessToken, {
     ...cookieOptions,
@@ -26,6 +37,7 @@ const registerUser = catchAsync(async (req, res) => {
     message: 'Student registered successfully',
     data: {
       user: result.user,
+      accessToken: result.accessToken, // Include token in response
     },
   });
 });
@@ -49,6 +61,8 @@ const logingUser = catchAsync(async (req, res) => {
     message: 'Login successful',
     data: {
       user: result.user,
+      accessToken: result.accessToken, // Include token in response
+      refreshToken: result.refreshToken,
     },
   });
 });
@@ -83,9 +97,47 @@ const cheangePassword = catchAsync(async (req, res) => {
   });
 });
 
+const getAuthStatus = catchAsync(async (req, res) => {
+  const user = req.user as JwtPayload;
+  
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: 'Authentication status',
+    data: {
+      authenticated: true,
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      },
+    },
+  });
+});
+
+const logout = catchAsync(async (req, res) => {
+  // Clear both access token and refresh token cookies
+  res.clearCookie('bf_access_token', {
+    ...cookieOptions,
+  });
+
+  res.clearCookie('refreshToken', {
+    ...cookieOptions,
+  });
+
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: 'Logged out successfully',
+  });
+});
+
 export const AuthController = {
   registerUser,
   logingUser,
   refeshToken,
   cheangePassword,
+  getAuthStatus,
+  logout,
 };

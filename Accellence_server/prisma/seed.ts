@@ -1,7 +1,14 @@
 import dotenv from 'dotenv';
-import { PrismaClient, Role, CourseLevel, EnrollmentStatus, PaymentStatus, NoticeCategory, NoticeAudience } from '../src/generated/prisma';
 import bcrypt from 'bcryptjs';
-
+import {
+  PrismaClient,
+  Role,
+  CourseLevel,
+  EnrollmentStatus,
+  PaymentStatus,
+  NoticeCategory,
+  NoticeAudience,
+} from '@prisma/client';
 dotenv.config();
 
 const prisma = new PrismaClient();

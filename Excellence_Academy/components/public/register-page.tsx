@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
@@ -15,6 +15,8 @@ import {
   Eye,
   EyeOff,
   BadgeCheck,
+  Upload,
+  X,
 } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
@@ -24,6 +26,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { useAuth } from '@/hooks/use-auth'
+import Image from 'next/image'
 
 // Matches the backend User model: name, email, password (required),
 // phone (optional String? in Prisma). `role` is not sent — the API
@@ -52,6 +55,9 @@ export function RegisterPage() {
   const { register: registerUser } = useAuth()
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirm, setShowConfirm] = useState(false)
+  const [avatarFile, setAvatarFile] = useState<File | null>(null)
+  const [avatarPreview, setAvatarPreview] = useState<string | null>(null)
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   const {
     register,
@@ -61,12 +67,77 @@ export function RegisterPage() {
     resolver: zodResolver(registerSchema),
   })
 
+  const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (file) {
+      if (file.size > 5 * 1024 * 1024) {
+        toast.error('Image size must be less than 5MB')
+        return
+      }
+      if (!file.type.startsWith('image/')) {
+        toast.error('Only image files are allowed')
+        return
+      }
+      setAvatarFile(file)
+      const reader = new FileReader()
+      reader.onloadend = () => {
+        setAvatarPreview(reader.result as string)
+      }
+      reader.readAsDataURL(file)
+    }
+  }
+
+  const removeAvatar = () => {
+    setAvatarFile(null)
+    setAvatarPreview(null)
+    if (fileInputRef.current) {
+      fileInputRef.current.value = ''
+    }
+  }
+
   async function onSubmit(values: RegisterFormValues) {
     try {
       // confirmPassword is client-side only — don't send it to the API
       const { confirmPassword, ...payload } = values
-      const user = await registerUser(payload)
-      toast.success(`Welcome aboard, ${user.name}`)
+
+      // Create FormData for file upload
+      const formData = new FormData()
+      formData.append('name', payload.name)
+      formData.append('email', payload.email)
+      formData.append('password', payload.password)
+      if (payload.phone) {
+        formData.append('phone', payload.phone)
+      }
+      if (avatarFile) {
+        formData.append('avatar', avatarFile)
+      }
+
+      // Call API directly with FormData
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/register`, {
+        method: 'POST',
+        credentials: 'include',
+        body: formData,
+      })
+
+      const result = await res.json()
+
+      if (!res.ok) {
+        throw new Error(result.message || 'Registration failed')
+      }
+
+      toast.success(`Welcome aboard, ${result.data.user.name}`)
+      
+      // Store user in localStorage (matching useAuth pattern)
+      const clientUser = {
+        id: result.data.user.id,
+        name: result.data.user.name,
+        email: result.data.user.email,
+        role: result.data.user.role.toLowerCase(),
+        avatar: result.data.user.avatar,
+        phone: result.data.user.phone,
+      }
+      localStorage.setItem('bf_auth_user', JSON.stringify(clientUser))
+      
       router.replace('/dashboard/student')
     } catch (error) {
       toast.error(error instanceof Error ? error.message : 'Registration failed')
@@ -112,6 +183,49 @@ export function RegisterPage() {
                     <Input id="name" className="h-10 pl-9" placeholder="Jane Doe" {...register('name')} />
                   </div>
                   {errors.name && <p className="text-xs text-red-500">{errors.name.message}</p>}
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="avatar">Profile Photo <span className="text-muted-foreground">(optional)</span></Label>
+                  <div className="flex items-center gap-4">
+                    {avatarPreview ? (
+                      <div className="relative size-20 overflow-hidden rounded-full border-2 border-border">
+                        <Image src={avatarPreview} alt="Avatar preview" fill className="object-cover" />
+                        <button
+                          type="button"
+                          onClick={removeAvatar}
+                          className="absolute -right-1 -top-1 flex size-6 items-center justify-center rounded-full bg-red-500 text-white hover:bg-red-600"
+                        >
+                          <X className="size-3" />
+                        </button>
+                      </div>
+                    ) : (
+                      <div className="flex size-20 items-center justify-center rounded-full border-2 border-dashed border-border bg-muted">
+                        <UserRoundPlus className="size-8 text-muted-foreground" />
+                      </div>
+                    )}
+                    <div className="flex-1">
+                      <input
+                        ref={fileInputRef}
+                        type="file"
+                        id="avatar"
+                        accept="image/*"
+                        onChange={handleAvatarChange}
+                        className="hidden"
+                      />
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={() => fileInputRef.current?.click()}
+                        className="w-full"
+                      >
+                        <Upload className="size-4" />
+                        {avatarFile ? 'Change Photo' : 'Upload Photo'}
+                      </Button>
+                      <p className="mt-1 text-xs text-muted-foreground">Max 5MB, JPG/PNG</p>
+                    </div>
+                  </div>
                 </div>
 
                 <div className="space-y-2">

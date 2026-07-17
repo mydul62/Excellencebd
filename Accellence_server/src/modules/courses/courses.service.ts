@@ -85,10 +85,44 @@ const deleteCourseFromDb = async (id: string) => {
   return result;
 };
 
+const assignTeacherToCourseInDb = async (courseId: string, teacherId: string | null) => {
+  // Validate course exists
+  const course = await prisma.course.findUnique({ where: { id: courseId } });
+  if (!course) {
+    throw new Error('Course not found');
+  }
+
+  // If teacherId provided, validate teacher exists
+  if (teacherId) {
+    const teacher = await prisma.teacher.findUnique({ where: { id: teacherId } });
+    if (!teacher) {
+      throw new Error('Teacher not found');
+    }
+  }
+
+  // Update course with new teacherId (or null to unassign)
+  const result = await prisma.course.update({
+    where: { id: courseId },
+    data: { teacherId },
+    include: {
+      teacher: {
+        include: {
+          user: {
+            select: { id: true, name: true, email: true, avatar: true, phone: true },
+          },
+        },
+      },
+    },
+  });
+
+  return result;
+};
+
 export const CourseService = {
   createCourseInDb,
   getAllCoursesFromDb,
   getSingleCourseFromDb,
   updateCourseInDb,
   deleteCourseFromDb,
+  assignTeacherToCourseInDb,
 };

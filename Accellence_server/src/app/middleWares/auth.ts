@@ -14,7 +14,7 @@ const auth = (...roles: Role[]) => {
     next: NextFunction
   ) => {
     try {
-      // Authorization Header অথবা Cookie — যেটা আছে সেটাই ব্যবহার করবে
+      // Check Authorization Header or Cookie
       const authHeader = req.headers.authorization;
       const cookieToken = req.cookies?.bf_access_token;
 
@@ -31,27 +31,44 @@ const auth = (...roles: Role[]) => {
       if (!token) {
         throw new ApiError(
           httpStatus.UNAUTHORIZED,
-          "You are not authorized"
+          "Authentication required. Please provide a valid access token."
         );
       }
 
-      const verifiedUser = Jwthelper.verifyToken(
-        token,
-        config.jwt.jwt_scret as string
-      ) as JwtPayload;
+      // Verify token
+      let verifiedUser: JwtPayload;
+      try {
+        verifiedUser = Jwthelper.verifyToken(
+          token,
+          config.jwt.jwt_scret as string
+        ) as JwtPayload;
+      } catch (err: any) {
+        if (err.name === 'TokenExpiredError') {
+          throw new ApiError(
+            httpStatus.UNAUTHORIZED,
+            "Access token has expired. Please refresh your token."
+          );
+        } else if (err.name === 'JsonWebTokenError') {
+          throw new ApiError(
+            httpStatus.UNAUTHORIZED,
+            "Invalid access token. Please login again."
+          );
+        }
+        throw new ApiError(
+          httpStatus.UNAUTHORIZED,
+          "Token verification failed. Please login again."
+        );
+      }
 
-      if (
-        roles.length &&
-        !roles.includes(verifiedUser.role as Role)
-      ) {
+      // Check role authorization
+      if (roles.length && !roles.includes(verifiedUser.role as Role)) {
         throw new ApiError(
           httpStatus.FORBIDDEN,
-          "You are forbidden"
+          `Access denied. This route requires one of the following roles: ${roles.join(', ')}. Your role: ${verifiedUser.role}`
         );
       }
 
       req.user = verifiedUser;
-
       next();
     } catch (error) {
       next(error);

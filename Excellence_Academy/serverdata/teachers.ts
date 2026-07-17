@@ -120,3 +120,30 @@ export async function updateTeacher(
 export async function deleteTeacher(id: string): Promise<void> {
   await apiDelete<null>(`/teachers/${id}`)
 }
+
+/**
+ * GET /api/teachers/me/profile
+ * TEACHER only — gets own profile by JWT userId.
+ */
+export async function getMyTeacherProfile(): Promise<ServerTeacher> {
+  const res = await apiGet<ServerTeacher>('/teachers/me/profile')
+  return res.data
+}
+
+/**
+ * GET /api/teachers/me/courses
+ * TEACHER only — gets courses assigned to logged-in teacher.
+ */
+export async function getMyCourses(): Promise<ServerTeacherCourse[]> {
+  const res = await apiGet<ServerTeacherCourse[]>('/teachers/me/courses')
+  return res.data
+}
+
+/**
+ * GET /api/teachers/me/students
+ * TEACHER only — gets students enrolled in teacher's courses.
+ */
+export async function getMyStudents(): Promise<any[]> {
+  const res = await apiGet<any[]>('/teachers/me/students')
+  return res.data
+}

@@ -1,0 +1,133 @@
+### Test Authentication & Authorization
+### Use REST Client extension in VS Code or import to Postman
+
+@baseUrl = http://localhost:5000/api
+@adminToken = YOUR_ADMIN_TOKEN_HERE
+@teacherToken = YOUR_TEACHER_TOKEN_HERE
+@studentToken = YOUR_STUDENT_TOKEN_HERE
+
+### 1. Login as Admin
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@example.com",
+  "password": "Admin@12345"
+}
+
+### 2. Login as Teacher
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "rafiq@demo.com",
+  "password": "Demo@123456"
+}
+
+### 3. Login as Student
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "user1@example.com",
+  "password": "User@12345"
+}
+
+### ========================================
+### PUBLIC ROUTES (No auth required)
+### ========================================
+
+### 4. Get all teachers (Public)
+GET {{baseUrl}}/teachers
+
+### 5. Get single teacher (Public)
+GET {{baseUrl}}/teachers/TEACHER_ID_HERE
+
+### ========================================
+### ADMIN ONLY ROUTES
+### ========================================
+
+### 6. Create Teacher (ADMIN only)
+POST {{baseUrl}}/teachers
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+  "name": "New Test Teacher",
+  "email": "newteacher@demo.com",
+  "password": "Teacher@123456",
+  "subject": "Computer Science",
+  "bio": "Experienced computer science educator",
+  "experienceYears": 8,
+  "qualification": "MSc Computer Science",
+  "phone": "+880 1811 999999"
+}
+
+### 7. Delete Teacher (ADMIN only)
+DELETE {{baseUrl}}/teachers/TEACHER_ID_HERE
+Authorization: Bearer {{adminToken}}
+
+### ========================================
+### TEACHER ROUTES
+### ========================================
+
+### 8. Get Own Teacher Profile (TEACHER only)
+GET {{baseUrl}}/teachers/me/profile
+Authorization: Bearer {{teacherToken}}
+
+### 9. Update Own Teacher Profile (TEACHER)
+PUT {{baseUrl}}/teachers/TEACHER_ID_HERE
+Content-Type: application/json
+Authorization: Bearer {{teacherToken}}
+
+{
+  "bio": "Updated bio text",
+  "experienceYears": 13
+}
+
+### ========================================
+### TEACHER trying ADMIN route (Should FAIL)
+### ========================================
+
+### 10. Teacher tries to create teacher (Should FAIL with 403)
+POST {{baseUrl}}/teachers
+Content-Type: application/json
+Authorization: Bearer {{teacherToken}}
+
+{
+  "name": "Unauthorized Teacher",
+  "email": "unauthorized@demo.com",
+  "password": "Test@123456",
+  "subject": "Test Subject"
+}
+
+### ========================================
+### STUDENT trying TEACHER route (Should FAIL)
+### ========================================
+
+### 11. Student tries to get teacher profile (Should FAIL with 403)
+GET {{baseUrl}}/teachers/me/profile
+Authorization: Bearer {{studentToken}}
+
+### ========================================
+### NO TOKEN (Should FAIL)
+### ========================================
+
+### 12. Try to create teacher without token (Should FAIL with 401)
+POST {{baseUrl}}/teachers
+Content-Type: application/json
+
+{
+  "name": "No Auth Teacher",
+  "email": "noauth@demo.com",
+  "password": "Test@123456",
+  "subject": "Test Subject"
+}
+
+### ========================================
+### INVALID TOKEN (Should FAIL)
+### ========================================
+
+### 13. Try with invalid token (Should FAIL with 401)
+GET {{baseUrl}}/teachers/me/profile
+Authorization: Bearer INVALID_TOKEN_HERE

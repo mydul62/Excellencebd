@@ -69,12 +69,26 @@ const id = req.params.id as string;
   });
 });
 
+const assignTeacherToCourse = catchAsync(async (req, res) => {
+  const courseId = req.params.id as string;
+  const { teacherId } = req.body;
+  
+  const result = await CourseService.assignTeacherToCourseInDb(courseId, teacherId);
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: 'Teacher assigned successfully',
+    data: result,
+  });
+});
+
 export const CourseController = {
   createCourse,
   getAllCourses,
   getSingleCourse,
   updateCourse,
   deleteCourse,
+  assignTeacherToCourse,
 };
 
 

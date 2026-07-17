@@ -5,6 +5,33 @@
 const BASE_URL =
   process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:5000/api";
 
+// Token storage key
+const TOKEN_KEY = 'bf_access_token';
+
+/**
+ * Get stored access token from localStorage
+ */
+export function getAccessToken(): string | null {
+  if (typeof window === 'undefined') return null;
+  return localStorage.getItem(TOKEN_KEY);
+}
+
+/**
+ * Store access token in localStorage
+ */
+export function setAccessToken(token: string): void {
+  if (typeof window === 'undefined') return;
+  localStorage.setItem(TOKEN_KEY, token);
+}
+
+/**
+ * Remove access token from localStorage
+ */
+export function removeAccessToken(): void {
+  if (typeof window === 'undefined') return;
+  localStorage.removeItem(TOKEN_KEY);
+}
+
 export interface ApiResponse<T> {
   success: boolean;
   statusCode: number;
@@ -26,10 +53,16 @@ export async function apiFetch<T>(
     ...(options.headers as Record<string, string>),
   };
 
+  // Add Authorization header with Bearer token if available
+  const token = getAccessToken();
+  if (token) {
+    headers["Authorization"] = `Bearer ${token}`;
+  }
+
   const res = await fetch(`${BASE_URL}${path}`, {
     ...options,
     headers,
-    credentials: "include", // খুবই গুরুত্বপূর্ণ
+    credentials: "include", // Still include cookies for refresh token
   });
 
   if (!res.ok) {
@@ -39,6 +72,11 @@ export async function apiFetch<T>(
       const err = await res.json();
       message = err?.message ?? message;
     } catch {}
+
+    // Clear token on 401 Unauthorized
+    if (res.status === 401) {
+      removeAccessToken();
+    }
 
     throw new Error(message);
   }
@@ -94,8 +132,17 @@ export async function apiFetchFormData<T>(
   method: "POST" | "PUT" | "PATCH",
   body: FormData
 ): Promise<ApiResponse<T>> {
+  const headers: Record<string, string> = {};
+
+  // Add Authorization header with Bearer token if available
+  const token = getAccessToken();
+  if (token) {
+    headers["Authorization"] = `Bearer ${token}`;
+  }
+
   const res = await fetch(`${BASE_URL}${path}`, {
     method,
+    headers,
     body,
     credentials: "include",
   });
@@ -107,6 +154,11 @@ export async function apiFetchFormData<T>(
       const err = await res.json();
       message = err?.message ?? message;
     } catch {}
+
+    // Clear token on 401 Unauthorized
+    if (res.status === 401) {
+      removeAccessToken();
+    }
 
     throw new Error(message);
   }

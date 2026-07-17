@@ -1,17 +1,20 @@
 import { NextRequest, NextResponse } from "next/server";
 import { jwtDecode } from "jwt-decode";
 
-type Role = keyof typeof roleBasedPrivateRoutes;
+// Backend sends uppercase roles: ADMIN, TEACHER, STUDENT
+type BackendRole = "ADMIN" | "TEACHER" | "STUDENT";
+// Frontend uses lowercase roles: admin, teacher, student
+type FrontendRole = "admin" | "teacher" | "student";
 
 const authRoutes = ["/login", "/register"];
 
-const roleBasedPrivateRoutes = {
+const roleBasedPrivateRoutes: Record<BackendRole, RegExp[]> = {
   ADMIN: [/^\/dashboard\/admin/],
   STUDENT: [/^\/dashboard\/student/],
   TEACHER: [/^\/dashboard\/teacher/],
 };
 
-const roleDashboardPaths = {
+const roleDashboardPaths: Record<BackendRole, string> = {
   ADMIN: "/dashboard/admin",
   STUDENT: "/dashboard/student",
   TEACHER: "/dashboard/teacher",
@@ -20,7 +23,7 @@ const roleDashboardPaths = {
 interface DecodedToken {
   id: string;
   email: string;
-  role?: Role;
+  role?: BackendRole; // Changed from FrontendRole to BackendRole
   exp?: number;
   iat?: number;
 }
@@ -31,20 +34,24 @@ export function middleware(request: NextRequest) {
   const accessToken = request.cookies.get(
     "bf_access_token"
   )?.value;
-console.log(accessToken)
+
+  console.log("=== MIDDLEWARE DEBUG ===");
+  console.log("Path:", pathname);
   console.log("Access Token:", accessToken);
 
-let userInfo: DecodedToken | null = null;
+  let userInfo: DecodedToken | null = null;
 
-if (accessToken) {
-  try {
-    userInfo = jwtDecode<DecodedToken>(accessToken);
-  } catch (error) {
-    console.log("Decode Error:", error);
+  if (accessToken) {
+    try {
+      userInfo = jwtDecode<DecodedToken>(accessToken);
+      console.log("Decoded Token:", userInfo);
+    } catch (error) {
+      console.log("Decode Error:", error);
+    }
   }
-}
 
-console.log("FINAL USER:", userInfo);
+  console.log("FINAL USER ROLE:", userInfo?.role);
+  console.log("========================");
 
   // login/register
   if (authRoutes.includes(pathname)) {
@@ -99,9 +106,11 @@ console.log("FINAL USER:", userInfo);
         route.test(pathname)
       )
     ) {
+      console.log("✅ Access granted to:", pathname);
       return NextResponse.next();
     }
 
+    console.log("❌ Access denied. User role:", userInfo.role, "Path:", pathname);
     return NextResponse.redirect(
       new URL(
         roleDashboardPaths[userInfo.role],

@@ -22,6 +22,7 @@ router.put(
   CourseController.updateCourse
 );
 router.delete('/:id', auth(Role.ADMIN), CourseController.deleteCourse);
+router.patch('/:id/assign-teacher', auth(Role.ADMIN), CourseController.assignTeacherToCourse);
 
 export const CourseRoutes = router;
 
