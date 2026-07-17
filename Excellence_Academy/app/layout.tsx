@@ -2,7 +2,9 @@ import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
 import { Toaster } from '@/components/ui/sonner'
 import { Providers } from '@/components/providers'
+
 import './globals.css'
+import MouseFollower from '@/components/MouseFollower'
 
 export const metadata: Metadata = {
   title: 'Bright Future Coaching Center — Management System',
@@ -31,13 +33,20 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="light bg-background">
-     <body className="font-sans antialiased
-     
-     " cz-shortcut-listen="true">
-  <Providers>{children}</Providers>
-  <Toaster position="top-right" richColors />
-  {process.env.NODE_ENV === 'production' && <Analytics />}
-</body>
+      <body
+        className="font-sans antialiased"
+        cz-shortcut-listen="true"
+      >
+        <MouseFollower />
+
+        <Providers>
+          {children}
+        </Providers>
+
+        <Toaster position="top-right" richColors />
+
+        {process.env.NODE_ENV === 'production' && <Analytics />}
+      </body>
     </html>
   )
 }
