@@ -43,6 +43,7 @@ const registerUser = catchAsync(async (req, res) => {
 });
 
 const logingUser = catchAsync(async (req, res) => {
+
   const result = await AuthService.authLogingInToDb(req.body);
 
   res.cookie('bf_access_token', result.accessToken, {

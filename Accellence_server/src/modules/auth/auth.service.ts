@@ -86,9 +86,11 @@ const authRegisterInToDB = async (payload: IRegisterPayload) => {
 
 // ─── Login (all roles) ────────────────────────────────────────────────────────
 const authLogingInToDb = async (payload: ILoginPayload) => {
+    
   const { email, password } = payload;
 
   const isExistUser = await prisma.user.findFirst({ where: { email } });
+  ;
   if (!isExistUser) {
     throw new ApiError(httpStatus.UNAUTHORIZED, 'Invalid email or password');
   }
