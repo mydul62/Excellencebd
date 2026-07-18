@@ -289,7 +289,51 @@ export default function TeacherAttendancePage() {
               No attendance records found for this student.
             </p>
           )}
+          <DataTable
+  columns={[
+    {
+      header: 'Student',
+      accessor: (row) => (
+        <div className="flex items-center gap-3">
+          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 font-semibold text-primary">
+            {row.student?.name?.charAt(0) ?? '-'}
+          </div>
+
+          <div className="flex flex-col">
+            <span className="font-medium text-foreground">
+              {row.student?.name ?? 'Unknown Student'}
+            </span>
+            <span className="text-xs text-muted-foreground">
+              {row.student?.email ?? ''}
+            </span>
+          </div>
+        </div>
+      ),
+    },
+    {
+      header: 'Course',
+      accessor: (row) => row.course?.title ?? '—',
+    },
+    {
+      header: 'Date',
+      accessor: (row) => formatDate(row.date),
+    },
+    {
+      header: 'Status',
+      accessor: (row) => (
+        <div className="flex items-center gap-2">
+          {STATUS_ICON[row.status]}
+          <Badge variant={STATUS_VARIANT[row.status]}>
+            {row.status}
+          </Badge>
+        </div>
+      ),
+    },
+  ]}
+  data={attendanceLogs}
+/>
           {!loadingLogs && attendanceLogs.length > 0 && (
+            
             <DataTable
               columns={[
                 { header: 'Date', accessor: (row) => formatDate(row.date) },

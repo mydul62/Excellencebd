@@ -73,24 +73,46 @@ export function PublicFooter() {
             <ul className="flex flex-col gap-3 text-sm text-[#8FA2B8]">
               <li className="flex items-start gap-2.5">
                 <MapPin className="mt-0.5 size-4 shrink-0 text-[#F9801D]" />
-                House 12, Road 5, Dhanmondi, Dhaka 1205
+                বাড়ি নং ৩১৫, রোড নং ১৩, সাভার DOHS, সাভার
               </li>
               <li className="flex items-center gap-2.5">
                 <Phone className="size-4 shrink-0 text-[#F9801D]" />
-                +880 1711 000000
+               +880 1306031982
               </li>
               <li className="flex items-center gap-2.5">
                 <Mail className="size-4 shrink-0 text-[#F9801D]" />
-                info@brightfuture.com
+              toukirahmed.th@gmail.com
               </li>
             </ul>
           </div>
         </div>
 
-        <div className="mt-10 flex flex-col items-center justify-between gap-3 border-t border-white/10 pt-6 text-sm text-[#8FA2B8] sm:flex-row">
-          <p>&copy; {new Date().getFullYear()} Exellence Academy. সর্বস্বত্ব সংরক্ষিত।</p>
-          <p>শিক্ষায় উৎকর্ষের জন্য নির্মিত।</p>
-        </div>
+    <div className="mt-10 flex flex-col items-center justify-between gap-3 border-t border-white/10 pt-6 text-sm text-[#8FA2B8] sm:flex-row">
+  <p>
+    &copy; {new Date().getFullYear()} Excellence Academy. সর্বস্বত্ব সংরক্ষিত।
+  </p>
+
+  <p>
+    শিক্ষায় উৎকর্ষের জন্য নির্মিত।
+  </p>
+
+  <p>
+    Developed by{" "}
+    <Link
+      href="https://www.linkedin.com/in/mahim62?utm_source=share_via&utm_content=profile&utm_medium=member_android"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="
+        font-semibold
+        text-white
+        transition
+        hover:text-[#F9801D]
+      "
+    >
+      Md Mydul Islam
+    </Link>
+  </p>
+</div>
       </div>
     </footer>
   )
