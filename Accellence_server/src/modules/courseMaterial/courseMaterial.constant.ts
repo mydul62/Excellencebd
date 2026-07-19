@@ -1,0 +1,7 @@
+export const COURSE_MATERIAL_CLOUDINARY_FOLDER = 'course-materials';
+
+export const COURSE_MATERIAL_MAX_FILE_SIZE_MB = 20;
+export const COURSE_MATERIAL_MAX_FILE_SIZE_BYTES =
+  COURSE_MATERIAL_MAX_FILE_SIZE_MB * 1024 * 1024;
+
+export const COURSE_MATERIAL_ALLOWED_MIME = 'application/pdf';
