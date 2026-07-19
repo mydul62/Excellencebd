@@ -82,7 +82,7 @@ export default function PhotoGalleryPage() {
         </div>
       </section>
 
-      <main className="mx-auto w-[95%] max-w-7xl py-16">
+      <main className="mx-auto w-[95%] container py-16">
         {loading && (
           <div className="flex h-[400px] items-center justify-center">
             <div className="flex items-center gap-3 text-[#146373]">
