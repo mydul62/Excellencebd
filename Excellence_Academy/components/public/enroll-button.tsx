@@ -29,7 +29,7 @@ export function EnrollButton({ course }: EnrollButtonProps) {
     checkEnrollment(course.id)
       .then(({ enrolled, enrollment }) => {
         setAlreadyEnrolled(enrolled)
-        if (enrollment) setEnrollmentStatus(enrollment.status)
+        if (enrollment) setEnrollmentStatus(enrollment.enrollmentStatus)
       })
       .catch(() => {
         // ignore — treat as not enrolled

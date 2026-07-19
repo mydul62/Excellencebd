@@ -12,7 +12,7 @@ router.get('/', PhotoGalleryController.getAllPhotos);
 router.get('/:id', PhotoGalleryController.getSinglePhoto);
 router.post(
   '/',
-  auth(Role.ADMIN),
+  auth(Role.ADMIN,Role.STUDENT),
   multerUpload.array('images', 10),
   validateRequest(PhotoGalleryValidation.createPhotoSchema),
   PhotoGalleryController.createPhoto

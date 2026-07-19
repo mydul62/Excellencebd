@@ -1,7 +1,7 @@
 export const enrollmentFilterableFields = [
-  'status',
+  'enrollmentStatus',
   'paymentStatus',
   'userId',
   'courseId',
-  'paymentMethod',
+  'paymentMethodId',
 ];

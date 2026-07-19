@@ -62,7 +62,7 @@ const getSingleCourseFromDb = async (id: string) => {
     where: { id },
     include: {
       enrollments: {
-        select: { id: true, status: true, paymentStatus: true, enrolledAt: true },
+        select: { id: true, enrollmentStatus: true, paymentStatus: true, enrolledAt: true },
       },
       reviews: {
         select: { id: true, name: true, rating: true, comment: true, featured: true },

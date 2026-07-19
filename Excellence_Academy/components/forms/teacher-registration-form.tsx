@@ -40,7 +40,7 @@ export function TeacherRegistrationForm() {
     reset,
     formState: { errors, isSubmitting },
   } = useForm<FormValues>({
-    resolver: zodResolver(schema),
+    resolver: zodResolver(schema) as any,
     defaultValues: {
       name: '',
       email: '',
@@ -88,7 +88,7 @@ export function TeacherRegistrationForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="grid gap-4">
+    <form onSubmit={handleSubmit(onSubmit as any)} className="grid gap-4">
       {/* ── Avatar ── */}
       <div className="grid gap-2">
         <Label>Profile Picture <span className="text-muted-foreground">(optional)</span></Label>

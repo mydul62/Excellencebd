@@ -112,13 +112,13 @@ export default function StudentReviewsPage() {
 
   // ── Submit form ───────────────────────────────────────────────────────────
   const submitForm = useForm<SubmitFormValues>({
-    resolver: zodResolver(submitSchema),
+    resolver: zodResolver(submitSchema) as any,
     defaultValues: { rating: 0, comment: '', courseId: '' },
   })
 
   // ── Edit form ─────────────────────────────────────────────────────────────
   const editForm = useForm<EditFormValues>({
-    resolver: zodResolver(editSchema),
+    resolver: zodResolver(editSchema) as any,
     defaultValues: { rating: 0, comment: '' },
   })
 
@@ -240,7 +240,7 @@ export default function StudentReviewsPage() {
         title="Write a Review"
         description="Share your experience to help other students."
       >
-        <form onSubmit={submitForm.handleSubmit(onSubmit)} className="grid max-w-lg gap-4">
+        <form onSubmit={submitForm.handleSubmit(onSubmit as any)} className="grid max-w-lg gap-4">
           {/* Star rating picker */}
           <div className="grid gap-2">
             <Label>Rating</Label>
@@ -380,7 +380,7 @@ export default function StudentReviewsPage() {
             <DialogTitle>Edit Review</DialogTitle>
           </DialogHeader>
 
-          <form onSubmit={editForm.handleSubmit(onEditSubmit)} className="grid gap-4 py-2">
+          <form onSubmit={editForm.handleSubmit(onEditSubmit as any)} className="grid gap-4 py-2">
             <div className="grid gap-2">
               <Label>Rating</Label>
               <StarPicker

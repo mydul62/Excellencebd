@@ -41,7 +41,11 @@ const buttonVariants = cva(
   }
 )
 
-interface ButtonProps extends ButtonPrimitive.Props, VariantProps<typeof buttonVariants> {
+// Omit 'render' from ButtonPrimitive.Props so we can redefine it with our own type
+type ButtonPrimitiveProps = Omit<ButtonPrimitive.Props, 'render'>
+
+interface ButtonProps extends ButtonPrimitiveProps, VariantProps<typeof buttonVariants> {
+  /** Pass a React element (e.g. <Link href="…" />) to render the button as that element */
   render?: React.ReactElement | null
 }
 
@@ -56,10 +60,11 @@ function Button({
   const buttonClassName = cn(buttonVariants({ variant, size, className }))
 
   if (render) {
-    return React.cloneElement(render, {
-      className: cn(buttonClassName, render.props.className),
-      children: render.props.children ?? children,
-      ...props,
+    const renderEl = render as React.ReactElement<React.HTMLAttributes<HTMLElement> & { href?: string }>
+    return React.cloneElement(renderEl, {
+      className: cn(buttonClassName, renderEl.props.className),
+      children: renderEl.props.children ?? children,
+      ...(props as object),
     })
   }
 
@@ -67,7 +72,7 @@ function Button({
     <ButtonPrimitive
       data-slot="button"
       className={buttonClassName}
-      {...props}
+      {...(props as ButtonPrimitive.Props)}
     >
       {children}
     </ButtonPrimitive>

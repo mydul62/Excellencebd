@@ -28,38 +28,55 @@ export interface ServerEnrollmentCourse {
   teacherId: string | null
 }
 
+export interface ServerEnrollmentPaymentMethod {
+  id: string
+  name: string
+  accountNumber: string
+  accountName: string
+  accountType: string
+  logo: string | null
+}
+
 export interface ServerEnrollment {
   id: string
   userId: string
   courseId: string
-  name: string
-  email: string
-  phone: string
-  paymentMethod: string
+  paymentMethodId: string
+  // payment submission fields
+  courseFee: number
+  amountSent: number
+  senderNumber: string
   transactionId: string
-  notes: string | null
-  screenshotUrl: string | null
-  status: EnrollmentStatus
+  paymentScreenshot: string | null
+  // admin-managed
   paymentStatus: PaymentStatus
-  amountPaid: number
+  enrollmentStatus: EnrollmentStatus
+  rejectionReason: string | null
   enrolledAt: string
   createdAt: string
   updatedAt: string
+  // relations
   user: ServerEnrollmentUser
   course: ServerEnrollmentCourse
+  paymentMethod: ServerEnrollmentPaymentMethod | null
 }
 
 export interface EnrollmentCheckResult {
   enrolled: boolean
-  enrollment: { id: string; status: EnrollmentStatus; paymentStatus: PaymentStatus } | null
+  enrollment: {
+    id: string
+    enrollmentStatus: EnrollmentStatus
+    paymentStatus: PaymentStatus
+    rejectionReason?: string | null
+  } | null
 }
 
 export interface EnrollmentFilters {
-  status?: EnrollmentStatus
+  enrollmentStatus?: EnrollmentStatus
   paymentStatus?: PaymentStatus
   userId?: string
   courseId?: string
-  paymentMethod?: string
+  paymentMethodId?: string
   page?: number
   limit?: number
 }
@@ -72,108 +89,115 @@ export interface EnrollmentsResult {
 export interface CreateEnrollmentPayload {
   userId: string
   courseId: string
-  name: string
-  email: string
-  phone: string
-  paymentMethod: string
+  paymentMethodId: string
+  courseFee: number
+  amountSent: number
+  senderNumber: string
   transactionId: string
-  notes?: string
-  screenshotUrl?: string
+  paymentScreenshot?: string
 }
 
 export interface UpdateEnrollmentPayload {
-  status?: EnrollmentStatus
   paymentStatus?: PaymentStatus
-  amountPaid?: number
-  notes?: string
+  enrollmentStatus?: EnrollmentStatus
+  rejectionReason?: string
+}
+
+export interface ResubmitEnrollmentPayload {
+  transactionId: string
+  senderNumber: string
+  amountSent: number
+  paymentScreenshot?: string
 }
 
 // ─── API calls ────────────────────────────────────────────────────────────────
 
-/** GET /api/admin/enrollments — ADMIN only */
+/** GET /api/enrollments — ADMIN only, full list with filters */
 export async function getAdminEnrollments(filters: EnrollmentFilters = {}): Promise<EnrollmentsResult> {
-  const params = new URLSearchParams()
-  if (filters.status)        params.set('status', filters.status)
-  if (filters.paymentStatus) params.set('paymentStatus', filters.paymentStatus)
-  if (filters.userId)        params.set('userId', filters.userId)
-  if (filters.courseId)      params.set('courseId', filters.courseId)
-  if (filters.paymentMethod) params.set('paymentMethod', filters.paymentMethod)
-  if (filters.page)          params.set('page', String(filters.page))
-  if (filters.limit)         params.set('limit', String(filters.limit))
-
-  const query = params.toString()
-  const res = await apiGet<ServerEnrollment[]>(`/admin/enrollments${query ? `?${query}` : ''}`)
-  return { data: res.data ?? [], meta: res.meta ?? { page: 1, limit: 10, total: 0 } }
+  return getEnrollments(filters)
 }
 
 /** GET /api/enrollments — ADMIN only */
 export async function getEnrollments(filters: EnrollmentFilters = {}): Promise<EnrollmentsResult> {
   const params = new URLSearchParams()
-  if (filters.status)        params.set('status', filters.status)
-  if (filters.paymentStatus) params.set('paymentStatus', filters.paymentStatus)
-  if (filters.userId)        params.set('userId', filters.userId)
-  if (filters.courseId)      params.set('courseId', filters.courseId)
-  if (filters.paymentMethod) params.set('paymentMethod', filters.paymentMethod)
-  if (filters.page)          params.set('page', String(filters.page))
-  if (filters.limit)         params.set('limit', String(filters.limit))
+  if (filters.enrollmentStatus) params.set('enrollmentStatus', filters.enrollmentStatus)
+  if (filters.paymentStatus)    params.set('paymentStatus',    filters.paymentStatus)
+  if (filters.userId)           params.set('userId',           filters.userId)
+  if (filters.courseId)         params.set('courseId',         filters.courseId)
+  if (filters.paymentMethodId)  params.set('paymentMethodId',  filters.paymentMethodId)
+  if (filters.page)             params.set('page',             String(filters.page))
+  if (filters.limit)            params.set('limit',            String(filters.limit))
 
   const query = params.toString()
   const res = await apiGet<ServerEnrollment[]>(`/enrollments${query ? `?${query}` : ''}`)
   return { data: res.data ?? [], meta: res.meta ?? { page: 1, limit: 10, total: 0 } }
 }
 
-/** GET /api/enrollments/mine — logged-in user's own enrollments (STUDENT/ADMIN/TEACHER) */
-export async function getMyEnrollments(filters: Omit<EnrollmentFilters, 'userId'> = {}): Promise<EnrollmentsResult> {
+/** GET /api/enrollments/mine — authenticated user's own enrollments */
+export async function getMyEnrollments(
+  filters: Omit<EnrollmentFilters, 'userId'> = {},
+): Promise<EnrollmentsResult> {
   const params = new URLSearchParams()
-  if (filters.status)        params.set('status', filters.status)
-  if (filters.paymentStatus) params.set('paymentStatus', filters.paymentStatus)
-  if (filters.page)          params.set('page', String(filters.page))
-  if (filters.limit)         params.set('limit', String(filters.limit))
+  if (filters.enrollmentStatus) params.set('enrollmentStatus', filters.enrollmentStatus)
+  if (filters.paymentStatus)    params.set('paymentStatus',    filters.paymentStatus)
+  if (filters.page)             params.set('page',             String(filters.page))
+  if (filters.limit)            params.set('limit',            String(filters.limit))
 
   const query = params.toString()
   const res = await apiGet<ServerEnrollment[]>(`/enrollments/mine${query ? `?${query}` : ''}`)
   return { data: res.data ?? [], meta: res.meta ?? { page: 1, limit: 10, total: 0 } }
 }
 
-/** GET /api/enrollments/check/:courseId — check if logged-in user is enrolled */
+/** GET /api/enrollments/check/:courseId */
 export async function checkEnrollment(courseId: string): Promise<EnrollmentCheckResult> {
   const res = await apiGet<EnrollmentCheckResult>(`/enrollments/check/${courseId}`)
   return res.data
 }
 
-/** GET /api/admin/enrollments/:id — ADMIN only */
+/** GET /api/enrollments/:id */
 export async function getAdminEnrollment(id: string): Promise<ServerEnrollment> {
-  const res = await apiGet<ServerEnrollment>(`/admin/enrollments/${id}`)
-  return res.data
+  return getEnrollment(id)
 }
 
-/** GET /api/enrollments/:id — ADMIN, STUDENT, or TEACHER */
+/** GET /api/enrollments/:id */
 export async function getEnrollment(id: string): Promise<ServerEnrollment> {
   const res = await apiGet<ServerEnrollment>(`/enrollments/${id}`)
   return res.data
 }
 
-/** POST /api/enrollments — ADMIN or STUDENT */
+/** POST /api/enrollments */
 export async function createEnrollment(payload: CreateEnrollmentPayload): Promise<ServerEnrollment> {
   const res = await apiPost<ServerEnrollment>('/enrollments', payload)
   return res.data
 }
 
-/** PUT /api/enrollments/:id — ADMIN only */
-export async function updateEnrollment(id: string, payload: UpdateEnrollmentPayload): Promise<ServerEnrollment> {
+/** PUT /api/enrollments/:id — ADMIN manual patch */
+export async function updateEnrollment(
+  id: string,
+  payload: UpdateEnrollmentPayload,
+): Promise<ServerEnrollment> {
   const res = await apiPut<ServerEnrollment>(`/enrollments/${id}`, payload)
   return res.data
 }
 
-/** PATCH /api/admin/enrollments/:id/approve — ADMIN only */
-export async function approveEnrollment(id: string, reason?: string): Promise<ServerEnrollment> {
-  const res = await apiPatch<ServerEnrollment>(`/admin/enrollments/${id}/approve`, reason ? { reason } : {})
+/** PATCH /api/enrollments/:id/approve — ADMIN only */
+export async function approveEnrollment(id: string): Promise<ServerEnrollment> {
+  const res = await apiPatch<ServerEnrollment>(`/enrollments/${id}/approve`, {})
   return res.data
 }
 
-/** PATCH /api/admin/enrollments/:id/reject — ADMIN only */
-export async function rejectEnrollment(id: string, reason?: string): Promise<ServerEnrollment> {
-  const res = await apiPatch<ServerEnrollment>(`/admin/enrollments/${id}/reject`, reason ? { reason } : {})
+/** PATCH /api/enrollments/:id/reject — ADMIN only, reason required */
+export async function rejectEnrollment(id: string, reason: string): Promise<ServerEnrollment> {
+  const res = await apiPatch<ServerEnrollment>(`/enrollments/${id}/reject`, { reason })
+  return res.data
+}
+
+/** PATCH /api/enrollments/:id/resubmit — STUDENT only */
+export async function resubmitEnrollment(
+  id: string,
+  payload: ResubmitEnrollmentPayload,
+): Promise<ServerEnrollment> {
+  const res = await apiPatch<ServerEnrollment>(`/enrollments/${id}/resubmit`, payload)
   return res.data
 }
 

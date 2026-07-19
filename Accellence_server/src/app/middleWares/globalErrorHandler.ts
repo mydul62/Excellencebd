@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import httpStatus from 'http-status';
+import { ZodError } from 'zod';
 import ApiError from '../error/ApiError';
 
 const globalErrorHandler = (
@@ -8,6 +9,18 @@ const globalErrorHandler = (
   res: Response,
   next: NextFunction
 ) => {
+  // Zod validation errors → 400 with a readable message
+  if (err instanceof ZodError) {
+    const message = err.errors
+      .map((e) => `${e.path.join('.')}: ${e.message}`)
+      .join('; ');
+    return res.status(httpStatus.BAD_REQUEST).json({
+      success: false,
+      message,
+      error: process.env.NODE_ENV === 'development' ? err.errors : undefined,
+    });
+  }
+
   // Use the statusCode from ApiError if available, otherwise default to 500
   const statusCode =
     err instanceof ApiError

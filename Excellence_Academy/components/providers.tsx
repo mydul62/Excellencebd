@@ -22,7 +22,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <QueryClientProvider client={client}>
       <AuthProvider>
-        <TooltipProvider delay={200}>{children}</TooltipProvider>
+        <TooltipProvider>{children}</TooltipProvider>
       </AuthProvider>
     </QueryClientProvider>
   )

@@ -104,7 +104,7 @@ export default function AdminCourseAssignPage() {
         <div className="grid max-w-2xl gap-6">
           <div className="grid gap-2">
             <Label htmlFor="course">Select Course</Label>
-            <Select value={selectedCourseId} onValueChange={setSelectedCourseId}>
+            <Select value={selectedCourseId} onValueChange={(v) => setSelectedCourseId(v ?? '')}>
               <SelectTrigger id="course">
                 <SelectValue placeholder="Choose a course..." />
               </SelectTrigger>
@@ -147,7 +147,7 @@ export default function AdminCourseAssignPage() {
 
           <div className="grid gap-2">
             <Label htmlFor="teacher">Select Teacher</Label>
-            <Select value={selectedTeacherId} onValueChange={setSelectedTeacherId}>
+            <Select value={selectedTeacherId} onValueChange={(v) => setSelectedTeacherId(v ?? '')}>
               <SelectTrigger id="teacher">
                 <SelectValue placeholder="Choose a teacher or leave empty to unassign..." />
               </SelectTrigger>
