@@ -13,6 +13,7 @@ import { NoticeRoutes } from '../../modules/notices/notices.routes';
 import { ReviewRoutes } from '../../modules/reviews/reviews.routes';
 import { PhotoGalleryRoutes } from '../../modules/photoGallery/photoGallery.routes';
 import { PaymentMethodRoutes } from '../../modules/paymentMethods/paymentMethods.routes';
+import { CourseReviewRoutes } from '../../modules/courseReview/courseReview.routes';
 
 const router = express.Router();
 
@@ -31,6 +32,7 @@ const moduleRoutes = [
   { path: '/reviews', route: ReviewRoutes },
   { path: '/photo-gallery', route: PhotoGalleryRoutes },
   { path: '/payment-methods', route: PaymentMethodRoutes },
+  { path: '/course-review',   route: CourseReviewRoutes },
 ];
 
 moduleRoutes.forEach((route) => router.use(route.path, route.route));

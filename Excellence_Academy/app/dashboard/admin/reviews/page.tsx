@@ -158,9 +158,9 @@ export default function AdminReviewsPage() {
         <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div className="space-y-2">
             <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-sm font-medium text-primary">
-              <Star className="h-4 w-4" />Review Management
+              <Star className="h-4 w-4" />Testimonials Management
             </div>
-            <h1 className="font-display text-3xl font-semibold text-foreground">Reviews</h1>
+            <h1 className="font-display text-3xl font-semibold text-foreground">Testimonials</h1>
             <p className="max-w-2xl text-sm text-muted-foreground">
               Moderate student reviews, feature testimonials, and remove inappropriate content.
             </p>
@@ -172,7 +172,7 @@ export default function AdminReviewsPage() {
       </div>
 
       <SectionCard
-        title={`Reviews (${reviews.length})`}
+        title={`Testimonials (${reviews.length})`}
         description="All submitted reviews, newest first."
       >
         {loading && (

@@ -38,7 +38,8 @@ const navConfig: Record<Role, { label: string; href: string; icon: typeof Layout
     { label: 'পেমেন্ট মেথড', href: '/dashboard/admin/payment-methods', icon: CreditCard },
     { label: 'নোটিশ', href: '/dashboard/admin/notices', icon: BellRing },
     { label: 'ফটো গ্যালারি', href: '/dashboard/admin/photo-gallery', icon: Camera },
-    { label: 'রিভিউ', href: '/dashboard/admin/reviews', icon: Star },
+    { label: 'টেস্টিমনিয়ালস', href: '/dashboard/admin/reviews', icon: Star },
+    { label: 'কোর্স রিভিউ', href: '/dashboard/admin/course-reviews', icon: Star },
     { label: 'প্রোফাইল', href: '/dashboard/admin/profile', icon: UserCircle2 },
   ],
   teacher: [

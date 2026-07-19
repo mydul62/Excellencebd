@@ -22,6 +22,7 @@ model User {
   profile        Profile?
   results        Result[]
   reviews        Review[]
+  courseReviews  CourseReview[]
   studentProfile Student?
   teacherProfile Teacher?
 }
@@ -58,11 +59,12 @@ model Course {
   teacherId   String?
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
-  attendances Attendance[]
-  teacher     Teacher?     @relation(fields: [teacherId], references: [id])
-  enrollments Enrollment[]
-  results     Result[]
-  reviews     Review[]
+  attendances    Attendance[]
+  teacher        Teacher?      @relation(fields: [teacherId], references: [id])
+  enrollments    Enrollment[]
+  results        Result[]
+  reviews        Review[]
+  courseReviews  CourseReview[]
 }
 
 model PaymentMethod {
@@ -128,6 +130,20 @@ model Review {
   updatedAt DateTime @updatedAt
   course    Course?  @relation(fields: [courseId], references: [id])
   user      User?    @relation(fields: [userId], references: [id])
+}
+
+model CourseReview {
+  id        String   @id @default(uuid())
+  courseId  String
+  userId    String
+  rating    Int
+  comment   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([courseId, userId])
 }
 
 model PhotoGallery {

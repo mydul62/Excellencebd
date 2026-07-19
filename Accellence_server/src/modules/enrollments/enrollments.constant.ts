@@ -4,4 +4,5 @@ export const enrollmentFilterableFields = [
   'userId',
   'courseId',
   'paymentMethodId',
+  'searchTerm',
 ];
