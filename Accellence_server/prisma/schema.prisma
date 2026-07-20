@@ -65,25 +65,41 @@ model Course {
   reviews     Review[]
 }
 
-model Enrollment {
-  id            String           @id @default(uuid())
-  userId        String
-  courseId      String
+model PaymentMethod {
+  id            String       @id @default(uuid())
   name          String
-  email         String
-  phone         String
-  paymentMethod String
-  transactionId String
-  notes         String?
-  screenshotUrl String?
-  status        EnrollmentStatus @default(pending)
-  paymentStatus PaymentStatus    @default(unpaid)
-  amountPaid    Float            @default(0)
-  enrolledAt    DateTime         @default(now())
-  createdAt     DateTime         @default(now())
-  updatedAt     DateTime         @updatedAt
-  course        Course           @relation(fields: [courseId], references: [id])
-  user          User             @relation(fields: [userId], references: [id])
+  accountNumber String
+  accountName   String
+  accountType   String
+  instructions  String?
+  logo          String?
+  isActive      Boolean      @default(true)
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  enrollments   Enrollment[]
+}
+
+model Enrollment {
+  id               String           @id @default(uuid())
+  userId           String
+  courseId         String
+  paymentMethodId  String
+  // payment submission — student fills these
+  courseFee        Float            @default(0)
+  amountSent       Float            @default(0)
+  senderNumber     String
+  transactionId    String
+  paymentScreenshot String?
+  // admin-managed
+  paymentStatus    PaymentStatus    @default(unpaid)
+  enrollmentStatus EnrollmentStatus @default(pending)
+  rejectionReason  String?
+  enrolledAt       DateTime         @default(now())
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+  course           Course           @relation(fields: [courseId], references: [id])
+  paymentMethod    PaymentMethod    @relation(fields: [paymentMethodId], references: [id])
+  user             User             @relation(fields: [userId], references: [id])
 }
 
 model Notice {

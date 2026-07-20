@@ -29,6 +29,6 @@ export const courseIconMap: Record<string, LucideIcon> = {
   leaf: Leaf,
 }
 
-export function getCourseIcon(key: string): LucideIcon {
-  return courseIconMap[key] ?? BookOpen
+export function getCourseIcon(key: string | null | undefined): LucideIcon {
+  return courseIconMap[key ?? ''] ?? BookOpen
 }

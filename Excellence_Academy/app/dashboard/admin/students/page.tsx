@@ -81,7 +81,7 @@ export default function AdminStudentsPage() {
     enrollments.filter((e) => e.userId === userId).length
 
   const approvedCount = (userId: string) =>
-    enrollments.filter((e) => e.userId === userId && e.status === 'approved').length
+    enrollments.filter((e) => e.userId === userId && e.enrollmentStatus === 'approved').length
 
   // ── Open edit dialog ───────────────────────────────────────────────────────
   function openEdit(student: ServerStudent) {

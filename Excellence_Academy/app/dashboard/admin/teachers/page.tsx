@@ -49,7 +49,7 @@ export default function AdminTeachersPage() {
     handleSubmit,
     reset,
     formState: { errors, isSubmitting },
-  } = useForm<EditFormValues>({ resolver: zodResolver(editSchema) })
+  } = useForm<EditFormValues>({ resolver: zodResolver(editSchema) as any })
 
   // ── Data fetch ─────────────────────────────────────────────────────────────
   const fetchTeachers = () => {
@@ -214,7 +214,7 @@ export default function AdminTeachersPage() {
             <DialogTitle>Edit Teacher</DialogTitle>
           </DialogHeader>
 
-          <form onSubmit={handleSubmit(onEditSubmit)} className="grid gap-4 py-2">
+          <form onSubmit={handleSubmit(onEditSubmit as any)} className="grid gap-4 py-2">
             <div className="grid gap-2">
               <Label htmlFor="edit-name">Full Name</Label>
               <Input id="edit-name" {...register('name')} />

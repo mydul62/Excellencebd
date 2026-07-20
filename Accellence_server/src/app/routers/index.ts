@@ -12,6 +12,7 @@ import { EnrollmentRoutes } from '../../modules/enrollments/enrollments.routes';
 import { NoticeRoutes } from '../../modules/notices/notices.routes';
 import { ReviewRoutes } from '../../modules/reviews/reviews.routes';
 import { PhotoGalleryRoutes } from '../../modules/photoGallery/photoGallery.routes';
+import { PaymentMethodRoutes } from '../../modules/paymentMethods/paymentMethods.routes';
 
 const router = express.Router();
 
@@ -29,6 +30,7 @@ const moduleRoutes = [
   { path: '/notices', route: NoticeRoutes },
   { path: '/reviews', route: ReviewRoutes },
   { path: '/photo-gallery', route: PhotoGalleryRoutes },
+  { path: '/payment-methods', route: PaymentMethodRoutes },
 ];
 
 moduleRoutes.forEach((route) => router.use(route.path, route.route));

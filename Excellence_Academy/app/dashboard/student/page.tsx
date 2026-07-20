@@ -108,7 +108,7 @@ export default function StudentDashboardPage() {
           <div className="grid gap-4 sm:grid-cols-2">
             {data.enrollments.map((enrollment) => {
               const course = enrollment.course
-              const Icon = getCourseIcon(course?.icon ?? null)
+              const Icon = getCourseIcon(course?.icon ?? '')
               return (
                 <div
                   key={enrollment.id}
@@ -121,8 +121,8 @@ export default function StudentDashboardPage() {
                     <p className="font-medium text-foreground truncate">{course?.title ?? 'Unknown Course'}</p>
                     <p className="text-xs text-muted-foreground">{course?.category} • {course?.duration}</p>
                     <div className="mt-1 flex items-center gap-2 flex-wrap">
-                      <Badge variant={enrollment.status === 'approved' ? 'default' : 'secondary'} className="text-xs">
-                        {enrollment.status}
+                      <Badge variant={enrollment.enrollmentStatus === 'approved' ? 'default' : 'secondary'} className="text-xs">
+                        {enrollment.enrollmentStatus}
                       </Badge>
                       <Badge variant={enrollment.paymentStatus === 'paid' ? 'default' : 'secondary'} className="text-xs">
                         {enrollment.paymentStatus}

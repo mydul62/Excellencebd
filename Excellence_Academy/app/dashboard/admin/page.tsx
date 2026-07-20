@@ -178,8 +178,8 @@ export default function AdminDashboardPage() {
               {
                 header: 'Status',
                 accessor: (row) => (
-                  <Badge variant={row.status === 'approved' ? 'default' : 'secondary'}>
-                    {row.status}
+                  <Badge variant={row.enrollmentStatus === 'approved' ? 'default' : 'secondary'}>
+                    {row.enrollmentStatus}
                   </Badge>
                 ),
               },

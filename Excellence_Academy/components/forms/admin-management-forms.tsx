@@ -93,7 +93,7 @@ export function StudentRegistrationForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="grid gap-4">
+    <form onSubmit={handleSubmit(onSubmit as any)} className="grid gap-4">
       {/* ── Avatar ── */}
       <div className="grid gap-2">
         <Label>Profile Picture <span className="text-muted-foreground">(optional)</span></Label>
@@ -207,7 +207,7 @@ export function CourseRegistrationForm() {
     reset,
     formState: { errors, isSubmitting },
   } = useForm<CourseFormValues>({
-    resolver: zodResolver(courseSchema),
+    resolver: zodResolver(courseSchema) as any,
     defaultValues: {
       title: '',
       category: '',
@@ -242,7 +242,7 @@ export function CourseRegistrationForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="grid gap-4">
+    <form onSubmit={handleSubmit(onSubmit as any)} className="grid gap-4">
       <div className="grid gap-2">
         <Label htmlFor="course-title">Course title</Label>
         <Input id="course-title" placeholder="Advanced Web Design" {...register('title')} />
@@ -362,7 +362,7 @@ export function NoticeRegistrationForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="grid gap-4">
+    <form onSubmit={handleSubmit(onSubmit as any)} className="grid gap-4">
       <div className="grid gap-2">
         <Label htmlFor="notice-title">Title</Label>
         <Input id="notice-title" placeholder="Exam schedule updated" {...register('title')} />
@@ -416,3 +416,4 @@ export function NoticeRegistrationForm() {
     </form>
   )
 }
+

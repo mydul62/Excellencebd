@@ -1,15 +1,12 @@
-// Base fetch helper
+// Base fetch helper + token utilities
 export * from './api'
 
-// Auth — export carefully to avoid name collisions
+// Auth
 export {
   loginApi,
   registerApi,
   refreshTokenApi,
   changePasswordApi,
-  saveAccessToken,
-  getAccessToken,
-  clearAccessToken,
   type LoginPayload,
   type RegisterPayload,
   type ChangePasswordPayload,
@@ -34,7 +31,10 @@ export * from './testimonials'
 // Enrollments
 export * from './enrollments'
 
-// Users — ServerUser is the canonical one; ServerRole from users
+// Payment Methods
+export * from './paymentMethods'
+
+// Users — ServerUser is the canonical type; ServerRole imported from users only
 export {
   getUsers,
   getUser,
@@ -44,7 +44,7 @@ export {
   type UsersResult,
   type UpdateUserPayload,
   type ServerUser,
-  type ServerRole,
+  type ServerRole as UsersServerRole,
 } from './users'
 
 // Contact
@@ -53,6 +53,6 @@ export * from './contact'
 // Categories
 export * from './categories'
 
-// ⚠️ Stubs for missing backend endpoints (blogs, events)
+// Stubs for missing backend endpoints
 export * from './blogs'
 export * from './events'

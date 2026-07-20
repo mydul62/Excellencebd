@@ -69,7 +69,7 @@ export default function AdminReviewsPage() {
     handleSubmit,
     reset,
     formState: { errors, isSubmitting },
-  } = useForm<EditFormValues>({ resolver: zodResolver(editSchema) })
+  } = useForm<EditFormValues>({ resolver: zodResolver(editSchema) as any })
 
   // ── Fetch ──────────────────────────────────────────────────────────────────
   const fetchReviews = () => {

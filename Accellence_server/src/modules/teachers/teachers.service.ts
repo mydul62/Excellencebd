@@ -162,7 +162,7 @@ const getTeacherStudentsFromDb = async (teacherId: string) => {
   const enrollments = await prisma.enrollment.findMany({
     where: {
       courseId: { in: courseIds },
-      status: 'approved', // Only approved enrollments
+      enrollmentStatus: 'approved', // Only approved enrollments
     },
     include: {
       user: {
@@ -193,7 +193,7 @@ const getTeacherStudentsFromDb = async (teacherId: string) => {
   // Get unique students with their enrollment details
   const studentMap = new Map();
   enrollments.forEach((enrollment) => {
-    const userId = enrollment.user.id;
+    const userId = enrollment.userId;
     if (!studentMap.has(userId)) {
       studentMap.set(userId, {
         id: enrollment.user.id,
@@ -210,7 +210,7 @@ const getTeacherStudentsFromDb = async (teacherId: string) => {
       id: enrollment.id,
       course: enrollment.course,
       enrolledAt: enrollment.enrolledAt,
-      status: enrollment.status,
+      enrollmentStatus: enrollment.enrollmentStatus,
     });
   });
 

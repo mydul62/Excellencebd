@@ -156,11 +156,11 @@ export async function getAdminStats(): Promise<AdminStats> {
   ])
 
   // Fetch pending enrollments count separately
-  const pendingRes = await apiGetEnrollments({ status: 'pending', limit: 1 })
+  const pendingRes = await apiGetEnrollments({ enrollmentStatus: 'pending', limit: 1 })
 
-  // Revenue: sum amountPaid across all enrollments (fetch full list)
+  // Revenue: sum amountSent across all approved enrollments (fetch full list)
   const allEnrollments = await apiGetEnrollments({ limit: 200 })
-  const totalRevenue = allEnrollments.data.reduce((sum, e) => sum + e.amountPaid, 0)
+  const totalRevenue = allEnrollments.data.reduce((sum, e) => sum + (e.amountSent ?? 0), 0)
 
   return {
     totalStudents: studentsRes.meta.total,
@@ -274,11 +274,11 @@ export async function getStudentDashboard(studentId: string): Promise<StudentDas
 
   const studentEnrollments = enrollmentsResult.data
 
-  const approvedCount = studentEnrollments.filter((e) => e.status === 'approved').length
-  const pendingCount  = studentEnrollments.filter((e) => e.status === 'pending').length
+  const approvedCount = studentEnrollments.filter((e) => e.enrollmentStatus === 'approved').length
+  const pendingCount  = studentEnrollments.filter((e) => e.enrollmentStatus === 'pending').length
   const dueAmount     = studentEnrollments.reduce((sum, e) => {
-    const price = e.course?.price ?? 0
-    return sum + Math.max(price - e.amountPaid, 0)
+    const fee = e.courseFee ?? e.course?.price ?? 0
+    return sum + Math.max(fee - (e.amountSent ?? 0), 0)
   }, 0)
 
   const studentNotices = [...noticesResult.data]

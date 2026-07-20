@@ -1,37 +1,56 @@
 import { z } from 'zod';
 import { EnrollmentStatus, PaymentStatus } from '@prisma/client';
 
+// ─── Create (student submits enrollment) ─────────────────────────────────────
+
 const createEnrollmentSchema = z.object({
   body: z.object({
-    // relations
-    userId: z.string().min(1, 'User ID is required'),
-    courseId: z.string().min(1, 'Course ID is required'),
-    // form data
-    name: z.string().min(1, 'Name is required'),
-    email: z.string().email('Invalid email'),
-    phone: z.string().min(1, 'Phone is required'),
-    paymentMethod: z.string().min(1, 'Payment method is required'),
-    transactionId: z.string().min(1, 'Transaction ID is required'),
-    notes: z.string().optional(),
-    screenshotUrl: z.string().optional(),
-    // optional overrides
-    status: z.nativeEnum(EnrollmentStatus).optional(),
-    paymentStatus: z.nativeEnum(PaymentStatus).optional(),
-    amountPaid: z.number().nonnegative().optional(),
-    enrolledAt: z.string().datetime().optional(),
+    userId:           z.string().min(1, 'User ID is required'),
+    courseId:         z.string().min(1, 'Course ID is required'),
+    paymentMethodId:  z.string().min(1, 'Payment method ID is required'),
+    courseFee:        z.coerce.number().nonnegative('Course fee must be 0 or more'),
+    amountSent:       z.coerce.number().nonnegative('Amount sent must be 0 or more'),
+    senderNumber:     z.string().min(1, 'Sender number is required'),
+    transactionId:    z.string().min(1, 'Transaction ID is required'),
+    paymentScreenshot: z.string().optional(),
+    // admin overrides — optional
+    paymentStatus:    z.nativeEnum(PaymentStatus).optional(),
+    enrollmentStatus: z.nativeEnum(EnrollmentStatus).optional(),
   }),
 });
 
+// ─── Admin update (patch status / reason) ────────────────────────────────────
+
 const updateEnrollmentSchema = z.object({
   body: z.object({
-    status: z.nativeEnum(EnrollmentStatus).optional(),
-    paymentStatus: z.nativeEnum(PaymentStatus).optional(),
-    amountPaid: z.number().nonnegative().optional(),
-    notes: z.string().optional(),
+    paymentStatus:    z.nativeEnum(PaymentStatus).optional(),
+    enrollmentStatus: z.nativeEnum(EnrollmentStatus).optional(),
+    rejectionReason:  z.string().optional(),
+  }),
+});
+
+// ─── Student resubmission ─────────────────────────────────────────────────────
+
+const resubmitEnrollmentSchema = z.object({
+  body: z.object({
+    transactionId:     z.string().min(1, 'Transaction ID is required'),
+    senderNumber:      z.string().min(1, 'Sender number is required'),
+    amountSent:        z.coerce.number().nonnegative('Amount must be 0 or more'),
+    paymentScreenshot: z.string().optional(),
+  }),
+});
+
+// ─── Admin reject (reason required) ──────────────────────────────────────────
+
+const rejectEnrollmentSchema = z.object({
+  body: z.object({
+    reason: z.string().min(1, 'Rejection reason is required'),
   }),
 });
 
 export const EnrollmentValidation = {
   createEnrollmentSchema,
   updateEnrollmentSchema,
+  resubmitEnrollmentSchema,
+  rejectEnrollmentSchema,
 };

@@ -14,7 +14,7 @@ export interface Teacher {
   name: string
   email: string
   phone: string
-  avatar: string
+  avatar?: string | null
   subject: string
   bio: string
   experienceYears: number
@@ -30,7 +30,7 @@ export interface Student {
   name: string
   email: string
   phone: string
-  avatar: string
+  avatar?: string | null
   status: StudentStatus
   address: string
   guardian: string
@@ -84,7 +84,7 @@ export interface Notice {
 export interface Review {
   id: string
   name: string
-  avatar: string
+  avatar?: string | null
   role: string
   rating: number
   featured?: boolean

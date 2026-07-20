@@ -4,21 +4,31 @@ import { EnrollmentService } from './enrollments.service';
 import { enrollmentFilterableFields } from './enrollments.constant';
 import httpStatus from 'http-status';
 
+// ─── Create ───────────────────────────────────────────────────────────────────
+
 const createEnrollment = catchAsync(async (req, res) => {
   const result = await EnrollmentService.createEnrollmentInDb(req.body);
   sendResponse(res, {
     success: true,
     statusCode: httpStatus.CREATED,
-    message: 'Enrollment created successfully',
+    message: 'Enrollment submitted successfully. Awaiting admin approval.',
     data: result,
   });
 });
 
+// ─── List all (admin) or own (student/teacher) ───────────────────────────────
+
 const getAllEnrollments = catchAsync(async (req, res) => {
+  const user = (req as any).user;
   const filters: Record<string, any> = {};
   enrollmentFilterableFields.forEach((field) => {
     if (req.query[field] !== undefined) filters[field] = req.query[field];
   });
+
+  // Non-admin users can only see their own enrollments
+  if (user.role !== 'ADMIN') {
+    filters.userId = user.id;
+  }
 
   const result = await EnrollmentService.getAllEnrollmentsFromDb(filters, req.query);
   sendResponse(res, {
@@ -30,8 +40,12 @@ const getAllEnrollments = catchAsync(async (req, res) => {
   });
 });
 
+// ─── Single ───────────────────────────────────────────────────────────────────
+
 const getSingleEnrollment = catchAsync(async (req, res) => {
-  const result = await EnrollmentService.getSingleEnrollmentFromDb(req.params.id as string);
+  const result = await EnrollmentService.getSingleEnrollmentFromDb(
+    req.params.id as string,
+  );
   sendResponse(res, {
     success: true,
     statusCode: httpStatus.OK,
@@ -40,8 +54,13 @@ const getSingleEnrollment = catchAsync(async (req, res) => {
   });
 });
 
+// ─── Admin update (manual patch) ─────────────────────────────────────────────
+
 const updateEnrollment = catchAsync(async (req, res) => {
-  const result = await EnrollmentService.updateEnrollmentInDb(req.params.id as string, req.body);
+  const result = await EnrollmentService.updateEnrollmentInDb(
+    req.params.id as string,
+    req.body,
+  );
   sendResponse(res, {
     success: true,
     statusCode: httpStatus.OK,
@@ -50,8 +69,12 @@ const updateEnrollment = catchAsync(async (req, res) => {
   });
 });
 
+// ─── Approve ─────────────────────────────────────────────────────────────────
+
 const approveEnrollment = catchAsync(async (req, res) => {
-  const result = await EnrollmentService.approveEnrollmentInDb(req.params.id as string, req.body?.reason);
+  const result = await EnrollmentService.approveEnrollmentInDb(
+    req.params.id as string,
+  );
   sendResponse(res, {
     success: true,
     statusCode: httpStatus.OK,
@@ -60,18 +83,44 @@ const approveEnrollment = catchAsync(async (req, res) => {
   });
 });
 
+// ─── Reject ───────────────────────────────────────────────────────────────────
+
 const rejectEnrollment = catchAsync(async (req, res) => {
-  const result = await EnrollmentService.rejectEnrollmentInDb(req.params.id as string, req.body?.reason);
+  const result = await EnrollmentService.rejectEnrollmentInDb(
+    req.params.id as string,
+    req.body.reason,
+  );
   sendResponse(res, {
     success: true,
     statusCode: httpStatus.OK,
-    message: req.body?.reason || 'Enrollment rejected successfully',
+    message: 'Enrollment rejected',
     data: result,
   });
 });
 
+// ─── Student resubmit ────────────────────────────────────────────────────────
+
+const resubmitEnrollment = catchAsync(async (req, res) => {
+  const user = (req as any).user;
+  const result = await EnrollmentService.resubmitEnrollmentInDb(
+    req.params.id as string,
+    user.id,
+    req.body,
+  );
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: 'Enrollment resubmitted successfully. Awaiting admin review.',
+    data: result,
+  });
+});
+
+// ─── Delete ───────────────────────────────────────────────────────────────────
+
 const deleteEnrollment = catchAsync(async (req, res) => {
-  const result = await EnrollmentService.deleteEnrollmentFromDb(req.params.id as string);
+  const result = await EnrollmentService.deleteEnrollmentFromDb(
+    req.params.id as string,
+  );
   sendResponse(res, {
     success: true,
     statusCode: httpStatus.OK,
@@ -80,7 +129,8 @@ const deleteEnrollment = catchAsync(async (req, res) => {
   });
 });
 
-// GET /enrollments/mine — returns the logged-in student's own enrollments
+// ─── Mine (student) ───────────────────────────────────────────────────────────
+
 const getMyEnrollments = catchAsync(async (req, res) => {
   const user = (req as any).user;
   const filters: Record<string, any> = { userId: user.id };
@@ -101,11 +151,14 @@ const getMyEnrollments = catchAsync(async (req, res) => {
   });
 });
 
-// GET /enrollments/check/:courseId — check if logged-in user is enrolled in a course
+// ─── Check ────────────────────────────────────────────────────────────────────
+
 const checkEnrollment = catchAsync(async (req, res) => {
   const user = (req as any).user;
-  const { courseId } = req.params;
-  const result = await EnrollmentService.checkEnrollmentExists(user.id, courseId as string);
+  const result = await EnrollmentService.checkEnrollmentExists(
+    user.id,
+    req.params.courseId as string,
+  );
   sendResponse(res, {
     success: true,
     statusCode: httpStatus.OK,
@@ -123,5 +176,6 @@ export const EnrollmentController = {
   updateEnrollment,
   approveEnrollment,
   rejectEnrollment,
+  resubmitEnrollment,
   deleteEnrollment,
 };
