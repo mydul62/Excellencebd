@@ -43,7 +43,7 @@ export function PhotoGallerySection() {
 
   if (loading) {
     return (
-      <section className="mx-auto w-[95%] max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+      <section className="mx-auto w-[95%] container px-4 py-20 sm:px-6 lg:px-8">
         <div className="mb-8 flex items-end justify-between">
           <div>
             <div className="mb-3 h-9 w-52 animate-pulse rounded-full bg-slate-200" />
@@ -90,7 +90,7 @@ export function PhotoGallerySection() {
 
   return (
     <>
-      <section className="mx-auto w-[95%] max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+      <section className="mx-auto w-[95%] container px-4 py-20 sm:px-6 lg:px-8">
 
         {/* Header */}
 

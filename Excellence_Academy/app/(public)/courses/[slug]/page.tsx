@@ -10,6 +10,7 @@ import type { ServerTeacher } from '@/serverdata/teachers'
 import { getCourseIcon } from '@/lib/course-icons'
 import { formatCurrency } from '@/lib/format'
 import { EnrollButton } from '@/components/public/enroll-button'
+import { CourseReviewSection } from '@/components/public/course-review-section'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -181,6 +182,13 @@ export default function CourseDetailPage() {
               </CardContent>
             </Card>
           </div>
+        </div>
+      </section>
+
+      {/* ── Course Reviews ── */}
+      <section className="pb-16">
+        <div className="mx-auto max-w-7xl px-4 md:px-6">
+          <CourseReviewSection courseId={course.id} />
         </div>
       </section>
     </>

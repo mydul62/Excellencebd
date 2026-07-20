@@ -77,6 +77,8 @@ export interface EnrollmentFilters {
   userId?: string
   courseId?: string
   paymentMethodId?: string
+  /** Full-text search: student name, sender mobile number, or transaction ID */
+  searchTerm?: string
   page?: number
   limit?: number
 }
@@ -125,6 +127,7 @@ export async function getEnrollments(filters: EnrollmentFilters = {}): Promise<E
   if (filters.userId)           params.set('userId',           filters.userId)
   if (filters.courseId)         params.set('courseId',         filters.courseId)
   if (filters.paymentMethodId)  params.set('paymentMethodId',  filters.paymentMethodId)
+  if (filters.searchTerm?.trim()) params.set('searchTerm',     filters.searchTerm.trim())
   if (filters.page)             params.set('page',             String(filters.page))
   if (filters.limit)            params.set('limit',            String(filters.limit))
 

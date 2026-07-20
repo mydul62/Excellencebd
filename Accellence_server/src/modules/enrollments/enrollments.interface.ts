@@ -41,4 +41,6 @@ export interface IEnrollmentFilters {
   userId?:           string;
   courseId?:         string;
   paymentMethodId?:  string;
+  /** Full-text search across student name, sender mobile, and transaction ID */
+  searchTerm?:       string;
 }

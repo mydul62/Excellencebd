@@ -61,7 +61,7 @@ export default function PhotoGalleryPage() {
         <div className="absolute -left-32 top-0 h-96 w-96 rounded-full bg-white/10 blur-3xl" />
         <div className="absolute -right-20 bottom-0 h-80 w-80 rounded-full bg-white/10 blur-3xl" />
 
-        <div className="relative mx-auto flex min-h-[340px] w-[95%] max-w-7xl flex-col justify-center py-20">
+        <div className="relative mx-auto flex min-h-[340px] w-[95%] container flex-col justify-center py-20">
           <div className="mb-5 inline-flex w-fit items-center gap-2 rounded-full bg-white/15 px-5 py-2 text-white backdrop-blur">
             <Camera className="h-5 w-5" />
             Our Beautiful Memories

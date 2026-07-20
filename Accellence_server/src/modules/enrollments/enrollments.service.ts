@@ -113,6 +113,18 @@ const getAllEnrollmentsFromDb = async (
   if (filters.courseId)         andConditions.push({ courseId:         filters.courseId });
   if (filters.paymentMethodId)  andConditions.push({ paymentMethodId:  filters.paymentMethodId });
 
+  // Full-text OR search: student name, sender mobile number, transaction ID
+  if (filters.searchTerm) {
+    const term = filters.searchTerm.trim();
+    andConditions.push({
+      OR: [
+        { user:          { name:     { contains: term, mode: 'insensitive' } } },
+        { senderNumber:  { contains: term, mode: 'insensitive' } },
+        { transactionId: { contains: term, mode: 'insensitive' } },
+      ],
+    });
+  }
+
   const where = andConditions.length > 0 ? { AND: andConditions } : {};
 
   const [result, total] = await Promise.all([

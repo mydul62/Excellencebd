@@ -1,11 +1,13 @@
+'use client'
+
 import Link from 'next/link'
 import { Clock, Users } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
-import { RatingStars } from '@/components/shared/rating-stars'
 import { getCourseIcon } from '@/lib/course-icons'
 import { formatCurrency } from '@/lib/format'
+import { CourseReviewStats } from '@/components/cards/course-review-stats'
 import type { CourseWithTeacher } from '@/services'
 
 export function CourseCard({ course }: { course: CourseWithTeacher }) {
@@ -25,7 +27,7 @@ export function CourseCard({ course }: { course: CourseWithTeacher }) {
             {course.description}
           </p>
         </div>
-        <RatingStars rating={course.rating} showValue />
+        <CourseReviewStats courseId={course.id} fallbackRating={course.rating} />
         <div className="mt-auto flex flex-wrap items-center gap-4 pt-2 text-sm text-muted-foreground">
           <span className="flex items-center gap-1.5">
             <Clock className="size-4" />

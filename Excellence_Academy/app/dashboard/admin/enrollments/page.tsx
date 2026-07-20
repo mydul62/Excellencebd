@@ -1,10 +1,10 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
-import Image from 'next/image'
 import {
-  ArrowLeft, BookOpen, CheckCircle2, XCircle, Pencil, Trash2, Eye, AlertTriangle,
+  ArrowLeft, BookOpen, CheckCircle2, XCircle, Pencil, Trash2, Eye, AlertTriangle, Search, X,
+  GraduationCap, CreditCard, Hash, Phone, CalendarDays, BadgeCheck, Ban, Clock,
 } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -72,11 +72,15 @@ export default function AdminEnrollmentsPage() {
   const [loading,              setLoading]              = useState(true)
   const [error,                setError]                = useState<string | null>(null)
   const [statusFilter,         setStatusFilter]         = useState<StatusFilter>('all')
+  const [searchInput,          setSearchInput]          = useState('')
+  const [searchTerm,           setSearchTerm]           = useState('')
   const [actionLoading,        setActionLoading]        = useState<string | null>(null)
   const [editTarget,           setEditTarget]           = useState<ServerEnrollment | null>(null)
   const [rejectTarget,         setRejectTarget]         = useState<ServerEnrollment | null>(null)
   const [detailsTarget,        setDetailsTarget]        = useState<ServerEnrollment | null>(null)
   const [deletingId,           setDeletingId]           = useState<string | null>(null)
+
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const editForm = useForm<EditFormValues>({
     resolver: zodResolver(editSchema),
@@ -87,16 +91,36 @@ export default function AdminEnrollmentsPage() {
     defaultValues: { reason: '' },
   })
 
+  // ── Debounce search input (400 ms) ────────────────────────────────────────
+  function handleSearchChange(value: string) {
+    setSearchInput(value)
+    if (debounceRef.current) clearTimeout(debounceRef.current)
+    debounceRef.current = setTimeout(() => {
+      setSearchTerm(value.trim())
+    }, 400)
+  }
+
+  function clearSearch() {
+    setSearchInput('')
+    setSearchTerm('')
+    if (debounceRef.current) clearTimeout(debounceRef.current)
+  }
+
+  // Cleanup timeout on unmount
+  useEffect(() => () => { if (debounceRef.current) clearTimeout(debounceRef.current) }, [])
+
   // ── Fetch ─────────────────────────────────────────────────────────────────
-  const fetchEnrollments = () => {
+  const fetchEnrollments = (term = searchTerm) => {
     setLoading(true)
-    getAdminEnrollments({ limit: 200 })
+    setError(null)
+    getAdminEnrollments({ limit: 200, ...(term ? { searchTerm: term } : {}) })
       .then(({ data }) => setEnrollments(data))
       .catch((e) => setError(e.message))
       .finally(() => setLoading(false))
   }
 
-  useEffect(() => { fetchEnrollments() }, [])
+  // Re-fetch whenever the debounced search term changes
+  useEffect(() => { fetchEnrollments(searchTerm) }, [searchTerm]) // eslint-disable-line react-hooks/exhaustive-deps
 
   // ── Derived state ─────────────────────────────────────────────────────────
   const filtered = enrollments.filter((e) =>
@@ -222,6 +246,29 @@ export default function AdminEnrollmentsPage() {
         </div>
       </div>
 
+      {/* Search */}
+      <div className="relative max-w-md">
+        <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground pointer-events-none" />
+        <Input
+          type="search"
+          placeholder="Search by student name, mobile number, or TXN ID…"
+          value={searchInput}
+          onChange={(e) => handleSearchChange(e.target.value)}
+          className="pl-9 pr-9"
+          aria-label="Search enrollments"
+        />
+        {searchInput && (
+          <button
+            type="button"
+            onClick={clearSearch}
+            aria-label="Clear search"
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+          >
+            <X className="h-4 w-4" />
+          </button>
+        )}
+      </div>
+
       {/* Status tabs */}
       <div className="flex flex-wrap gap-2">
         {STATUS_FILTERS.map(({ key, label }) => (
@@ -251,7 +298,9 @@ export default function AdminEnrollmentsPage() {
         {!loading && error && <p className="text-sm text-destructive">{error}</p>}
         {!loading && !error && filtered.length === 0 && (
           <p className="py-6 text-center text-sm text-muted-foreground">
-            No {statusFilter === 'all' ? '' : statusFilter} enrollments found.
+            {searchTerm
+              ? `No enrollments found matching "${searchTerm}".`
+              : `No ${statusFilter === 'all' ? '' : statusFilter} enrollments found.`}
           </p>
         )}
 
@@ -284,17 +333,31 @@ export default function AdminEnrollmentsPage() {
               },
               {
                 header: 'Payment Method',
-                accessor: (row) => (
-                  <div className="flex items-center gap-2">
-                    {row.paymentMethod?.logo ? (
-                      <Image src={row.paymentMethod.logo} alt={row.paymentMethod.name} width={24} height={24} className="rounded" unoptimized />
-                    ) : null}
-                    <div>
-                      <p className="text-sm font-medium">{row.paymentMethod?.name ?? '—'}</p>
-                      <p className="text-xs text-muted-foreground">{row.paymentMethod?.accountType}</p>
+                accessor: (row) => {
+                  const logo = row.paymentMethod?.logo?.trim() || null
+                  return (
+                    <div className="flex items-center gap-2">
+                      {logo ? (
+                        <img
+                          src={logo}
+                          alt={row.paymentMethod?.name ?? 'logo'}
+                          width={28}
+                          height={28}
+                          className="rounded object-contain shrink-0"
+                          onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none' }}
+                        />
+                      ) : (
+                        <div className="flex size-7 shrink-0 items-center justify-center rounded bg-muted">
+                          <CreditCard className="size-3.5 text-muted-foreground" />
+                        </div>
+                      )}
+                      <div>
+                        <p className="text-sm font-medium">{row.paymentMethod?.name ?? '—'}</p>
+                        <p className="text-xs text-muted-foreground">{row.paymentMethod?.accountType}</p>
+                      </div>
                     </div>
-                  </div>
-                ),
+                  )
+                },
               },
               {
                 header: 'Amount',
@@ -383,80 +446,214 @@ export default function AdminEnrollmentsPage() {
 
       {/* ── Details Dialog ── */}
       <Dialog open={detailsTarget !== null} onOpenChange={(v) => { if (!v) setDetailsTarget(null) }}>
-        <DialogContent className="sm:max-w-lg">
-          <DialogHeader><DialogTitle>Enrollment Details</DialogTitle></DialogHeader>
-          {detailsTarget && (
-            <div className="space-y-4">
-              {/* Student */}
-              <div className="rounded-xl border border-border/60 bg-muted/40 p-4">
-                <p className="font-semibold">{detailsTarget.user?.name}</p>
-                <p className="text-sm text-muted-foreground">{detailsTarget.user?.email} · {detailsTarget.user?.phone ?? '—'}</p>
-              </div>
-              {/* Receiver info */}
-              <div className="grid gap-3">
-                <div className="rounded-lg border p-3">
-                  <p className="text-xs text-muted-foreground">Course</p>
-                  <p className="font-medium">{detailsTarget.course?.title}</p>
+        <DialogContent className="sm:max-w-2xl max-h-[90vh] overflow-y-auto p-0 gap-0">
+
+          {detailsTarget && (() => {
+            const diff = paymentDiff(detailsTarget)
+            const enrollStatus = detailsTarget.enrollmentStatus
+            const payStatus    = detailsTarget.paymentStatus
+
+            const enrollIcon =
+              enrollStatus === 'approved' ? <BadgeCheck className="size-4" /> :
+              enrollStatus === 'rejected' ? <Ban className="size-4" /> :
+              <Clock className="size-4" />
+
+            const enrollColor =
+              enrollStatus === 'approved' ? 'bg-emerald-500/10 text-emerald-600 border-emerald-500/20' :
+              enrollStatus === 'rejected' ? 'bg-destructive/10 text-destructive border-destructive/20' :
+              'bg-amber-500/10 text-amber-600 border-amber-500/20'
+
+            const payColor =
+              payStatus === 'paid'    ? 'bg-emerald-500/10 text-emerald-600 border-emerald-500/20' :
+              payStatus === 'partial' ? 'bg-amber-500/10 text-amber-600 border-amber-500/20' :
+              'bg-muted text-muted-foreground border-border'
+
+            return (
+              <>
+                {/* ── Hero header ── */}
+                <div className="relative bg-gradient-to-br from-primary/10 via-primary/5 to-background px-6 pt-6 pb-5 border-b border-border/60">
+                  <div className="flex items-start gap-4">
+                    <Avatar size="lg" className="size-16 ring-2 ring-primary/20 ring-offset-2 ring-offset-background shrink-0">
+                      <AvatarImage src={detailsTarget.user?.avatar ?? ''} alt={detailsTarget.user?.name ?? ''} />
+                      <AvatarFallback className="text-lg font-semibold bg-primary/10 text-primary">
+                        {(detailsTarget.user?.name ?? 'S').slice(0, 2).toUpperCase()}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div className="min-w-0 flex-1">
+                      <h2 className="text-xl font-semibold text-foreground truncate">
+                        {detailsTarget.user?.name}
+                      </h2>
+                      <p className="text-sm text-muted-foreground mt-0.5">{detailsTarget.user?.email}</p>
+                      {detailsTarget.user?.phone && (
+                        <p className="text-sm text-muted-foreground flex items-center gap-1 mt-0.5">
+                          <Phone className="size-3" />{detailsTarget.user.phone}
+                        </p>
+                      )}
+                      <div className="flex flex-wrap items-center gap-2 mt-3">
+                        <span className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-xs font-medium capitalize ${enrollColor}`}>
+                          {enrollIcon}{enrollStatus}
+                        </span>
+                        <span className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-xs font-medium capitalize ${payColor}`}>
+                          <CreditCard className="size-3" />{payStatus}
+                        </span>
+                        <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-muted px-2.5 py-0.5 text-xs text-muted-foreground">
+                          <CalendarDays className="size-3" />{formatDate(detailsTarget.enrolledAt)}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  {/* Close affordance label */}
+                  <p className="mt-1 text-[11px] text-muted-foreground/60 text-right">Enrollment Details</p>
                 </div>
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="rounded-lg border p-3">
-                    <p className="text-xs text-muted-foreground">Course Fee</p>
-                    <p className="font-medium">{formatCurrency(detailsTarget.courseFee)}</p>
-                  </div>
-                  <div className="rounded-lg border p-3">
-                    <p className="text-xs text-muted-foreground">Amount Sent</p>
-                    <p className="font-medium">{formatCurrency(detailsTarget.amountSent)}</p>
-                  </div>
-                  <div className="rounded-lg border p-3">
-                    <p className="text-xs text-muted-foreground">Difference</p>
-                    <p className={`font-medium ${paymentDiff(detailsTarget).color}`}>
-                      {paymentDiff(detailsTarget).label}
-                    </p>
-                  </div>
-                  <div className="rounded-lg border p-3">
-                    <p className="text-xs text-muted-foreground">Payment Method</p>
-                    <p className="font-medium">{detailsTarget.paymentMethod?.name ?? '—'}</p>
-                  </div>
+
+                <div className="px-6 py-5 space-y-5">
+
+                  {/* ── Course info ── */}
+                  <section>
+                    <div className="flex items-center gap-2 mb-3">
+                      <GraduationCap className="size-4 text-primary" />
+                      <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Course</h3>
+                    </div>
+                    <div className="rounded-xl border border-border/60 bg-muted/30 px-4 py-3">
+                      <p className="font-semibold text-foreground">{detailsTarget.course?.title ?? '—'}</p>
+                      <p className="text-xs text-muted-foreground mt-0.5 capitalize">
+                        {detailsTarget.course?.category} · {detailsTarget.course?.level} · {detailsTarget.course?.duration}
+                      </p>
+                    </div>
+                  </section>
+
+                  {/* ── Payment summary ── */}
+                  <section>
+                    <div className="flex items-center gap-2 mb-3">
+                      <CreditCard className="size-4 text-primary" />
+                      <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Payment Summary</h3>
+                    </div>
+                    <div className="grid grid-cols-3 gap-3">
+                      <div className="rounded-xl border border-border/60 bg-muted/30 px-4 py-3 text-center">
+                        <p className="text-[11px] text-muted-foreground mb-1">Course Fee</p>
+                        <p className="font-semibold text-foreground">{formatCurrency(detailsTarget.courseFee)}</p>
+                      </div>
+                      <div className="rounded-xl border border-border/60 bg-muted/30 px-4 py-3 text-center">
+                        <p className="text-[11px] text-muted-foreground mb-1">Amount Sent</p>
+                        <p className="font-semibold text-foreground">{formatCurrency(detailsTarget.amountSent)}</p>
+                      </div>
+                      <div className={`rounded-xl border px-4 py-3 text-center ${
+                        diff.color === 'text-emerald-600' ? 'border-emerald-500/20 bg-emerald-500/5' :
+                        diff.color === 'text-blue-600'    ? 'border-blue-500/20 bg-blue-500/5' :
+                        'border-amber-500/20 bg-amber-500/5'
+                      }`}>
+                        <p className="text-[11px] text-muted-foreground mb-1">Difference</p>
+                        <p className={`font-semibold text-sm ${diff.color}`}>{diff.label}</p>
+                      </div>
+                    </div>
+                  </section>
+
+                  {/* ── Payment method & transaction ── */}
+                  <section>
+                    <div className="flex items-center gap-2 mb-3">
+                      <Hash className="size-4 text-primary" />
+                      <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Transaction Info</h3>
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      {/* Payment method */}
+                      <div className="rounded-xl border border-border/60 bg-muted/30 px-4 py-3 flex items-center gap-3">
+                        {detailsTarget.paymentMethod?.logo?.trim() ? (
+                          <img
+                            src={detailsTarget.paymentMethod.logo}
+                            alt={detailsTarget.paymentMethod.name}
+                            width={40}
+                            height={40}
+                            className="rounded-lg object-contain shrink-0 size-10"
+                            onError={(e) => {
+                              const el = e.currentTarget as HTMLImageElement
+                              el.style.display = 'none'
+                              const next = el.nextElementSibling as HTMLElement | null
+                              if (next) next.style.display = 'flex'
+                            }}
+                          />
+                        ) : null}
+                        <div
+                          className="size-9 rounded-lg bg-muted items-center justify-center shrink-0"
+                          style={{ display: detailsTarget.paymentMethod?.logo?.trim() ? 'none' : 'flex' }}
+                        >
+                          <CreditCard className="size-4 text-muted-foreground" />
+                        </div>
+                        <div className="min-w-0">
+                          <p className="text-[11px] text-muted-foreground">Payment Method</p>
+                          <p className="font-medium text-sm truncate">{detailsTarget.paymentMethod?.name ?? '—'}</p>
+                          <p className="text-xs text-muted-foreground capitalize">{detailsTarget.paymentMethod?.accountType ?? ''}</p>
+                        </div>
+                      </div>
+                      {/* Sender number */}
+                      <div className="rounded-xl border border-border/60 bg-muted/30 px-4 py-3">
+                        <p className="text-[11px] text-muted-foreground mb-1">Sender Number</p>
+                        <p className="font-mono font-semibold text-sm">{detailsTarget.senderNumber}</p>
+                      </div>
+                      {/* Transaction ID */}
+                      <div className="sm:col-span-2 rounded-xl border border-border/60 bg-muted/30 px-4 py-3">
+                        <p className="text-[11px] text-muted-foreground mb-1">Transaction ID</p>
+                        <p className="font-mono font-semibold text-sm break-all">{detailsTarget.transactionId}</p>
+                      </div>
+                    </div>
+                  </section>
+
+                  {/* ── Payment screenshot ── */}
+                  {detailsTarget.paymentScreenshot && (
+                    <section>
+                      <div className="flex items-center gap-2 mb-3">
+                        <Eye className="size-4 text-primary" />
+                        <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Payment Screenshot</h3>
+                      </div>
+                      <a
+                        href={detailsTarget.paymentScreenshot}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="group block overflow-hidden rounded-xl border border-border/60 bg-muted/30 relative"
+                        title="Click to open full size"
+                      >
+                        <img
+                          src={detailsTarget.paymentScreenshot}
+                          alt="Payment screenshot"
+                          className="w-full max-h-64 object-contain transition-opacity group-hover:opacity-80"
+                        />
+                        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/20 rounded-xl">
+                          <span className="bg-background/90 text-foreground text-xs font-medium px-3 py-1.5 rounded-full shadow">
+                            Open full size ↗
+                          </span>
+                        </div>
+                      </a>
+                    </section>
+                  )}
+
+                  {/* ── Rejection reason ── */}
+                  {detailsTarget.rejectionReason && (
+                    <section>
+                      <div className="flex items-center gap-2 mb-3">
+                        <XCircle className="size-4 text-destructive" />
+                        <h3 className="text-xs font-semibold uppercase tracking-wider text-destructive/70">Rejection Reason</h3>
+                      </div>
+                      <div className="rounded-xl border border-destructive/20 bg-destructive/5 px-4 py-3">
+                        <p className="text-sm text-destructive leading-relaxed">{detailsTarget.rejectionReason}</p>
+                      </div>
+                    </section>
+                  )}
+
                 </div>
-                <div className="rounded-lg border p-3">
-                  <p className="text-xs text-muted-foreground">Sender Number</p>
-                  <p className="font-mono font-medium">{detailsTarget.senderNumber}</p>
+
+                {/* ── Footer close button ── */}
+                <div className="px-6 pb-5">
+                  <Button
+                    variant="outline"
+                    className="w-full"
+                    onClick={() => setDetailsTarget(null)}
+                  >
+                    Close
+                  </Button>
                 </div>
-                <div className="rounded-lg border p-3">
-                  <p className="text-xs text-muted-foreground">Transaction ID</p>
-                  <p className="font-mono font-medium">{detailsTarget.transactionId}</p>
-                </div>
-                {detailsTarget.paymentScreenshot && (
-                  <div className="rounded-lg border p-3">
-                    <p className="mb-2 text-xs text-muted-foreground">Payment Screenshot</p>
-                    <a href={detailsTarget.paymentScreenshot} target="_blank" rel="noreferrer" className="block overflow-hidden rounded-lg">
-                      <Image src={detailsTarget.paymentScreenshot} alt="Payment screenshot" width={400} height={300} className="w-full object-contain" unoptimized />
-                    </a>
-                  </div>
-                )}
-                {detailsTarget.rejectionReason && (
-                  <div className="rounded-lg border border-destructive/30 bg-destructive/5 p-3">
-                    <p className="text-xs text-muted-foreground">Rejection Reason</p>
-                    <p className="text-sm text-destructive">{detailsTarget.rejectionReason}</p>
-                  </div>
-                )}
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="rounded-lg border p-3">
-                    <p className="text-xs text-muted-foreground">Enrollment Status</p>
-                    <Badge variant={ENROLLMENT_BADGE[detailsTarget.enrollmentStatus]} className="mt-1 text-xs">
-                      {detailsTarget.enrollmentStatus}
-                    </Badge>
-                  </div>
-                  <div className="rounded-lg border p-3">
-                    <p className="text-xs text-muted-foreground">Payment Status</p>
-                    <Badge variant={PAYMENT_BADGE[detailsTarget.paymentStatus]} className="mt-1 text-xs">
-                      {detailsTarget.paymentStatus}
-                    </Badge>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
+              </>
+            )
+          })()}
+
         </DialogContent>
       </Dialog>
 
